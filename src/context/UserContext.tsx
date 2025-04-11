@@ -52,12 +52,13 @@ const defaultUserData: UserData = {
   netWorth: 50,
 };
 
-// Hebrew translations for class names
+// Hebrew translations for class names - make sure all class names are included
 const classTranslations: { [key: string]: string } = {
   "Novice": "מתחיל",
   "Student": "תלמיד",
   "Apprentice": "שוליה",
   "Explorer": "חוקר",
+  // Add any additional class names that might be used
 };
 
 interface UserContextType {
