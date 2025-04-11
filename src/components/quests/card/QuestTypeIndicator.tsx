@@ -1,6 +1,6 @@
 
 import React from "react";
-import { Award, Calendar, Scroll, Shield, Star } from "lucide-react";
+import { Award, Calendar, Scroll, Shield, Star, Sword } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export type QuestType = "main" | "daily" | "penalty" | "reward" | "dungeon";
@@ -54,7 +54,7 @@ const getQuestTypeStyles = (type: QuestType): QuestTypeStyles => {
       };
     case "dungeon":
       return { 
-        icon: <Swords size={16} className="text-rpg-accent" />,
+        icon: <Sword size={16} className="text-rpg-accent" />,
         borderColor: "border-rpg-accent/30",
         bgColor: "bg-rpg-accent/5",
         label: "Dungeon Challenge",
