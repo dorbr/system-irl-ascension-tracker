@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect } from "react";
 
 export type QuestDifficulty = "E" | "D" | "C" | "B" | "A" | "S";
@@ -64,6 +63,40 @@ const defaultQuests: Quest[] = [
     streak: 0,
   },
   {
+    id: "daily-5",
+    title: "Read a Book",
+    description: "Read at least 20 pages from a book",
+    xpReward: 25,
+    type: "daily",
+    completed: false,
+    stats: ["INT", "WIL"],
+    tags: ["Knowledge", "Growth"],
+    streak: 0,
+  },
+  {
+    id: "daily-6",
+    title: "Hydration Check",
+    description: "Drink 8 glasses of water throughout the day",
+    xpReward: 15,
+    type: "daily",
+    completed: false,
+    stats: ["VIT", "WIL"],
+    tags: ["Health", "Wellbeing"],
+    streak: 0,
+  },
+  {
+    id: "daily-7",
+    title: "Journal Entry",
+    description: "Write in your journal about today's experiences",
+    xpReward: 20,
+    type: "daily",
+    completed: false,
+    stats: ["SEN", "INT"],
+    tags: ["Reflection", "Growth"],
+    streak: 0,
+  },
+  
+  {
     id: "5",
     title: "Learn a New Skill",
     description: "Start learning a new valuable skill",
@@ -74,6 +107,37 @@ const defaultQuests: Quest[] = [
     tags: ["Knowledge", "Growth"],
   },
   {
+    id: "main-2",
+    title: "Complete a Personal Project",
+    description: "Finish that project you've been putting off",
+    xpReward: 100,
+    type: "main",
+    completed: false,
+    stats: ["INT", "WIL", "CRE"],
+    tags: ["Achievement", "Growth", "Creativity"],
+  },
+  {
+    id: "main-3",
+    title: "Career Advancement",
+    description: "Take a significant step forward in your career",
+    xpReward: 150,
+    type: "main",
+    completed: false,
+    stats: ["INT", "CHA", "WIL"],
+    tags: ["Career", "Growth", "Achievement"],
+  },
+  {
+    id: "main-4",
+    title: "Master a Language",
+    description: "Reach conversational fluency in a foreign language",
+    xpReward: 200,
+    type: "main",
+    completed: false,
+    stats: ["INT", "CHA", "WIL"],
+    tags: ["Language", "Skill", "Communication"],
+  },
+  
+  {
     id: "6",
     title: "Public Speaking",
     description: "Prepare and deliver a presentation",
@@ -82,8 +146,75 @@ const defaultQuests: Quest[] = [
     completed: false,
     stats: ["PER", "INT", "SEN"],
     tags: ["Communication", "Challenge"],
-    difficulty: "B", // Adding difficulty rank
+    difficulty: "B",
   },
+  {
+    id: "dungeon-2",
+    title: "Marathon Challenge",
+    description: "Train for and complete a marathon",
+    xpReward: 200,
+    type: "dungeon",
+    completed: false,
+    stats: ["STR", "VIT", "WIL"],
+    tags: ["Fitness", "Endurance", "Challenge"],
+    difficulty: "A",
+  },
+  {
+    id: "dungeon-3",
+    title: "Tech Detox",
+    description: "Go 48 hours without technology",
+    xpReward: 80,
+    type: "dungeon",
+    completed: false,
+    stats: ["WIL", "SEN"],
+    tags: ["Discipline", "Mindfulness"],
+    difficulty: "C",
+  },
+  {
+    id: "dungeon-4",
+    title: "Cold Shower Challenge",
+    description: "Take cold showers for 7 consecutive days",
+    xpReward: 70,
+    type: "dungeon",
+    completed: false,
+    stats: ["WIL", "VIT"],
+    tags: ["Discipline", "Health"],
+    difficulty: "D",
+  },
+  {
+    id: "dungeon-5",
+    title: "Ultimate Interview Prep",
+    description: "Prepare for and excel at a critical job interview",
+    xpReward: 150,
+    type: "dungeon",
+    completed: false,
+    stats: ["CHA", "INT", "PER"],
+    tags: ["Career", "Communication"],
+    difficulty: "A",
+  },
+  {
+    id: "dungeon-6",
+    title: "Social Networking Challenge",
+    description: "Attend three networking events and make five new professional connections",
+    xpReward: 120,
+    type: "dungeon",
+    completed: false,
+    stats: ["CHA", "PER", "SEN"],
+    tags: ["Social", "Career", "Networking"],
+    difficulty: "B",
+  },
+  {
+    id: "dungeon-7",
+    title: "Master the Elements",
+    description: "Complete an extreme outdoor challenge (mountain climbing, deep diving, etc.)",
+    xpReward: 250,
+    type: "dungeon",
+    completed: false,
+    stats: ["STR", "AGI", "VIT"],
+    tags: ["Adventure", "Nature", "Challenge"],
+    difficulty: "S",
+  },
+  
   {
     id: "7",
     title: "Skip Bad Habits",
@@ -95,6 +226,27 @@ const defaultQuests: Quest[] = [
     tags: ["Discipline", "Focus"],
   },
   {
+    id: "penalty-2",
+    title: "No Junk Food",
+    description: "Avoid all processed foods and sugar for 3 days",
+    xpReward: 50,
+    type: "penalty",
+    completed: false,
+    stats: ["WIL", "VIT"],
+    tags: ["Health", "Nutrition", "Discipline"],
+  },
+  {
+    id: "penalty-3",
+    title: "Early to Bed",
+    description: "Go to bed before 10 PM for a week",
+    xpReward: 45,
+    type: "penalty",
+    completed: false,
+    stats: ["WIL", "VIT"],
+    tags: ["Sleep", "Health", "Discipline"],
+  },
+  
+  {
     id: "8",
     title: "Reward: Movie Night",
     description: "Enjoy a movie after completing all daily quests",
@@ -103,6 +255,26 @@ const defaultQuests: Quest[] = [
     completed: false,
     stats: ["SEN", "VIT"],
     tags: ["Relaxation", "Entertainment"],
+  },
+  {
+    id: "reward-2",
+    title: "Reward: Gaming Session",
+    description: "Enjoy a guilt-free gaming session after completing 3 main quests",
+    xpReward: 25,
+    type: "reward",
+    completed: false,
+    stats: ["SEN", "AGI"],
+    tags: ["Entertainment", "Fun", "Relaxation"],
+  },
+  {
+    id: "reward-3",
+    title: "Reward: Spa Day",
+    description: "Treat yourself to a spa day after completing a dungeon challenge",
+    xpReward: 30,
+    type: "reward",
+    completed: false,
+    stats: ["SEN", "VIT"],
+    tags: ["Self-care", "Relaxation", "Health"],
   },
 ];
 
@@ -143,10 +315,8 @@ export const QuestProvider: React.FC<{ children: React.ReactNode }> = ({
           const today = new Date().toISOString().split("T")[0];
           const lastCompleted = quest.lastCompleted;
           
-          // Update streak if daily quest
           let streak = quest.streak || 0;
           if (quest.type === "daily") {
-            // Increment streak if first completion or completed yesterday
             if (!lastCompleted) {
               streak = 1;
             } else {
@@ -157,7 +327,7 @@ export const QuestProvider: React.FC<{ children: React.ReactNode }> = ({
               if (lastDate.toISOString().split("T")[0] === yesterday.toISOString().split("T")[0]) {
                 streak += 1;
               } else if (lastDate.toISOString().split("T")[0] !== today) {
-                streak = 1; // Reset streak if it wasn't completed yesterday (and not completed today)
+                streak = 1;
               }
             }
           }
@@ -181,7 +351,6 @@ export const QuestProvider: React.FC<{ children: React.ReactNode }> = ({
     setQuests((prev) =>
       prev.map((quest) => {
         if (quest.type === "daily") {
-          // Only reset if not already completed today
           if (quest.lastCompleted !== today) {
             return {
               ...quest,
