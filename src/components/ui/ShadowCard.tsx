@@ -24,24 +24,24 @@ const ShadowCard: React.FC<ShadowCardProps> = ({ shadow, className }) => {
   return (
     <div className={cn("glass-card rounded-lg p-4 text-center", className)}>
       <div className="flex flex-col items-center mb-3">
-        <h3 className="font-semibold text-glow mb-1">{shadow.name}</h3>
-        <span className="text-xs text-muted-foreground">{shadow.date}</span>
+        <h3 className="font-semibold text-glow mb-1 text-center">{shadow.name}</h3>
+        <span className="text-xs text-muted-foreground text-center">{shadow.date}</span>
       </div>
       
       <div className="space-y-3 text-sm">
         <div className="flex flex-col items-center">
-          <p className="text-xs font-medium uppercase text-muted-foreground mb-1">{t('event')}</p>
-          <p>{shadow.event}</p>
+          <p className="text-xs font-medium uppercase text-muted-foreground mb-1 text-center">{t('event')}</p>
+          <p className="text-center">{shadow.event}</p>
         </div>
         
         <div className="flex flex-col items-center">
-          <p className="text-xs font-medium uppercase text-muted-foreground mb-1">{t('reflection')}</p>
-          <p className="italic text-muted-foreground">{shadow.reflection}</p>
+          <p className="text-xs font-medium uppercase text-muted-foreground mb-1 text-center">{t('reflection')}</p>
+          <p className="italic text-muted-foreground text-center">{shadow.reflection}</p>
         </div>
         
         <div className="flex flex-col items-center">
-          <p className="text-xs font-medium uppercase text-muted-foreground mb-1">{t('insight')}</p>
-          <p className="text-rpg-secondary">{shadow.insight}</p>
+          <p className="text-xs font-medium uppercase text-muted-foreground mb-1 text-center">{t('insight')}</p>
+          <p className="text-rpg-secondary text-center">{shadow.insight}</p>
         </div>
       </div>
       
