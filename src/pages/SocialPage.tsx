@@ -55,13 +55,8 @@ const SocialPage = () => {
   ];
 
   return (
-    <div className="py-4">
-      <div className="glass-card rounded-lg p-4 mb-4">
-        <h1 className="text-xl font-bold mb-1">Social Hub</h1>
-        <p className="text-muted-foreground text-sm mb-4">
-          Connect and adventure with others
-        </p>
-
+    <div className="p-4">
+      <div className="glass-card rounded-lg p-4">
         {isLoading ? (
           <div className="space-y-3">
             {[1, 2, 3, 4, 5].map((i) => (

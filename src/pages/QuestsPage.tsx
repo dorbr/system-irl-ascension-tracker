@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { useQuests } from "@/context/QuestContext";
 import { useUser } from "@/context/UserContext";
@@ -115,10 +114,8 @@ const QuestsPage = () => {
   };
 
   return (
-    <div className="py-4">
-      <div className="glass-card rounded-lg p-4 mb-4">
-        <h1 className="text-xl font-bold mb-4">Quest Log</h1>
-        
+    <div className="p-4">
+      <div className="glass-card rounded-lg p-4">
         <Tabs defaultValue="daily">
           <TabsList className="grid grid-cols-5 bg-secondary/50">
             <TabsTrigger value="daily" className="flex items-center gap-1">

@@ -24,6 +24,7 @@ import GuildPage from "@/pages/social/GuildPage";
 import FriendsPage from "@/pages/social/FriendsPage";
 import LeaderboardPage from "@/pages/social/LeaderboardPage";
 import EventsPage from "@/pages/social/EventsPage";
+import CrewPage from "@/pages/CrewPage";
 
 const queryClient = new QueryClient();
 
@@ -45,6 +46,7 @@ const App = () => (
                       <Route element={<MobileLayout />}>
                         <Route path="/" element={<Index />} />
                         <Route path="/quests" element={<QuestsPage />} />
+                        <Route path="/crew" element={<CrewPage />} />
                         <Route path="/stats" element={<StatsPage />} />
                         <Route path="/shadows" element={<ShadowsPage />} />
                         <Route path="/profile" element={<ProfilePage />} />
