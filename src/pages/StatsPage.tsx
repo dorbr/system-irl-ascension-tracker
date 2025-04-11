@@ -82,10 +82,10 @@ const StatsPage = () => {
           <DialogTrigger asChild>
             <Button className="w-full mb-6">{t("logProgress")}</Button>
           </DialogTrigger>
-          <DialogContent className="glass-card">
+          <DialogContent className={`glass-card ${isRtl ? "rtl" : ""}`}>
             <DialogHeader>
-              <DialogTitle>{t("logProgress")}</DialogTitle>
-              <DialogDescription>
+              <DialogTitle className={isRtl ? "text-right" : ""}>{t("logProgress")}</DialogTitle>
+              <DialogDescription className={isRtl ? "text-right" : ""}>
                 {t("selectStatToImprove")}
               </DialogDescription>
             </DialogHeader>
@@ -96,7 +96,8 @@ const StatsPage = () => {
                   id="stat"
                   value={selectedStat}
                   onChange={(e) => setSelectedStat(e.target.value)}
-                  className="w-full h-10 rounded-md bg-secondary/50 border-secondary text-sm"
+                  className={`w-full h-10 rounded-md bg-secondary/50 border-secondary text-sm ${isRtl ? "text-right" : ""}`}
+                  dir={isRtl ? "rtl" : "ltr"}
                 >
                   <option value="">{t("selectStatToImprove")}</option>
                   {userData.stats.map((stat) => (
@@ -114,7 +115,8 @@ const StatsPage = () => {
                   value={journalEntry}
                   onChange={(e) => setJournalEntry(e.target.value)}
                   placeholder={t("journalEntryPlaceholder")}
-                  className="bg-secondary/50 border-secondary"
+                  className={`bg-secondary/50 border-secondary ${isRtl ? "text-right" : ""}`}
+                  dir={isRtl ? "rtl" : "ltr"}
                 />
               </div>
               
@@ -127,14 +129,17 @@ const StatsPage = () => {
                   onChange={(e) => setStatGain(Number(e.target.value))}
                   min={1}
                   max={5}
-                  className="bg-secondary/50 border-secondary"
+                  className={`bg-secondary/50 border-secondary ${isRtl ? "text-right" : ""}`}
+                  dir={isRtl ? "rtl" : "ltr"}
                 />
                 <p className={`text-xs text-muted-foreground mt-1 ${isRtl ? "text-right" : ""}`}>
                   {t("earnXp").replace("{amount}", String(statGain * 10))}
                 </p>
               </div>
               
-              <Button onClick={handleLogProgress}>{t("logImprovement")}</Button>
+              <Button onClick={handleLogProgress} className={isRtl ? "w-full" : ""}>
+                {t("logImprovement")}
+              </Button>
             </div>
           </DialogContent>
         </Dialog>

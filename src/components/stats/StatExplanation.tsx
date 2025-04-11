@@ -11,7 +11,8 @@ interface StatExplanationProps {
   onClose?: () => void;
 }
 
-const statDescriptions: Record<string, { description: string, benefits: string[] }> = {
+// English stat descriptions
+const englishStatDescriptions: Record<string, { description: string, benefits: string[] }> = {
   "Strength": {
     description: "Physical power and muscle. Affects your ability to carry heavy loads, deal physical damage, and resist physical challenges.",
     benefits: [
@@ -78,60 +79,76 @@ const statDescriptions: Record<string, { description: string, benefits: string[]
   }
 };
 
-const StatExplanation: React.FC<StatExplanationProps> = ({ stats, onClose }) => {
-  const { t, isRtl } = useLanguage();
-  const stat = stats[0];
-  
-  if (!stat) return null;
-  
-  return (
-    <div className="relative">
-      {onClose && (
-        <Button 
-          variant="ghost" 
-          size="icon" 
-          onClick={onClose}
-          className="absolute right-0 top-0"
-        >
-          <X className="h-4 w-4" />
-        </Button>
-      )}
-      
-      <div className="flex items-center gap-2 mb-4">
-        <div 
-          className="w-8 h-8 rounded-md flex items-center justify-center text-white text-xs font-medium"
-          style={{ backgroundColor: stat.color }}
-        >
-          {stat.abbreviation}
-        </div>
-        <h2 className="text-lg font-semibold">{stat.name}</h2>
-      </div>
-      
-      <p className={`text-sm mb-4 ${isRtl ? "text-right" : ""}`}>{statDescriptions[stat.name]?.description || "No description available."}</p>
-      
-      <h4 className={`text-sm font-medium mb-2 ${isRtl ? "text-right" : ""}`}>
-        {t("benefits").replace("{stat}", stat.name)}
-      </h4>
-      <ul className={`text-sm space-y-2 list-disc pl-5 ${isRtl ? "text-right" : ""}`}>
-        {statDescriptions[stat.name]?.benefits.map((benefit, index) => (
-          <li key={index}>{benefit}</li>
-        ))}
-      </ul>
-      
-      <h4 className={`text-sm font-medium mt-4 mb-2 ${isRtl ? "text-right" : ""}`}>
-        {t("howToImprove").replace("{stat}", stat.name)}
-      </h4>
-      <ul className={`text-sm list-disc pl-5 ${isRtl ? "text-right" : ""}`}>
-        {getSuggestionsByStatName(stat.name).map((suggestion, index) => (
-          <li key={index}>{suggestion}</li>
-        ))}
-      </ul>
-    </div>
-  );
+// Hebrew stat descriptions
+const hebrewStatDescriptions: Record<string, { description: string, benefits: string[] }> = {
+  "Strength": {
+    description: "כוח פיזי ושרירים. משפיע על היכולת שלך לשאת משקל כבד, לגרום נזק פיזי, ולהתנגד לאתגרים פיזיים.",
+    benefits: [
+      "מגביר נזק פיזי בקרב",
+      "משפר את היכולת לשאת חפצים",
+      "עוזר במשימות עבודה פיזית"
+    ]
+  },
+  "Agility": {
+    description: "מהירות, שיווי משקל ורפלקסים. משפיע על כמה מהר אתה יכול לנוע, זמן התגובה שלך, והיכולת שלך לבצע משימות הדורשות קואורדינציה.",
+    benefits: [
+      "תנועה מהירה יותר וזמני תגובה טובים יותר",
+      "שיווי משקל וקואורדינציה טובים יותר",
+      "ביצועים משופרים בספורט ופעילויות פיזיות"
+    ]
+  },
+  "Intelligence": {
+    description: "חדות מחשבתית, יכולת למידה ופתרון בעיות. משפיע על היכולת שלך להבין נושאים מורכבים ולפתור בעיות קשות.",
+    benefits: [
+      "הבנה ולמידה טובים יותר",
+      "יכולות פתרון בעיות משופרות",
+      "זיכרון ושליפה משופרים"
+    ]
+  },
+  "Perception": {
+    description: "מודעות לסביבה שלך ותשומת לב לפרטים. משפיע על היכולת שלך להבחין בשינויים עדינים ופרטים חשובים.",
+    benefits: [
+      "הבחנה בפרטים חשובים בסביבה",
+      "זיהוי דפוסים בקלות רבה יותר",
+      "מודעות מרחבית משופרת"
+    ]
+  },
+  "Vitality": {
+    description: "בריאות, סיבולת ועמידות. משפיע על רמות האנרגיה שלך, התנגדות למחלות, והיכולת לבצע משימות לאורך זמן.",
+    benefits: [
+      "אנרגיה וסיבולת מוגברות",
+      "התאוששות טובה יותר ממאמץ פיזי",
+      "תפקוד משופר של מערכת החיסון"
+    ]
+  },
+  "Sense": {
+    description: "אינטואיציה וקבלת החלטות. משפיע על היכולת שלך לקבל החלטות טובות במהירות והבנה אינטואיטיבית של מצבים.",
+    benefits: [
+      "אינטואיציה ותחושות בטן טובות יותר",
+      "קבלת החלטות משופרת תחת לחץ",
+      "חישת סכנה או הזדמנויות"
+    ]
+  },
+  "Charisma": {
+    description: "השפעה חברתית ומגנטיות אישית. משפיע על איך אחרים תופסים אותך והיכולת שלך לשכנע ולהשרות השראה על אחרים.",
+    benefits: [
+      "אינטראקציות חברתיות משופרות",
+      "יכולות מנהיגות ושכנוע טובות יותר",
+      "קשרים ויחסים חזקים יותר"
+    ]
+  },
+  "Luck": {
+    description: "מזל והסתברות. למרות שמסתורי במקצת, נראה שיכולת זו משפיעה על תוצאות מקריות ועל כמה פעמים דברים מסתדרים לטובתך.",
+    benefits: [
+      "סיכוי מוגבר לתוצאות חיוביות",
+      "תדירות מופחתת של תקלות ותאונות",
+      "יותר הזדמנויות נראות מציגות את עצמן"
+    ]
+  }
 };
 
-// Helper function to get stat-specific improvement suggestions
-function getSuggestionsByStatName(statName: string): string[] {
+// Helper function to get stat-specific improvement suggestions in English
+function getEnglishSuggestionsByStatName(statName: string): string[] {
   switch (statName) {
     case "Strength":
       return ["Weight lifting", "Regular physical exercise", "Manual labor", "Resistance training"];
@@ -153,5 +170,91 @@ function getSuggestionsByStatName(statName: string): string[] {
       return ["Regular practice", "Learning from others", "Setting specific goals"];
   }
 }
+
+// Helper function to get stat-specific improvement suggestions in Hebrew
+function getHebrewSuggestionsByStatName(statName: string): string[] {
+  switch (statName) {
+    case "Strength":
+      return ["הרמת משקולות", "פעילות גופנית סדירה", "עבודה פיזית", "אימוני התנגדות"];
+    case "Agility":
+      return ["אימוני ספורט", "שיעורי ריקוד", "יוגה", "תרגילי איזון", "אומנויות לחימה"];
+    case "Intelligence":
+      return ["קריאת ספרים", "לקיחת קורסים", "פתרון חידות", "למידת מיומנויות חדשות", "ללמד אחרים"];
+    case "Perception":
+      return ["תרגול קשיבות", "תרגילי תצפית", "משימות מוכוונות פרטים", "מדיטציה"];
+    case "Vitality":
+      return ["אימון אירובי", "אכילת מזון בריא", "שינה נאותה", "שתייה מרובה"];
+    case "Sense":
+      return ["מדיטציה", "תרגול קבלת החלטות", "ניהול יומן", "ניתוח החלטות קודמות"];
+    case "Charisma":
+      return ["תרגול חברתי", "דיבור בציבור", "הקשבה פעילה", "הצטרפות לקבוצות חברתיות", "תפקידי מנהיגות"];
+    case "Luck":
+      return ["לקיחת סיכונים מחושבים", "להכניס את עצמך למצבים חדשים", "להיות פתוח להזדמנויות", "ללמוד מכישלונות"];
+    default:
+      return ["תרגול סדיר", "למידה מאחרים", "הצבת מטרות ספציפיות"];
+  }
+}
+
+const StatExplanation: React.FC<StatExplanationProps> = ({ stats, onClose }) => {
+  const { t, isRtl, language } = useLanguage();
+  const stat = stats[0];
+  
+  if (!stat) return null;
+  
+  // Choose the appropriate descriptions based on language
+  const statDescriptions = language === 'hebrew' ? hebrewStatDescriptions : englishStatDescriptions;
+  
+  return (
+    <div className="relative">
+      {onClose && (
+        <Button 
+          variant="ghost" 
+          size="icon" 
+          onClick={onClose}
+          className={`absolute ${isRtl ? 'left-0' : 'right-0'} top-0`}
+        >
+          <X className="h-4 w-4" />
+        </Button>
+      )}
+      
+      <div className={`flex items-center gap-2 mb-4 ${isRtl ? 'flex-row-reverse' : ''}`}>
+        <div 
+          className="w-8 h-8 rounded-md flex items-center justify-center text-white text-xs font-medium"
+          style={{ backgroundColor: stat.color }}
+        >
+          {stat.abbreviation}
+        </div>
+        <h2 className="text-lg font-semibold">{stat.name}</h2>
+      </div>
+      
+      <p className={`text-sm mb-4 ${isRtl ? "text-right" : ""}`}>
+        {statDescriptions[stat.name]?.description || (isRtl ? "אין תיאור זמין." : "No description available.")}
+      </p>
+      
+      <h4 className={`text-sm font-medium mb-2 ${isRtl ? "text-right" : ""}`}>
+        {t("benefits").replace("{stat}", stat.name)}
+      </h4>
+      <ul className={`text-sm space-y-2 list-disc ${isRtl ? "pr-5 text-right" : "pl-5"}`}>
+        {statDescriptions[stat.name]?.benefits.map((benefit, index) => (
+          <li key={index}>{benefit}</li>
+        ))}
+      </ul>
+      
+      <h4 className={`text-sm font-medium mt-4 mb-2 ${isRtl ? "text-right" : ""}`}>
+        {t("howToImprove").replace("{stat}", stat.name)}
+      </h4>
+      <ul className={`text-sm list-disc ${isRtl ? "pr-5 text-right" : "pl-5"}`}>
+        {language === 'hebrew' 
+          ? getHebrewSuggestionsByStatName(stat.name).map((suggestion, index) => (
+              <li key={index}>{suggestion}</li>
+            ))
+          : getEnglishSuggestionsByStatName(stat.name).map((suggestion, index) => (
+              <li key={index}>{suggestion}</li>
+            ))
+        }
+      </ul>
+    </div>
+  );
+};
 
 export default StatExplanation;
