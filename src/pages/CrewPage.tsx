@@ -62,13 +62,15 @@ const CrewPage = () => {
           className="flex transition-transform duration-300 h-full"
           style={{ 
             width: "200%", 
-            transform: section === "quests" ? "translateX(0)" : "translateX(-50%)" 
+            transform: section === "quests" 
+              ? isRtl ? "translateX(50%)" : "translateX(0)" 
+              : isRtl ? "translateX(0)" : "translateX(-50%)" 
           }}
         >
-          <div className="w-full h-full overflow-y-auto">
+          <div className={`w-full h-full overflow-y-auto ${isRtl ? "order-2" : "order-1"}`}>
             <QuestsPage />
           </div>
-          <div className="w-full h-full overflow-y-auto">
+          <div className={`w-full h-full overflow-y-auto ${isRtl ? "order-1" : "order-2"}`}>
             <SocialPage />
           </div>
         </div>
