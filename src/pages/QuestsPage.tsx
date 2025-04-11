@@ -11,6 +11,7 @@ const QuestsPage = () => {
   
   const availableStats = userData.stats.map(stat => stat.abbreviation);
   
+  // Filter quests by type
   const dailyQuests = quests.filter(quest => quest.type === "daily" && !quest.completed);
   const mainQuests = quests.filter(quest => quest.type === "main" && !quest.completed);
   const dungeonQuests = quests.filter(quest => quest.type === "dungeon" && !quest.completed);
@@ -27,8 +28,11 @@ const QuestsPage = () => {
       updateUserStat(statName, 1);
     });
     
+    // Different toast message depending on quest type
+    const questType = quest.type === "dungeon" ? "Dungeon" : "Quest";
+    
     toast({
-      title: "Quest Completed!",
+      title: `${questType} Completed!`,
       description: `You earned ${quest.xpReward} XP and improved ${quest.stats.join(", ")}`,
     });
   };

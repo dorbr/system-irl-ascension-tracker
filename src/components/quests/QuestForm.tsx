@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Switch } from "@/components/ui/switch";
 import { toast } from "@/hooks/use-toast";
 import { QuestDifficulty } from "@/context/QuestContext";
 
@@ -21,6 +22,8 @@ interface QuestFormProps {
 }
 
 const QuestForm: React.FC<QuestFormProps> = ({ availableStats, onCreateQuest }) => {
+  const [isDungeon, setIsDungeon] = useState(false);
+  
   const [newQuest, setNewQuest] = useState({
     title: "",
     description: "",
@@ -35,12 +38,14 @@ const QuestForm: React.FC<QuestFormProps> = ({ availableStats, onCreateQuest }) 
   const [newTag, setNewTag] = useState("");
   const [newStat, setNewStat] = useState("");
   
-  const [showDifficultySelect, setShowDifficultySelect] = useState(false);
-  
-  // Update showDifficultySelect when type changes
+  // Update quest type when isDungeon changes
   useEffect(() => {
-    setShowDifficultySelect(newQuest.type === "dungeon");
-  }, [newQuest.type]);
+    if (isDungeon) {
+      setNewQuest(prev => ({ ...prev, type: "dungeon" }));
+    } else {
+      setNewQuest(prev => ({ ...prev, type: "daily" }));
+    }
+  }, [isDungeon]);
   
   const handleAddStat = () => {
     if (!newStat || newQuest.stats.includes(newStat)) return;
@@ -78,7 +83,7 @@ const QuestForm: React.FC<QuestFormProps> = ({ availableStats, onCreateQuest }) 
     if (!newQuest.title.trim()) {
       toast({
         title: "Error",
-        description: "Quest title is required",
+        description: "Title is required",
         variant: "destructive",
       });
       return;
@@ -96,16 +101,18 @@ const QuestForm: React.FC<QuestFormProps> = ({ availableStats, onCreateQuest }) 
     onCreateQuest(questToCreate);
     
     toast({
-      title: "Quest Created",
-      description: "Your new quest has been added to your log",
+      title: isDungeon ? "Dungeon Created" : "Quest Created",
+      description: isDungeon 
+        ? "Your new dungeon challenge has been added" 
+        : "Your new quest has been added to your log",
     });
     
     // Reset form
     setNewQuest({
       title: "",
       description: "",
-      xpReward: 20,
-      type: "daily",
+      xpReward: isDungeon ? 50 : 20, // Higher default XP for dungeons
+      type: isDungeon ? "dungeon" : "daily",
       stats: [],
       tags: [],
       difficulty: "C",
@@ -114,14 +121,28 @@ const QuestForm: React.FC<QuestFormProps> = ({ availableStats, onCreateQuest }) 
 
   return (
     <div className="space-y-3">
+      <div className="flex items-center justify-between pb-2 border-b border-secondary">
+        <h3 className="font-medium">
+          {isDungeon ? "Create Dungeon Challenge" : "Create Quest"}
+        </h3>
+        <div className="flex items-center gap-2">
+          <span className="text-xs text-muted-foreground">Quest</span>
+          <Switch 
+            checked={isDungeon} 
+            onCheckedChange={setIsDungeon} 
+          />
+          <span className="text-xs text-muted-foreground">Dungeon</span>
+        </div>
+      </div>
+      
       <div>
-        <Label htmlFor="title">Quest Title</Label>
+        <Label htmlFor="title">{isDungeon ? "Dungeon Title" : "Quest Title"}</Label>
         <Input
           id="title"
           value={newQuest.title}
           onChange={(e) => setNewQuest({...newQuest, title: e.target.value})}
           className="bg-secondary/50 border-secondary"
-          placeholder="Enter quest title"
+          placeholder={isDungeon ? "Enter challenge title" : "Enter quest title"}
         />
       </div>
       
@@ -132,7 +153,7 @@ const QuestForm: React.FC<QuestFormProps> = ({ availableStats, onCreateQuest }) 
           value={newQuest.description}
           onChange={(e) => setNewQuest({...newQuest, description: e.target.value})}
           className="bg-secondary/50 border-secondary"
-          placeholder="What's this quest about?"
+          placeholder={isDungeon ? "What's this challenge about?" : "What's this quest about?"}
         />
       </div>
       
@@ -148,39 +169,38 @@ const QuestForm: React.FC<QuestFormProps> = ({ availableStats, onCreateQuest }) 
           />
         </div>
         
-        <div>
-          <Label htmlFor="type">Quest Type</Label>
-          <select
-            id="type"
-            value={newQuest.type}
-            onChange={(e) => setNewQuest({...newQuest, type: e.target.value as any})}
-            className="w-full h-10 rounded-md bg-secondary/50 border-secondary text-sm"
-          >
-            <option value="daily">Daily Quest</option>
-            <option value="main">Main Quest</option>
-            <option value="dungeon">Dungeon</option>
-          </select>
-        </div>
+        {!isDungeon ? (
+          <div>
+            <Label htmlFor="type">Quest Type</Label>
+            <select
+              id="type"
+              value={newQuest.type}
+              onChange={(e) => setNewQuest({...newQuest, type: e.target.value as "daily" | "main"})}
+              className="w-full h-10 rounded-md bg-secondary/50 border-secondary text-sm"
+            >
+              <option value="daily">Daily Quest</option>
+              <option value="main">Main Quest</option>
+            </select>
+          </div>
+        ) : (
+          <div>
+            <Label htmlFor="difficulty">Difficulty Rank</Label>
+            <select
+              id="difficulty"
+              value={newQuest.difficulty}
+              onChange={(e) => setNewQuest({...newQuest, difficulty: e.target.value as QuestDifficulty})}
+              className="w-full h-10 rounded-md bg-secondary/50 border-secondary text-sm"
+            >
+              <option value="E">E Rank (Easiest)</option>
+              <option value="D">D Rank</option>
+              <option value="C">C Rank (Average)</option>
+              <option value="B">B Rank</option>
+              <option value="A">A Rank</option>
+              <option value="S">S Rank (Hardest)</option>
+            </select>
+          </div>
+        )}
       </div>
-      
-      {showDifficultySelect && (
-        <div>
-          <Label htmlFor="difficulty">Dungeon Difficulty</Label>
-          <select
-            id="difficulty"
-            value={newQuest.difficulty}
-            onChange={(e) => setNewQuest({...newQuest, difficulty: e.target.value as QuestDifficulty})}
-            className="w-full h-10 rounded-md bg-secondary/50 border-secondary text-sm"
-          >
-            <option value="E">E Rank (Easiest)</option>
-            <option value="D">D Rank</option>
-            <option value="C">C Rank (Average)</option>
-            <option value="B">B Rank</option>
-            <option value="A">A Rank</option>
-            <option value="S">S Rank (Hardest)</option>
-          </select>
-        </div>
-      )}
       
       <div>
         <Label>Stats</Label>
@@ -246,7 +266,9 @@ const QuestForm: React.FC<QuestFormProps> = ({ availableStats, onCreateQuest }) 
         </div>
       </div>
       
-      <Button onClick={handleCreateQuest} className="w-full">Create Quest</Button>
+      <Button onClick={handleCreateQuest} className="w-full">
+        {isDungeon ? "Create Dungeon Challenge" : "Create Quest"}
+      </Button>
     </div>
   );
 };

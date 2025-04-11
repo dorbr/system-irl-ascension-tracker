@@ -1,7 +1,7 @@
 
 import React from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ScrollText, Sparkles, Swords, CheckCircle, PlusCircle } from "lucide-react";
+import { ScrollText, Swords, PlusCircle } from "lucide-react";
 import { Quest } from "@/context/QuestContext";
 import QuestList from "./QuestList";
 import QuestForm from "./QuestForm";
@@ -33,64 +33,43 @@ const QuestTabs: React.FC<QuestTabsProps> = ({
   onCompleteQuest,
   onCreateQuest
 }) => {
+  // Combine daily and main quests for the "All Quests" tab
+  const allQuests = [...dailyQuests, ...mainQuests];
+  
   return (
-    <Tabs defaultValue="daily">
-      <TabsList className="grid grid-cols-5 bg-secondary/50">
-        <TabsTrigger value="daily" className="flex items-center gap-1">
+    <Tabs defaultValue="quests">
+      <TabsList className="grid grid-cols-3 bg-secondary/50">
+        <TabsTrigger value="quests" className="flex items-center gap-1">
           <ScrollText size={14} />
-          <span className="hidden sm:inline">Daily</span>
+          <span className="hidden sm:inline">All Quests</span>
         </TabsTrigger>
-        <TabsTrigger value="main" className="flex items-center gap-1">
-          <Sparkles size={14} />
-          <span className="hidden sm:inline">Main</span>
-        </TabsTrigger>
-        <TabsTrigger value="dungeon" className="flex items-center gap-1">
+        <TabsTrigger value="dungeons" className="flex items-center gap-1">
           <Swords size={14} />
           <span className="hidden sm:inline">Dungeons</span>
         </TabsTrigger>
-        <TabsTrigger value="completed" className="flex items-center gap-1">
-          <CheckCircle size={14} />
-          <span className="hidden sm:inline">Done</span>
-        </TabsTrigger>
-        <TabsTrigger value="add" className="flex items-center gap-1">
+        <TabsTrigger value="create" className="flex items-center gap-1">
           <PlusCircle size={14} />
-          <span className="hidden sm:inline">Add</span>
+          <span className="hidden sm:inline">Create</span>
         </TabsTrigger>
       </TabsList>
       
-      <TabsContent value="daily">
+      <TabsContent value="quests">
         <QuestList 
-          quests={dailyQuests} 
+          quests={allQuests} 
           onComplete={onCompleteQuest} 
-          emptyMessage="No daily quests" 
+          emptyMessage="No quests available" 
         />
       </TabsContent>
       
-      <TabsContent value="main">
-        <QuestList 
-          quests={mainQuests} 
-          onComplete={onCompleteQuest} 
-          emptyMessage="No main quests" 
-        />
-      </TabsContent>
-      
-      <TabsContent value="dungeon">
+      <TabsContent value="dungeons">
         <QuestList 
           quests={dungeonQuests} 
           onComplete={onCompleteQuest} 
-          emptyMessage="No dungeons" 
+          emptyMessage="No dungeons available" 
         />
       </TabsContent>
       
-      <TabsContent value="completed">
-        <QuestList 
-          quests={completedQuests.slice(0, 5)} 
-          onComplete={onCompleteQuest} 
-          emptyMessage="No completed quests" 
-        />
-      </TabsContent>
-      
-      <TabsContent value="add">
+      <TabsContent value="create">
         <QuestForm 
           availableStats={availableStats}
           onCreateQuest={onCreateQuest}
