@@ -9,8 +9,8 @@ import { User, Check, X, Loader2 } from "lucide-react";
 interface PendingFriendsListProps {
   pendingFriends: Friend[];
   isLoading: boolean;
-  onAcceptFriend: (friendshipId: string) => Promise<void>;
-  onRejectFriend: (friendshipId: string) => Promise<void>;
+  onAcceptFriend: (friendshipId: string) => Promise<boolean | void>;
+  onRejectFriend: (friendshipId: string) => Promise<boolean | void>;
 }
 
 const PendingFriendsList = ({ 
