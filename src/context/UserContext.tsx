@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { useLanguage } from "@/context/LanguageContext";
 
@@ -165,9 +164,15 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const getLocalizedClassName = (className: string) => {
+    console.log("Current language:", language);
+    console.log("Class name to translate:", className);
+    console.log("Available translations:", classTranslations);
+    
     if (language === 'hebrew' && classTranslations[className]) {
+      console.log("Using Hebrew translation:", classTranslations[className]);
       return classTranslations[className];
     }
+    console.log("Using original class name:", className);
     return className;
   };
 

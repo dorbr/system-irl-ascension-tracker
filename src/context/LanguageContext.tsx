@@ -25,14 +25,33 @@ interface LanguageProviderProps {
 }
 
 export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) => {
-  const [language, setLanguageState] = useState<string>('english');
-  const [translations, setTranslations] = useState<Translations>(getTranslations('english'));
-  const [textDirection, setTextDirection] = useState<"ltr" | "rtl">('ltr');
-  const [isRtl, setIsRtl] = useState<boolean>(false);
+  // Check for saved language preference or use default
+  const getSavedLanguage = () => {
+    const saved = localStorage.getItem('system_irl_language');
+    return saved || 'english';
+  };
+
+  const [language, setLanguageState] = useState<string>(getSavedLanguage());
+  const [translations, setTranslations] = useState<Translations>(getTranslations(getSavedLanguage()));
+  const [textDirection, setTextDirection] = useState<"ltr" | "rtl">(getSavedLanguage() === 'hebrew' ? 'rtl' : 'ltr');
+  const [isRtl, setIsRtl] = useState<boolean>(getSavedLanguage() === 'hebrew');
+
+  // Update document direction on initial load
+  useEffect(() => {
+    if (language === 'hebrew' || language === 'arabic') {
+      document.documentElement.dir = 'rtl';
+      document.body.classList.add('rtl');
+    } else {
+      document.documentElement.dir = 'ltr';
+      document.body.classList.remove('rtl');
+    }
+  }, []);
 
   const setLanguage = (newLanguage: string) => {
+    console.log("Setting language to:", newLanguage);
     setLanguageState(newLanguage);
     setTranslations(getTranslations(newLanguage));
+    localStorage.setItem('system_irl_language', newLanguage);
     
     // Set direction based on language
     if (newLanguage === 'hebrew' || newLanguage === 'arabic') {

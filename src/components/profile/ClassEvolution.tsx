@@ -12,6 +12,10 @@ const ClassEvolution: React.FC<ClassEvolutionProps> = ({ userData }) => {
   const { t, isRtl } = useLanguage();
   const { getLocalizedClassName } = useUser();
   
+  // Add console.log to debug
+  console.log("ClassEvolution - Current class:", userData.class.name);
+  console.log("ClassEvolution - Translated class:", getLocalizedClassName(userData.class.name));
+  
   return (
     <div className="glass-card p-3 rounded-lg">
       <h3 className="text-sm font-medium mb-1 text-center">{t('classEvolution')}</h3>

@@ -29,6 +29,10 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
   const { isRtl, t } = useLanguage();
   const { getLocalizedClassName } = useUser();
   
+  // Add console.log to debug
+  console.log("ProfileHeader - Current class:", userData.class.name);
+  console.log("ProfileHeader - Translated class:", getLocalizedClassName(userData.class.name));
+  
   return (
     <div className="mb-4 text-center">
       <div className="w-24 h-24 mx-auto mb-2 rounded-full overflow-hidden border-2 border-rpg-primary/30">
