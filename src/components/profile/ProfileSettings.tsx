@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -19,11 +19,38 @@ interface ProfileSettingsProps {
   signOut: () => void;
 }
 
+interface LanguageOption {
+  value: string;
+  label: string;
+  dir: "ltr" | "rtl";
+}
+
 const ProfileSettings: React.FC<ProfileSettingsProps> = ({ signOut }) => {
   const [notifications, setNotifications] = useState(true);
   const [darkMode, setDarkMode] = useState(false);
   const [sound, setSound] = useState(true);
   const [language, setLanguage] = useState("english");
+  const [textDirection, setTextDirection] = useState<"ltr" | "rtl">("ltr");
+  
+  // Language options with direction information
+  const languageOptions: LanguageOption[] = [
+    { value: "english", label: "English", dir: "ltr" },
+    { value: "spanish", label: "Español", dir: "ltr" },
+    { value: "french", label: "Français", dir: "ltr" },
+    { value: "german", label: "Deutsch", dir: "ltr" },
+    { value: "arabic", label: "العربية", dir: "rtl" },
+    { value: "hebrew", label: "עברית", dir: "rtl" },
+    { value: "japanese", label: "日本語", dir: "ltr" },
+  ];
+  
+  // Update document direction when language changes
+  useEffect(() => {
+    const selectedLanguage = languageOptions.find(option => option.value === language);
+    if (selectedLanguage) {
+      setTextDirection(selectedLanguage.dir);
+      document.documentElement.dir = selectedLanguage.dir;
+    }
+  }, [language]);
   
   const handleDarkModeToggle = () => {
     setDarkMode(!darkMode);
@@ -66,7 +93,7 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ signOut }) => {
   };
   
   return (
-    <div className="space-y-4">
+    <div className="space-y-4" dir={textDirection}>
       <div className="text-sm text-muted-foreground mb-2">
         Manage your account settings and preferences
       </div>
@@ -77,8 +104,8 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ signOut }) => {
           <CardDescription>Customize your app experience</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
+          <div className={`flex items-center justify-between ${textDirection === "rtl" ? "flex-row-reverse" : ""}`}>
+            <div className={`flex items-center space-x-4 ${textDirection === "rtl" ? "flex-row-reverse space-x-reverse" : ""}`}>
               <Bell size={18} className="text-muted-foreground" />
               <div>
                 <p className="text-sm font-medium">Notifications</p>
@@ -91,8 +118,8 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ signOut }) => {
             />
           </div>
           
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
+          <div className={`flex items-center justify-between ${textDirection === "rtl" ? "flex-row-reverse" : ""}`}>
+            <div className={`flex items-center space-x-4 ${textDirection === "rtl" ? "flex-row-reverse space-x-reverse" : ""}`}>
               <Moon size={18} className="text-muted-foreground" />
               <div>
                 <p className="text-sm font-medium">Dark Mode</p>
@@ -105,8 +132,8 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ signOut }) => {
             />
           </div>
           
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
+          <div className={`flex items-center justify-between ${textDirection === "rtl" ? "flex-row-reverse" : ""}`}>
+            <div className={`flex items-center space-x-4 ${textDirection === "rtl" ? "flex-row-reverse space-x-reverse" : ""}`}>
               <Volume2 size={18} className="text-muted-foreground" />
               <div>
                 <p className="text-sm font-medium">Sound Effects</p>
@@ -119,8 +146,8 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ signOut }) => {
             />
           </div>
           
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
+          <div className={`flex items-center justify-between ${textDirection === "rtl" ? "flex-row-reverse" : ""}`}>
+            <div className={`flex items-center space-x-4 ${textDirection === "rtl" ? "flex-row-reverse space-x-reverse" : ""}`}>
               <Languages size={18} className="text-muted-foreground" />
               <div>
                 <p className="text-sm font-medium">Language</p>
@@ -132,11 +159,11 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ signOut }) => {
                 <SelectValue placeholder="Select language" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="english">English</SelectItem>
-                <SelectItem value="spanish">Español</SelectItem>
-                <SelectItem value="french">Français</SelectItem>
-                <SelectItem value="german">Deutsch</SelectItem>
-                <SelectItem value="japanese">日本語</SelectItem>
+                {languageOptions.map(option => (
+                  <SelectItem key={option.value} value={option.value}>
+                    {option.label}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </div>
@@ -157,7 +184,7 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ signOut }) => {
               description: "This feature is not yet implemented."
             })}
           >
-            <Shield size={18} className="mr-2" />
+            <Shield size={18} className={textDirection === "rtl" ? "ml-2" : "mr-2"} />
             Privacy Settings
           </Button>
           
@@ -166,7 +193,7 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ signOut }) => {
             className="w-full justify-start text-destructive hover:text-destructive"
             onClick={handleDeleteAccount}
           >
-            <Trash2 size={18} className="mr-2" />
+            <Trash2 size={18} className={textDirection === "rtl" ? "ml-2" : "mr-2"} />
             Delete Account
           </Button>
         </CardContent>
@@ -176,7 +203,7 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ signOut }) => {
             className="w-full bg-destructive/10 border-destructive/20 hover:bg-destructive/20"
             onClick={signOut}
           >
-            <LogOut size={16} className="mr-2" />
+            <LogOut size={16} className={textDirection === "rtl" ? "ml-2" : "mr-2"} />
             Sign Out
           </Button>
         </CardFooter>
