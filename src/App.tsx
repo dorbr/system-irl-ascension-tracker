@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import { UserProvider } from "@/context/UserContext";
 import { QuestProvider } from "@/context/QuestContext";
 import { ShadowProvider } from "@/context/ShadowContext";
@@ -41,31 +41,29 @@ const App = () => (
                 <LanguageProvider>
                   <Toaster />
                   <Sonner />
-                  <BrowserRouter>
-                    <Routes>
-                      <Route path="/auth" element={<AuthPage />} />
-                      <Route path="/onboarding" element={<OnboardingPage />} />
-                      
-                      <Route element={<ProtectedRoute />}>
-                        <Route element={<MobileLayout />}>
-                          <Route path="/" element={<Index />} />
-                          <Route path="/quests" element={<QuestsPage />} />
-                          <Route path="/crew" element={<CrewPage />} />
-                          <Route path="/stats" element={<StatsPage />} />
-                          <Route path="/shadows" element={<ShadowsPage />} />
-                          <Route path="/profile" element={<ProfilePage />} />
-                          <Route path="/social" element={<SocialPage />} />
-                          <Route path="/social/party" element={<PartyPage />} />
-                          <Route path="/social/guild" element={<GuildPage />} />
-                          <Route path="/social/friends" element={<FriendsPage />} />
-                          <Route path="/social/leaderboard" element={<LeaderboardPage />} />
-                          <Route path="/social/events" element={<EventsPage />} />
-                        </Route>
+                  <Routes>
+                    <Route path="/auth" element={<AuthPage />} />
+                    <Route path="/onboarding" element={<OnboardingPage />} />
+                    
+                    <Route element={<ProtectedRoute />}>
+                      <Route element={<MobileLayout />}>
+                        <Route path="/" element={<Index />} />
+                        <Route path="/quests" element={<QuestsPage />} />
+                        <Route path="/crew" element={<CrewPage />} />
+                        <Route path="/stats" element={<StatsPage />} />
+                        <Route path="/shadows" element={<ShadowsPage />} />
+                        <Route path="/profile" element={<ProfilePage />} />
+                        <Route path="/social" element={<SocialPage />} />
+                        <Route path="/social/party" element={<PartyPage />} />
+                        <Route path="/social/guild" element={<GuildPage />} />
+                        <Route path="/social/friends" element={<FriendsPage />} />
+                        <Route path="/social/leaderboard" element={<LeaderboardPage />} />
+                        <Route path="/social/events" element={<EventsPage />} />
                       </Route>
-                      
-                      <Route path="*" element={<NotFound />} />
-                    </Routes>
-                  </BrowserRouter>
+                    </Route>
+                    
+                    <Route path="*" element={<NotFound />} />
+                  </Routes>
                 </LanguageProvider>
               </SocialProvider>
             </ShadowProvider>
