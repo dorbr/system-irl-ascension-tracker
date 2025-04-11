@@ -1,10 +1,10 @@
-
 import React, { useState, useEffect } from "react";
 import { useSocial } from "@/context/SocialContext";
 import { useAuth } from "@/context/AuthContext";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { ArrowLeft, Trophy, User, Medal, Sparkles, Swords, FlameKindling } from "lucide-react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 // Import leaderboard components
 import LeaderboardFilters from "@/components/leaderboard/LeaderboardFilters";
@@ -21,6 +21,7 @@ interface LeaderboardUser {
 }
 
 const LeaderboardPage = () => {
+  const navigate = useNavigate();
   const { user } = useAuth();
   const { friends } = useSocial();
   const [category, setCategory] = useState("xp");
@@ -34,12 +35,10 @@ const LeaderboardPage = () => {
     { id: "streaks", name: "Quest Streaks", icon: FlameKindling, color: "text-orange-500" }
   ];
   
-  // Mock data for demonstration
   useEffect(() => {
     const fetchLeaderboard = async () => {
       setIsLoading(true);
       
-      // This is mock data for demonstration
       const mockData: LeaderboardUser[] = [
         {
           id: "1",
@@ -83,7 +82,6 @@ const LeaderboardPage = () => {
         }
       ];
       
-      // Filter based on scope
       let filteredData = mockData;
       if (scope === "friends") {
         const friendIds = friends.map(f => f.friend_id);
@@ -92,10 +90,8 @@ const LeaderboardPage = () => {
         );
       }
       
-      // Sort by value
       filteredData.sort((a, b) => b.value - a.value);
       
-      // Update ranks
       filteredData.forEach((user, index) => {
         user.rank = index + 1;
       });
@@ -126,12 +122,21 @@ const LeaderboardPage = () => {
     return cat ? cat.color : "";
   };
   
+  const handleBack = () => {
+    navigate("/crew");
+  };
+  
   return (
     <div className="py-4">
       <div className="mb-4 flex items-center">
-        <Link to="/social" className="text-muted-foreground hover:text-foreground">
-          <ArrowLeft className="h-5 w-5 mr-2" />
-        </Link>
+        <Button 
+          variant="ghost" 
+          size="icon" 
+          onClick={handleBack}
+          className="text-muted-foreground hover:text-foreground"
+        >
+          <ArrowLeft className="h-5 w-5" />
+        </Button>
         <h1 className="text-xl font-bold">Leaderboards</h1>
       </div>
       

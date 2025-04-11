@@ -1,7 +1,8 @@
 
 import React, { useState } from "react";
 import { useSocial } from "@/context/SocialContext";
-import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ArrowLeft } from "lucide-react";
@@ -11,6 +12,7 @@ import AddFriendDialog from "@/components/friends/AddFriendDialog";
 import FriendBenefits from "@/components/friends/FriendBenefits";
 
 const FriendsPage = () => {
+  const navigate = useNavigate();
   const { 
     friends, 
     pendingFriends, 
@@ -44,12 +46,21 @@ const FriendsPage = () => {
     }
   };
   
+  const handleBack = () => {
+    navigate("/crew");
+  };
+  
   return (
     <div className="py-4">
       <div className="mb-4 flex items-center">
-        <Link to="/social" className="text-muted-foreground hover:text-foreground">
-          <ArrowLeft className="h-5 w-5 mr-2" />
-        </Link>
+        <Button 
+          variant="ghost" 
+          size="icon" 
+          onClick={handleBack}
+          className="text-muted-foreground hover:text-foreground"
+        >
+          <ArrowLeft className="h-5 w-5" />
+        </Button>
         <h1 className="text-xl font-bold">Friends</h1>
       </div>
       

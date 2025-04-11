@@ -2,8 +2,9 @@
 import React, { useState } from "react";
 import { useSocial } from "@/context/SocialContext";
 import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { Loader2, ArrowLeft } from "lucide-react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 // Import party components
 import PartyDetails from "@/components/party/PartyDetails";
@@ -13,6 +14,7 @@ import PartyBenefits from "@/components/party/PartyBenefits";
 import { CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 const PartyPage = () => {
+  const navigate = useNavigate();
   const { userParty, createParty, joinPartyWithCode, leaveParty, isLoading } = useSocial();
   const [showCreateDialog, setShowCreateDialog] = useState(false);
   const [showJoinDialog, setShowJoinDialog] = useState(false);
@@ -37,12 +39,21 @@ const PartyPage = () => {
     }
   };
   
+  const handleBack = () => {
+    navigate("/crew");
+  };
+  
   return (
     <div className="py-4">
       <div className="mb-4 flex items-center">
-        <Link to="/social" className="text-muted-foreground hover:text-foreground">
-          <ArrowLeft className="h-5 w-5 mr-2" />
-        </Link>
+        <Button 
+          variant="ghost" 
+          size="icon" 
+          onClick={handleBack}
+          className="text-muted-foreground hover:text-foreground"
+        >
+          <ArrowLeft className="h-5 w-5" />
+        </Button>
         <h1 className="text-xl font-bold">Party</h1>
       </div>
       

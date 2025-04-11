@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useSocial } from "@/context/SocialContext";
 import { Button } from "@/components/ui/button";
@@ -6,7 +5,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Loader2, LogOut, ArrowLeft } from "lucide-react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 
 // Import guild components
@@ -28,6 +27,7 @@ interface GuildQuest {
 }
 
 const GuildPage = () => {
+  const navigate = useNavigate();
   const { userGuild, createGuild, joinGuild, leaveGuild, isLoading } = useSocial();
   const [showCreateDialog, setShowCreateDialog] = useState(false);
   const [guildQuests, setGuildQuests] = useState<GuildQuest[]>([]);
@@ -96,12 +96,21 @@ const GuildPage = () => {
     }
   };
   
+  const handleBack = () => {
+    navigate("/crew");
+  };
+  
   return (
     <div className="py-4">
       <div className="mb-4 flex items-center">
-        <Link to="/social" className="text-muted-foreground hover:text-foreground">
-          <ArrowLeft className="h-5 w-5 mr-2" />
-        </Link>
+        <Button 
+          variant="ghost" 
+          size="icon" 
+          onClick={handleBack}
+          className="text-muted-foreground hover:text-foreground"
+        >
+          <ArrowLeft className="h-5 w-5" />
+        </Button>
         <h1 className="text-xl font-bold">Guild</h1>
       </div>
       
