@@ -54,7 +54,7 @@ const defaultUserData: UserData = {
 
 // Hebrew translations for class names - make sure all class names are included
 const classTranslations: { [key: string]: string } = {
-  "Novice": "מתחיל",
+  "Novice": "טירון",
   "Student": "תלמיד",
   "Apprentice": "שוליה",
   "Explorer": "חוקר",
