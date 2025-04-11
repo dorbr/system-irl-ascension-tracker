@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { useShadows } from "@/context/ShadowContext";
 import { useUser } from "@/context/UserContext";
+import { useLanguage } from "@/context/LanguageContext";
 import ShadowCard from "@/components/ui/ShadowCard";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from "@/components/ui/dialog";
@@ -13,6 +14,7 @@ import { toast } from "@/hooks/use-toast";
 const ShadowsPage = () => {
   const { shadows, addShadow } = useShadows();
   const { userData } = useUser();
+  const { t } = useLanguage();
   
   const [newShadow, setNewShadow] = useState({
     name: "",
@@ -45,8 +47,8 @@ const ShadowsPage = () => {
   const handleCreateShadow = () => {
     if (!newShadow.name.trim() || !newShadow.event.trim()) {
       toast({
-        title: "Error",
-        description: "Shadow name and event are required",
+        title: t('error'),
+        description: t('shadowRequired'),
         variant: "destructive",
       });
       return;
@@ -55,8 +57,8 @@ const ShadowsPage = () => {
     addShadow(newShadow);
     
     toast({
-      title: "Shadow Archived",
-      description: "Your shadow has been recorded in the archive",
+      title: t('shadowArchived'),
+      description: t('shadowDesc'),
     });
     
     // Reset form
@@ -73,77 +75,77 @@ const ShadowsPage = () => {
     <div className="py-4">
       <div className="glass-card rounded-lg p-4 mb-4">
         <div className="flex justify-between items-center mb-4">
-          <h1 className="text-xl font-bold">Shadow Archive</h1>
+          <h1 className="text-xl font-bold">{t('shadowArchive')}</h1>
           <Dialog>
             <DialogTrigger asChild>
-              <Button variant="outline" size="sm">New Shadow</Button>
+              <Button variant="outline" size="sm">{t('newShadow')}</Button>
             </DialogTrigger>
             <DialogContent className="glass-card">
               <DialogHeader>
-                <DialogTitle>Archive New Shadow</DialogTitle>
+                <DialogTitle>{t('archiveNewShadow')}</DialogTitle>
                 <DialogDescription>
-                  Record a failure or challenge as a Shadow to learn from it.
+                  {t('shadowDesc')}
                 </DialogDescription>
               </DialogHeader>
               <div className="space-y-4 pt-4">
                 <div>
-                  <Label htmlFor="shadowName">Shadow Name</Label>
+                  <Label htmlFor="shadowName">{t('shadowName')}</Label>
                   <Input
                     id="shadowName"
                     value={newShadow.name}
                     onChange={(e) => setNewShadow({...newShadow, name: e.target.value})}
                     className="bg-secondary/50 border-secondary"
-                    placeholder="Name your shadow (e.g., 'Fear of Rejection')"
+                    placeholder={t('shadowNamePlaceholder')}
                   />
                 </div>
                 
                 <div>
-                  <Label htmlFor="event">What Happened?</Label>
+                  <Label htmlFor="event">{t('event')}</Label>
                   <Textarea
                     id="event"
                     value={newShadow.event}
                     onChange={(e) => setNewShadow({...newShadow, event: e.target.value})}
                     className="bg-secondary/50 border-secondary"
-                    placeholder="Describe the event or challenge"
+                    placeholder={t('eventPlaceholder')}
                   />
                 </div>
                 
                 <div>
-                  <Label htmlFor="reflection">Your Reflection</Label>
+                  <Label htmlFor="reflection">{t('reflection')}</Label>
                   <Textarea
                     id="reflection"
                     value={newShadow.reflection}
                     onChange={(e) => setNewShadow({...newShadow, reflection: e.target.value})}
                     className="bg-secondary/50 border-secondary"
-                    placeholder="How did you feel? What were your thoughts?"
+                    placeholder={t('reflectionPlaceholder')}
                   />
                 </div>
                 
                 <div>
-                  <Label htmlFor="insight">Insight Gained</Label>
+                  <Label htmlFor="insight">{t('insight')}</Label>
                   <Textarea
                     id="insight"
                     value={newShadow.insight}
                     onChange={(e) => setNewShadow({...newShadow, insight: e.target.value})}
                     className="bg-secondary/50 border-secondary"
-                    placeholder="What did you learn from this experience?"
+                    placeholder={t('insightPlaceholder')}
                   />
                 </div>
                 
                 <div>
-                  <Label>Related Stats</Label>
+                  <Label>{t('relatedStats')}</Label>
                   <div className="flex items-center gap-2 mb-2">
                     <select
                       value={newStat}
                       onChange={(e) => setNewStat(e.target.value)}
                       className="flex-1 h-10 rounded-md bg-secondary/50 border-secondary text-sm"
                     >
-                      <option value="">Select a Stat</option>
+                      <option value="">{t('selectStat')}</option>
                       {availableStats.map(stat => (
                         <option key={stat} value={stat}>{stat}</option>
                       ))}
                     </select>
-                    <Button type="button" onClick={handleAddStat} size="sm">Add</Button>
+                    <Button type="button" onClick={handleAddStat} size="sm">{t('add')}</Button>
                   </div>
                   
                   <div className="flex flex-wrap gap-1 mb-3">
@@ -164,19 +166,19 @@ const ShadowsPage = () => {
                   </div>
                 </div>
                 
-                <Button onClick={handleCreateShadow} className="w-full">Archive Shadow</Button>
+                <Button onClick={handleCreateShadow} className="w-full">{t('archiveShadow')}</Button>
               </div>
             </DialogContent>
           </Dialog>
         </div>
         
         <p className="text-sm text-muted-foreground mb-4">
-          Record your failures and challenges as Shadows. Draw wisdom from them to overcome future obstacles.
+          {t('shadowsDesc')}
         </p>
         
         <div className="space-y-4">
           {shadows.length === 0 ? (
-            <p className="text-center text-muted-foreground py-6">No shadows archived yet</p>
+            <p className="text-center text-muted-foreground py-6">{t('noShadows')}</p>
           ) : (
             shadows.map(shadow => (
               <ShadowCard key={shadow.id} shadow={shadow} />

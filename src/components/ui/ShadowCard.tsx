@@ -3,6 +3,7 @@ import React from "react";
 import { Shadow } from "@/context/ShadowContext";
 import StatBadge from "./StatBadge";
 import { useUser } from "@/context/UserContext";
+import { useLanguage } from "@/context/LanguageContext";
 import { cn } from "@/lib/utils";
 
 interface ShadowCardProps {
@@ -12,6 +13,7 @@ interface ShadowCardProps {
 
 const ShadowCard: React.FC<ShadowCardProps> = ({ shadow, className }) => {
   const { userData } = useUser();
+  const { t } = useLanguage();
   
   // Get stat colors for badges
   const getStatColor = (abbreviation: string) => {
@@ -28,17 +30,17 @@ const ShadowCard: React.FC<ShadowCardProps> = ({ shadow, className }) => {
       
       <div className="space-y-3 text-sm">
         <div>
-          <p className="text-xs font-medium uppercase text-muted-foreground mb-1">Event</p>
+          <p className="text-xs font-medium uppercase text-muted-foreground mb-1">{t('event')}</p>
           <p>{shadow.event}</p>
         </div>
         
         <div>
-          <p className="text-xs font-medium uppercase text-muted-foreground mb-1">Reflection</p>
+          <p className="text-xs font-medium uppercase text-muted-foreground mb-1">{t('reflection')}</p>
           <p className="italic text-muted-foreground">{shadow.reflection}</p>
         </div>
         
         <div>
-          <p className="text-xs font-medium uppercase text-muted-foreground mb-1">Insight</p>
+          <p className="text-xs font-medium uppercase text-muted-foreground mb-1">{t('insight')}</p>
           <p className="text-rpg-secondary">{shadow.insight}</p>
         </div>
       </div>

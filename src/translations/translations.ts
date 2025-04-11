@@ -1,4 +1,3 @@
-
 // Define types for our translations
 export type TranslationKey = 
   | 'preferences'
@@ -58,7 +57,28 @@ export type TranslationKey =
   | 'saving'
   | 'username'
   | 'crew'
-  | 'road';
+  | 'road'
+  | 'shadowArchive'
+  | 'newShadow'
+  | 'archiveNewShadow'
+  | 'shadowDesc'
+  | 'shadowName'
+  | 'shadowNamePlaceholder'
+  | 'event'
+  | 'eventPlaceholder'
+  | 'reflection'
+  | 'reflectionPlaceholder'
+  | 'insight'
+  | 'insightPlaceholder'
+  | 'relatedStats'
+  | 'selectStat'
+  | 'add'
+  | 'archiveShadow'
+  | 'shadowsDesc'
+  | 'noShadows'
+  | 'error'
+  | 'shadowRequired'
+  | 'shadowArchived';
 
 export type Translations = {
   [key in TranslationKey]: string;
@@ -125,7 +145,30 @@ export const englishTranslations: Translations = {
   saving: 'Saving...',
   username: 'Username',
   crew: 'Crew',
-  road: 'Road'
+  road: 'Road',
+  
+  // Shadow page translations
+  shadowArchive: 'Shadow Archive',
+  newShadow: 'New Shadow',
+  archiveNewShadow: 'Archive New Shadow',
+  shadowDesc: 'Record a failure or challenge as a Shadow to learn from it.',
+  shadowName: 'Shadow Name',
+  shadowNamePlaceholder: 'Name your shadow (e.g., \'Fear of Rejection\')',
+  event: 'What Happened?',
+  eventPlaceholder: 'Describe the event or challenge',
+  reflection: 'Your Reflection',
+  reflectionPlaceholder: 'How did you feel? What were your thoughts?',
+  insight: 'Insight Gained',
+  insightPlaceholder: 'What did you learn from this experience?',
+  relatedStats: 'Related Stats',
+  selectStat: 'Select a Stat',
+  add: 'Add',
+  archiveShadow: 'Archive Shadow',
+  shadowsDesc: 'Record your failures and challenges as Shadows. Draw wisdom from them to overcome future obstacles.',
+  noShadows: 'No shadows archived yet',
+  error: 'Error',
+  shadowRequired: 'Shadow name and event are required',
+  shadowArchived: 'Shadow Archived',
 };
 
 // Hebrew translations
@@ -187,7 +230,30 @@ export const hebrewTranslations: Translations = {
   saving: 'שומר...',
   username: 'שם משתמש',
   crew: 'צוות',
-  road: 'דרך'
+  road: 'דרך',
+  
+  // Shadow page translations in Hebrew
+  shadowArchive: 'ארכיון צללים',
+  newShadow: 'צל חדש',
+  archiveNewShadow: 'הוספת צל חדש',
+  shadowDesc: 'תעד כישלון או אתגר כצל כדי ללמוד ממנו.',
+  shadowName: 'שם הצל',
+  shadowNamePlaceholder: 'תן שם לצל שלך (לדוגמה, \'פחד מדחייה\')',
+  event: 'מה קרה?',
+  eventPlaceholder: 'תאר את האירוע או האתגר',
+  reflection: 'הרהורים שלך',
+  reflectionPlaceholder: 'איך הרגשת? מה היו המחשבות שלך?',
+  insight: 'תובנה שהושגה',
+  insightPlaceholder: 'מה למדת מהחוויה הזו?',
+  relatedStats: 'סטטיסטיקות קשורות',
+  selectStat: 'בחר סטטיסטיקה',
+  add: 'הוסף',
+  archiveShadow: 'שמור צל',
+  shadowsDesc: 'תעד את הכישלונות והאתגרים שלך כצללים. שאב חוכמה מהם כדי להתגבר על מכשולים עתידיים.',
+  noShadows: 'אין צללים בארכיון עדיין',
+  error: 'שגיאה',
+  shadowRequired: 'שם הצל והאירוע הם שדות חובה',
+  shadowArchived: 'הצל נשמר בארכיון',
 };
 
 // Get translations based on selected language
