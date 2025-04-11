@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollText, Swords, PlusCircle, Calendar, Star, RotateCcw } from "lucide-react";
 import { Quest } from "@/context/QuestContext";
@@ -7,6 +7,7 @@ import QuestList from "./QuestList";
 import QuestForm from "./QuestForm";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
+import DungeonStrategyPlanner from "@/components/dungeons/DungeonStrategyPlanner";
 
 interface QuestTabsProps {
   dailyQuests: Quest[];
@@ -37,6 +38,9 @@ const QuestTabs: React.FC<QuestTabsProps> = ({
   onCreateQuest,
   onResetQuests
 }) => {
+  const [selectedDungeon, setSelectedDungeon] = useState<Quest | null>(null);
+  const [showStrategyPlanner, setShowStrategyPlanner] = useState(false);
+  
   // Combine daily and main quests for the "All Quests" tab
   const allQuests = [...dailyQuests, ...mainQuests];
   
@@ -47,6 +51,13 @@ const QuestTabs: React.FC<QuestTabsProps> = ({
         title: "Quests Reset",
         description: "All quests have been reset to defaults",
       });
+    }
+  };
+  
+  const handleQuestClick = (quest: Quest) => {
+    if (quest.type === "dungeon") {
+      setSelectedDungeon(quest);
+      setShowStrategyPlanner(true);
     }
   };
   
@@ -107,7 +118,8 @@ const QuestTabs: React.FC<QuestTabsProps> = ({
         {allQuests.length > 0 ? (
           <QuestList 
             quests={allQuests} 
-            onComplete={onCompleteQuest} 
+            onComplete={onCompleteQuest}
+            onQuestClick={handleQuestClick}
             emptyMessage="No quests available" 
           />
         ) : (
@@ -125,7 +137,8 @@ const QuestTabs: React.FC<QuestTabsProps> = ({
         {dungeonQuests.length > 0 ? (
           <QuestList 
             quests={dungeonQuests} 
-            onComplete={onCompleteQuest} 
+            onComplete={onCompleteQuest}
+            onQuestClick={handleQuestClick}
             emptyMessage="No dungeons available" 
           />
         ) : (
@@ -145,6 +158,13 @@ const QuestTabs: React.FC<QuestTabsProps> = ({
           onCreateQuest={onCreateQuest}
         />
       </TabsContent>
+      
+      {/* Dungeon Strategy Planner */}
+      <DungeonStrategyPlanner
+        dungeon={selectedDungeon}
+        isOpen={showStrategyPlanner}
+        onClose={() => setShowStrategyPlanner(false)}
+      />
     </Tabs>
   );
 };

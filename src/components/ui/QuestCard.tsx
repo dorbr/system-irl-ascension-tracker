@@ -2,13 +2,14 @@
 import React from "react";
 import { Quest } from "@/context/QuestContext";
 import StatBadge from "./StatBadge";
-import { CheckCircle, Circle, Shield, Star, Calendar, Award, Swords } from "lucide-react";
+import { CheckCircle, Circle, Shield, Star, Calendar, Award, Swords, Scroll } from "lucide-react";
 import { useUser } from "@/context/UserContext";
 import { cn } from "@/lib/utils";
 
 interface QuestCardProps {
   quest: Quest;
   onComplete: () => void;
+  onClick?: () => void;
   className?: string;
 }
 
@@ -86,6 +87,7 @@ const getQuestTypeStyles = (type: string): {
 const QuestCard: React.FC<QuestCardProps> = ({
   quest,
   onComplete,
+  onClick,
   className,
 }) => {
   const { userData } = useUser();
@@ -99,13 +101,31 @@ const QuestCard: React.FC<QuestCardProps> = ({
     return stat?.color || "#9b87f5";
   };
 
+  // Determine if the card is clickable for strategy planning
+  const isClickable = quest.type === "dungeon" && onClick;
+
+  const handleCardClick = (e: React.MouseEvent) => {
+    // Prevent the complete button from triggering card click
+    if (e.target instanceof HTMLElement && 
+        (e.target.tagName === 'BUTTON' || 
+         e.target.closest('button'))) {
+      return;
+    }
+    
+    if (isClickable && onClick) {
+      onClick();
+    }
+  };
+
   return (
     <div 
+      onClick={handleCardClick}
       className={cn(
-        "quest-item glass-card", 
+        "quest-item glass-card relative", 
         typeStyles.borderColor,
         typeStyles.bgColor,
-        quest.completed && "opacity-60", 
+        quest.completed && "opacity-60",
+        isClickable && "cursor-pointer hover:border-rpg-accent/50 transition-colors",
         className
       )}
     >
@@ -158,7 +178,10 @@ const QuestCard: React.FC<QuestCardProps> = ({
         <div className="flex flex-col items-end">
           <div className="text-sm font-semibold text-rpg-primary mb-1">+{quest.xpReward} XP</div>
           <button
-            onClick={onComplete}
+            onClick={(e) => {
+              e.stopPropagation();
+              onComplete();
+            }}
             disabled={quest.completed}
             className="p-1 transition-transform hover:scale-110 disabled:opacity-50 disabled:hover:scale-100"
           >
@@ -170,6 +193,14 @@ const QuestCard: React.FC<QuestCardProps> = ({
           </button>
         </div>
       </div>
+      
+      {/* Strategy planning indicator for dungeons */}
+      {quest.type === "dungeon" && isClickable && (
+        <div className="absolute top-2 right-2 text-xs flex items-center gap-1 bg-rpg-accent/10 px-1.5 py-0.5 rounded-full">
+          <Scroll size={12} className="text-rpg-accent" />
+          <span className="text-rpg-accent font-medium">Strategy</span>
+        </div>
+      )}
     </div>
   );
 };
