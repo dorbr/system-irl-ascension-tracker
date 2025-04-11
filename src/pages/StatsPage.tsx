@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
 import StatExplanation from "@/components/stats/StatExplanation";
 import ProgressGuide from "@/components/stats/ProgressGuide";
+import { Card, CardContent } from "@/components/ui/card";
 
 const StatsPage = () => {
   const { userData, updateUserStat, updateUserXp } = useUser();
@@ -17,9 +18,11 @@ const StatsPage = () => {
   const [journalEntry, setJournalEntry] = useState("");
   const [statGain, setStatGain] = useState(1);
   const [statAnimations, setStatAnimations] = useState<Record<string, boolean>>({});
+  const [showStatDetail, setShowStatDetail] = useState(false);
 
   const handleStatClick = (statName: string) => {
     setSelectedStat(statName);
+    setShowStatDetail(true);
   };
 
   const handleLogProgress = () => {
@@ -58,29 +61,10 @@ const StatsPage = () => {
       <div className="glass-card rounded-lg p-4 mb-4">
         <h1 className="text-xl font-bold mb-4">Stat Tracker</h1>
         
-        {/* Stat Cards Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 mb-6">
-          {userData.stats.map((stat) => (
-            <StatCard
-              key={stat.name}
-              stat={stat}
-              onClick={() => handleStatClick(stat.name)}
-              className={selectedStat === stat.name ? "border border-rpg-primary/50" : ""}
-              animate={statAnimations[stat.name]}
-            />
-          ))}
-        </div>
-
-        {/* Progress Guide */}
-        <ProgressGuide />
-        
-        {/* Stat Explanations */}
-        <StatExplanation stats={userData.stats} />
-
-        {/* Log Progress Dialog */}
+        {/* Log Progress Button - Moved up */}
         <Dialog>
           <DialogTrigger asChild>
-            <Button className="w-full">Log Progress</Button>
+            <Button className="w-full mb-6">Log Progress</Button>
           </DialogTrigger>
           <DialogContent className="glass-card">
             <DialogHeader>
@@ -138,6 +122,34 @@ const StatsPage = () => {
             </div>
           </DialogContent>
         </Dialog>
+        
+        {/* Progress Guide */}
+        <ProgressGuide />
+        
+        {/* Stat Cards Grid */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 mb-6">
+          {userData.stats.map((stat) => (
+            <StatCard
+              key={stat.name}
+              stat={stat}
+              onClick={() => handleStatClick(stat.name)}
+              className={selectedStat === stat.name ? "border border-rpg-primary/50" : ""}
+              animate={statAnimations[stat.name]}
+            />
+          ))}
+        </div>
+
+        {/* Show stat explanation when a stat is selected */}
+        {showStatDetail && selectedStat && (
+          <Card className="mb-6">
+            <CardContent className="pt-4">
+              <StatExplanation 
+                stats={userData.stats.filter(s => s.name === selectedStat)} 
+                onClose={() => setShowStatDetail(false)}
+              />
+            </CardContent>
+          </Card>
+        )}
       </div>
     </div>
   );

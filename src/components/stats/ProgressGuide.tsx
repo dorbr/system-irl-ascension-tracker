@@ -12,41 +12,47 @@ const ProgressGuide: React.FC = () => {
   return (
     <Card className="mb-6 bg-secondary/5 border-secondary/20">
       <CardHeader className="pb-2">
-        <CardTitle className="text-lg">Logging Progress</CardTitle>
+        <CardTitle className="text-lg">How to Log Progress</CardTitle>
         <CardDescription>
           Track your real-life activities to boost your stats
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="space-y-4">
+        <div className="space-y-3">
           <p className="text-sm">
-            When you complete activities in real life that improve a particular skill or ability,
-            log your progress here to increase your stats and earn XP.
+            Log your real-life activities that improve your skills to increase stats and earn XP.
+            Select a stat, add details about what you did, and choose how much you improved (1-5).
           </p>
           
-          <div className="space-y-2">
-            <h3 className="text-sm font-medium">How to log progress:</h3>
-            <ol className="text-sm list-decimal pl-5 space-y-1">
-              <li>Select the stat you want to improve</li>
-              <li>Click the "Log Progress" button</li>
-              <li>Enter details about what you did (optional but recommended)</li>
-              <li>Select how much you improved (1-5)</li>
-              <li>Submit to earn stat points and XP</li>
-            </ol>
-          </div>
-          
-          <div className="space-y-2">
-            <h3 className="text-sm font-medium">Examples of activities for each stat:</h3>
-            <ul className="text-sm space-y-2">
-              <li><span className="font-medium">Strength:</span> Weightlifting, physical labor, resistance training</li>
-              <li><span className="font-medium">Agility:</span> Sports, dance, yoga, coordination exercises</li>
-              <li><span className="font-medium">Intelligence:</span> Learning, studying, solving puzzles, reading</li>
-              <li><span className="font-medium">Perception:</span> Observation tasks, mindfulness exercises, detailed work</li>
-              <li><span className="font-medium">Vitality:</span> Cardio exercise, healthy eating, good sleep habits</li>
-              <li><span className="font-medium">Sense:</span> Meditation, reflection, practicing intuition</li>
-              <li><span className="font-medium">Charisma:</span> Social interaction, public speaking, leadership activities</li>
-              <li><span className="font-medium">Luck:</span> Taking calculated risks, trying new things</li>
-            </ul>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-sm">
+            <div className="space-y-1">
+              <h4 className="font-semibold">Physical</h4>
+              <ul className="text-xs space-y-1 list-disc pl-4">
+                <li>Strength: Exercise, lifting</li>
+                <li>Agility: Sports, yoga, dance</li>
+              </ul>
+            </div>
+            <div className="space-y-1">
+              <h4 className="font-semibold">Mental</h4>
+              <ul className="text-xs space-y-1 list-disc pl-4">
+                <li>Intelligence: Learning, studying</li>
+                <li>Perception: Observation, details</li>
+              </ul>
+            </div>
+            <div className="space-y-1">
+              <h4 className="font-semibold">Health & Mind</h4>
+              <ul className="text-xs space-y-1 list-disc pl-4">
+                <li>Vitality: Cardio, healthy habits</li>
+                <li>Sense: Meditation, reflection</li>
+              </ul>
+            </div>
+            <div className="space-y-1">
+              <h4 className="font-semibold">Social & Fortune</h4>
+              <ul className="text-xs space-y-1 list-disc pl-4">
+                <li>Charisma: Social skills, leadership</li>
+                <li>Luck: Taking chances, new experiences</li>
+              </ul>
+            </div>
           </div>
         </div>
       </CardContent>

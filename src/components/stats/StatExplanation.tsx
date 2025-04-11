@@ -1,16 +1,13 @@
 
 import React from "react";
 import { Stat } from "@/context/UserContext";
-import { 
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
 import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { X } from "lucide-react";
 
 interface StatExplanationProps {
   stats: Stat[];
+  onClose?: () => void;
 }
 
 const statDescriptions: Record<string, { description: string, benefits: string[] }> = {
@@ -80,47 +77,75 @@ const statDescriptions: Record<string, { description: string, benefits: string[]
   }
 };
 
-const StatExplanation: React.FC<StatExplanationProps> = ({ stats }) => {
+const StatExplanation: React.FC<StatExplanationProps> = ({ stats, onClose }) => {
+  const stat = stats[0];
+  
+  if (!stat) return null;
+  
   return (
-    <div className="mb-6">
-      <h2 className="text-lg font-semibold mb-3">Understanding Your Stats</h2>
-      <p className="text-sm text-muted-foreground mb-4">
-        Stats represent your various attributes and abilities in real life. As you complete activities related to each stat, 
-        your abilities improve and unlock new opportunities.
-      </p>
+    <div className="relative">
+      {onClose && (
+        <Button 
+          variant="ghost" 
+          size="icon" 
+          onClick={onClose}
+          className="absolute right-0 top-0"
+        >
+          <X className="h-4 w-4" />
+        </Button>
+      )}
       
-      <Accordion type="single" collapsible className="w-full">
-        {stats.map((stat) => (
-          <AccordionItem key={stat.name} value={stat.name}>
-            <AccordionTrigger className="hover:no-underline">
-              <div className="flex items-center gap-2">
-                <div 
-                  className="w-6 h-6 rounded-md flex items-center justify-center text-white text-xs font-medium"
-                  style={{ backgroundColor: stat.color }}
-                >
-                  {stat.abbreviation}
-                </div>
-                <span>{stat.name}</span>
-              </div>
-            </AccordionTrigger>
-            <AccordionContent>
-              <Card className="border-0 bg-secondary/10">
-                <CardContent className="pt-4">
-                  <p className="text-sm mb-2">{statDescriptions[stat.name]?.description || "No description available."}</p>
-                  <h4 className="text-sm font-medium mt-2 mb-1">Benefits of high {stat.name}:</h4>
-                  <ul className="text-xs space-y-1 list-disc pl-4">
-                    {statDescriptions[stat.name]?.benefits.map((benefit, index) => (
-                      <li key={index}>{benefit}</li>
-                    ))}
-                  </ul>
-                </CardContent>
-              </Card>
-            </AccordionContent>
-          </AccordionItem>
+      <div className="flex items-center gap-2 mb-4">
+        <div 
+          className="w-8 h-8 rounded-md flex items-center justify-center text-white text-xs font-medium"
+          style={{ backgroundColor: stat.color }}
+        >
+          {stat.abbreviation}
+        </div>
+        <h2 className="text-lg font-semibold">{stat.name}</h2>
+      </div>
+      
+      <p className="text-sm mb-4">{statDescriptions[stat.name]?.description || "No description available."}</p>
+      
+      <h4 className="text-sm font-medium mb-2">Benefits of high {stat.name}:</h4>
+      <ul className="text-sm space-y-2 list-disc pl-5">
+        {statDescriptions[stat.name]?.benefits.map((benefit, index) => (
+          <li key={index}>{benefit}</li>
         ))}
-      </Accordion>
+      </ul>
+      
+      <h4 className="text-sm font-medium mt-4 mb-2">How to improve {stat.name}:</h4>
+      <ul className="text-sm list-disc pl-5">
+        {getSuggestionsByStatName(stat.name).map((suggestion, index) => (
+          <li key={index}>{suggestion}</li>
+        ))}
+      </ul>
     </div>
   );
 };
+
+// Helper function to get stat-specific improvement suggestions
+function getSuggestionsByStatName(statName: string): string[] {
+  switch (statName) {
+    case "Strength":
+      return ["Weight lifting", "Regular physical exercise", "Manual labor", "Resistance training"];
+    case "Agility":
+      return ["Sports practice", "Dance lessons", "Yoga", "Balance exercises", "Martial arts"];
+    case "Intelligence":
+      return ["Reading books", "Taking courses", "Solving puzzles", "Learning new skills", "Teaching others"];
+    case "Perception":
+      return ["Mindfulness practice", "Observation exercises", "Detail-oriented tasks", "Meditation"];
+    case "Vitality":
+      return ["Cardiovascular exercise", "Eating healthy foods", "Getting proper sleep", "Staying hydrated"];
+    case "Sense":
+      return ["Meditation", "Decision-making practice", "Journaling", "Analyzing past decisions"];
+    case "Charisma":
+      return ["Social practice", "Public speaking", "Active listening", "Joining social groups", "Leadership roles"];
+    case "Luck":
+      return ["Taking calculated risks", "Putting yourself in new situations", "Being open to opportunities", "Learning from setbacks"];
+    default:
+      return ["Regular practice", "Learning from others", "Setting specific goals"];
+  }
+}
 
 export default StatExplanation;
