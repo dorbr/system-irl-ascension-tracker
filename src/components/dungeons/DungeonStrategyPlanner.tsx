@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -99,10 +98,33 @@ Approach this dungeon with confidence and persistence!
     `;
   };
 
-  // Format title with rank
-  const dungeonTitle = dungeon && dungeon.difficulty 
-    ? `${dungeon.title} - ${dungeon.difficulty} Rank` 
-    : dungeon?.title || '';
+  // Get rank color based on difficulty
+  const getRankColor = (difficulty?: string) => {
+    switch (difficulty) {
+      case "S": return "text-red-500";
+      case "A": return "text-orange-500";
+      case "B": return "text-purple-500";
+      case "C": return "text-blue-500";
+      case "D": return "text-green-500";
+      case "E": return "text-gray-400";
+      default: return "";
+    }
+  };
+
+  // Format title with colored rank
+  const displayDungeonTitle = () => {
+    if (dungeon && dungeon.difficulty) {
+      return (
+        <span>
+          {dungeon.title}{" "}
+          <span className={`font-bold ${getRankColor(dungeon.difficulty)}`}>
+            - {dungeon.difficulty} Rank
+          </span>
+        </span>
+      );
+    }
+    return dungeon?.title || '';
+  };
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
@@ -117,7 +139,7 @@ Approach this dungeon with confidence and persistence!
         {dungeon && (
           <div className="space-y-4">
             <div className="flex items-center gap-2 border-b pb-2">
-              <h3 className="text-lg font-semibold">{dungeonTitle}</h3>
+              <h3 className="text-lg font-semibold">{displayDungeonTitle()}</h3>
             </div>
             
             <div className="flex flex-wrap gap-1 text-sm">

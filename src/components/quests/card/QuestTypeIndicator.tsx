@@ -63,35 +63,15 @@ const getQuestTypeStyles = (type: QuestType): QuestTypeStyles => {
   }
 };
 
-const getDifficultyColor = (difficulty?: string): string => {
-  switch (difficulty) {
-    case "E": return "text-gray-400";
-    case "D": return "text-green-500";
-    case "C": return "text-blue-500";
-    case "B": return "text-purple-500";
-    case "A": return "text-orange-500";
-    case "S": return "text-red-500";
-    default: return "text-gray-500";
-  }
-};
-
 export const QuestTypeIndicator: React.FC<QuestTypeIndicatorProps> = ({ type, difficulty }) => {
   const typeStyles = getQuestTypeStyles(type);
   
   return (
-    <div className="flex items-center gap-2 flex-wrap">
-      <div className="flex items-center gap-1.5">
-        {typeStyles.icon}
-        <span className={`text-xs font-medium px-1.5 py-0.5 rounded-full bg-secondary/40 ${typeStyles.textColor}`}>
-          {typeStyles.label}
-        </span>
-      </div>
-      
-      {type === "dungeon" && difficulty && (
-        <div className={cn("text-xs font-bold px-1.5 py-0.5 rounded", getDifficultyColor(difficulty))}>
-          {difficulty}-Rank
-        </div>
-      )}
+    <div className="flex items-center gap-1.5">
+      {typeStyles.icon}
+      <span className={`text-xs font-medium px-1.5 py-0.5 rounded-full bg-secondary/40 ${typeStyles.textColor}`}>
+        {typeStyles.label}
+      </span>
     </div>
   );
 };

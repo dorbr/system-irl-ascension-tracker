@@ -51,10 +51,33 @@ const QuestCard: React.FC<QuestCardProps> = ({
     }
   };
 
-  // Format the title with rank for dungeon quests
-  const displayTitle = quest.type === "dungeon" && quest.difficulty 
-    ? `${quest.title} - ${quest.difficulty} Rank` 
-    : quest.title;
+  // Get rank color based on difficulty
+  const getRankColor = (difficulty?: string) => {
+    switch (difficulty) {
+      case "S": return "text-red-500";
+      case "A": return "text-orange-500";
+      case "B": return "text-purple-500";
+      case "C": return "text-blue-500";
+      case "D": return "text-green-500";
+      case "E": return "text-gray-400";
+      default: return "";
+    }
+  };
+
+  // Format the title with colorful rank for dungeon quests
+  const displayTitle = () => {
+    if (quest.type === "dungeon" && quest.difficulty) {
+      return (
+        <span>
+          {quest.title}{" "}
+          <span className={`font-bold ${getRankColor(quest.difficulty)}`}>
+            - {quest.difficulty} Rank
+          </span>
+        </span>
+      );
+    }
+    return quest.title;
+  };
 
   return (
     <div 
@@ -73,7 +96,7 @@ const QuestCard: React.FC<QuestCardProps> = ({
           {/* Header section with quest type and title */}
           <div className="flex flex-col gap-2 mb-3">
             <QuestTypeIndicator type={quest.type} difficulty={quest.difficulty} />
-            <h3 className="font-semibold text-sm">{displayTitle}</h3>
+            <h3 className="font-semibold text-sm">{displayTitle()}</h3>
           </div>
           
           {/* Description */}
