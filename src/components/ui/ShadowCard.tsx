@@ -22,30 +22,30 @@ const ShadowCard: React.FC<ShadowCardProps> = ({ shadow, className }) => {
   };
 
   return (
-    <div className={cn("glass-card rounded-lg p-4", className)}>
-      <div className="flex justify-between items-start mb-3">
-        <h3 className="font-semibold text-glow">{shadow.name}</h3>
+    <div className={cn("glass-card rounded-lg p-4 text-center", className)}>
+      <div className="flex flex-col items-center mb-3">
+        <h3 className="font-semibold text-glow mb-1">{shadow.name}</h3>
         <span className="text-xs text-muted-foreground">{shadow.date}</span>
       </div>
       
       <div className="space-y-3 text-sm">
-        <div>
+        <div className="flex flex-col items-center">
           <p className="text-xs font-medium uppercase text-muted-foreground mb-1">{t('event')}</p>
           <p>{shadow.event}</p>
         </div>
         
-        <div>
+        <div className="flex flex-col items-center">
           <p className="text-xs font-medium uppercase text-muted-foreground mb-1">{t('reflection')}</p>
           <p className="italic text-muted-foreground">{shadow.reflection}</p>
         </div>
         
-        <div>
+        <div className="flex flex-col items-center">
           <p className="text-xs font-medium uppercase text-muted-foreground mb-1">{t('insight')}</p>
           <p className="text-rpg-secondary">{shadow.insight}</p>
         </div>
       </div>
       
-      <div className="mt-3 flex gap-1">
+      <div className="mt-3 flex justify-center gap-1">
         {shadow.stats.map((stat) => (
           <StatBadge
             key={stat}
