@@ -79,7 +79,9 @@ export type TranslationKey =
   | 'noShadows'
   | 'error'
   | 'shadowRequired'
-  | 'shadowArchived';
+  | 'shadowArchived'
+  | 'home'  // Add this for the Home navigation item
+  | 'stats'; // Add this for the Stats navigation item
 
 export type Translations = {
   [key in TranslationKey]: string;

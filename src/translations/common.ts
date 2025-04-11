@@ -13,6 +13,9 @@ export const englishCommon: Partial<Translations> = {
   username: 'Username',
   saveChanges: 'Save Changes',
   saving: 'Saving...',
+  home: 'Home',
+  stats: 'Stats',
+  profile: 'Profile',
 };
 
 export const hebrewCommon: Partial<Translations> = {
@@ -26,4 +29,7 @@ export const hebrewCommon: Partial<Translations> = {
   username: 'שם משתמש',
   saveChanges: 'שמור שינויים',
   saving: 'שומר...',
+  home: 'בית',
+  stats: 'סטטיסטיקות',
+  profile: 'פרופיל',
 };
