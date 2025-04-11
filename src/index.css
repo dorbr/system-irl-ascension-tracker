@@ -112,7 +112,7 @@
   
   /* Fix RTL button alignment */
   .rtl button svg {
-    margin-left: 0.5rem;
+    margin-left: 0;
     margin-right: 0;
   }
   

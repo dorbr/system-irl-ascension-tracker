@@ -66,7 +66,7 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ signOut }) => {
         {t('manageAccount')}
       </div>
       
-      <Card className="text-start">
+      <Card className={`${isRtl ? "text-right" : "text-left"}`}>
         <CardHeader className="text-center">
           <CardTitle className="text-base">{t('preferences')}</CardTitle>
           <CardDescription>{t('customizeExperience')}</CardDescription>
@@ -74,10 +74,12 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ signOut }) => {
         <CardContent className="space-y-4">
           {/* Notifications Setting */}
           <div className="flex items-center justify-between">
-            <div className={`flex items-center gap-4 ${isRtl ? "flex-row-reverse" : ""}`}>
-              <Bell size={18} className="text-muted-foreground shrink-0" />
-              <div className={isRtl ? "text-right" : "text-left"}>
-                <p className="text-sm font-medium">{t('notifications')}</p>
+            <div className="flex items-center gap-3 rtl:flex-row-reverse">
+              <div className="flex-shrink-0 w-6 flex justify-center">
+                <Bell size={18} className="text-muted-foreground" />
+              </div>
+              <div>
+                <p className="text-sm font-medium leading-none mb-1">{t('notifications')}</p>
                 <p className="text-xs text-muted-foreground">{t('notificationsDesc')}</p>
               </div>
             </div>
@@ -89,10 +91,12 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ signOut }) => {
           
           {/* Dark Mode Setting */}
           <div className="flex items-center justify-between">
-            <div className={`flex items-center gap-4 ${isRtl ? "flex-row-reverse" : ""}`}>
-              <Moon size={18} className="text-muted-foreground shrink-0" />
-              <div className={isRtl ? "text-right" : "text-left"}>
-                <p className="text-sm font-medium">{t('darkMode')}</p>
+            <div className="flex items-center gap-3 rtl:flex-row-reverse">
+              <div className="flex-shrink-0 w-6 flex justify-center">
+                <Moon size={18} className="text-muted-foreground" />
+              </div>
+              <div>
+                <p className="text-sm font-medium leading-none mb-1">{t('darkMode')}</p>
                 <p className="text-xs text-muted-foreground">{t('darkModeDesc')}</p>
               </div>
             </div>
@@ -104,10 +108,12 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ signOut }) => {
           
           {/* Sound Effect Setting */}
           <div className="flex items-center justify-between">
-            <div className={`flex items-center gap-4 ${isRtl ? "flex-row-reverse" : ""}`}>
-              <Volume2 size={18} className="text-muted-foreground shrink-0" />
-              <div className={isRtl ? "text-right" : "text-left"}>
-                <p className="text-sm font-medium">{t('soundEffects')}</p>
+            <div className="flex items-center gap-3 rtl:flex-row-reverse">
+              <div className="flex-shrink-0 w-6 flex justify-center">
+                <Volume2 size={18} className="text-muted-foreground" />
+              </div>
+              <div>
+                <p className="text-sm font-medium leading-none mb-1">{t('soundEffects')}</p>
                 <p className="text-xs text-muted-foreground">{t('soundEffectsDesc')}</p>
               </div>
             </div>
@@ -119,10 +125,12 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ signOut }) => {
           
           {/* Language Setting */}
           <div className="flex items-center justify-between">
-            <div className={`flex items-center gap-4 ${isRtl ? "flex-row-reverse" : ""}`}>
-              <Languages size={18} className="text-muted-foreground shrink-0" />
-              <div className={isRtl ? "text-right" : "text-left"}>
-                <p className="text-sm font-medium">{t('language')}</p>
+            <div className="flex items-center gap-3 rtl:flex-row-reverse">
+              <div className="flex-shrink-0 w-6 flex justify-center">
+                <Languages size={18} className="text-muted-foreground" />
+              </div>
+              <div>
+                <p className="text-sm font-medium leading-none mb-1">{t('language')}</p>
                 <p className="text-xs text-muted-foreground">{t('languageDesc')}</p>
               </div>
             </div>
@@ -142,7 +150,7 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ signOut }) => {
         </CardContent>
       </Card>
       
-      <Card className="text-start">
+      <Card className={`${isRtl ? "text-right" : "text-left"}`}>
         <CardHeader className="text-center">
           <CardTitle className="text-base">{t('account')}</CardTitle>
           <CardDescription>{t('manageAccount')}</CardDescription>
@@ -150,29 +158,35 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ signOut }) => {
         <CardContent className="space-y-2">
           <Button 
             variant="outline" 
-            className={`w-full ${isRtl ? "flex-row-reverse" : "justify-start"}`}
+            className="w-full justify-start rtl:flex-row-reverse rtl:justify-end"
           >
-            <Shield size={18} className={`${isRtl ? "ml-2" : "mr-2"}`} />
-            {t('privacySettings')}
+            <div className="flex-shrink-0 w-6 flex justify-center">
+              <Shield size={18} />
+            </div>
+            <span className="mx-2">{t('privacySettings')}</span>
           </Button>
           
           <Button 
             variant="outline" 
-            className={`w-full text-destructive hover:text-destructive ${isRtl ? "flex-row-reverse" : "justify-start"}`}
+            className="w-full justify-start text-destructive hover:text-destructive rtl:flex-row-reverse rtl:justify-end"
             onClick={handleDeleteAccount}
           >
-            <Trash2 size={18} className={`${isRtl ? "ml-2" : "mr-2"}`} />
-            {t('deleteAccount')}
+            <div className="flex-shrink-0 w-6 flex justify-center">
+              <Trash2 size={18} />
+            </div>
+            <span className="mx-2">{t('deleteAccount')}</span>
           </Button>
         </CardContent>
         <CardFooter>
           <Button 
             variant="outline" 
-            className={`w-full bg-destructive/10 border-destructive/20 hover:bg-destructive/20 ${isRtl ? "flex-row-reverse" : ""}`}
+            className="w-full bg-destructive/10 border-destructive/20 hover:bg-destructive/20 justify-start rtl:flex-row-reverse rtl:justify-end"
             onClick={signOut}
           >
-            <LogOut size={16} className={`${isRtl ? "ml-2" : "mr-2"}`} />
-            {t('signOut')}
+            <div className="flex-shrink-0 w-6 flex justify-center">
+              <LogOut size={16} />
+            </div>
+            <span className="mx-2">{t('signOut')}</span>
           </Button>
         </CardFooter>
       </Card>
