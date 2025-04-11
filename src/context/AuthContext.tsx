@@ -45,9 +45,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           });
         }
 
-        // Check for new signups based on metadata instead of event type
-        if (session?.user && !session.user.app_metadata.onboarding_completed) {
-          setIsNewUser(true);
+        // Check for new signups or first login based on metadata
+        if (session?.user && event === 'SIGNED_IN') {
+          // Check if this is the first time signing in (no onboarding_completed flag)
+          const onboardingCompleted = session.user.app_metadata.onboarding_completed;
+          if (onboardingCompleted === undefined || onboardingCompleted === false) {
+            setIsNewUser(true);
+          } else {
+            setIsNewUser(false);
+          }
         }
       }
     );
@@ -58,8 +64,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setUser(session?.user ?? null);
       
       // Check if user is new (hasn't completed onboarding)
-      if (session?.user && !session.user.app_metadata.onboarding_completed) {
-        setIsNewUser(true);
+      if (session?.user) {
+        const onboardingCompleted = session.user.app_metadata.onboarding_completed;
+        if (onboardingCompleted === undefined || onboardingCompleted === false) {
+          setIsNewUser(true);
+        } else {
+          setIsNewUser(false);
+        }
       }
       
       setLoading(false);
