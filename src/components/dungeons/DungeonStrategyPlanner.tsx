@@ -99,6 +99,11 @@ Approach this dungeon with confidence and persistence!
     `;
   };
 
+  // Format title with rank
+  const dungeonTitle = dungeon && dungeon.difficulty 
+    ? `${dungeon.title} - ${dungeon.difficulty} Rank` 
+    : dungeon?.title || '';
+
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <DialogContent className="sm:max-w-[600px] max-h-[80vh] overflow-y-auto glass-card">
@@ -112,18 +117,7 @@ Approach this dungeon with confidence and persistence!
         {dungeon && (
           <div className="space-y-4">
             <div className="flex items-center gap-2 border-b pb-2">
-              <h3 className="text-lg font-semibold">{dungeon.title}</h3>
-              {dungeon.difficulty && (
-                <span className={`text-xs font-bold px-1.5 py-0.5 rounded bg-secondary/50 ${
-                  dungeon.difficulty === 'S' ? 'text-red-500' : 
-                  dungeon.difficulty === 'A' ? 'text-orange-500' : 
-                  dungeon.difficulty === 'B' ? 'text-purple-500' : 
-                  dungeon.difficulty === 'C' ? 'text-blue-500' : 
-                  dungeon.difficulty === 'D' ? 'text-green-500' : 'text-gray-500'
-                }`}>
-                  {dungeon.difficulty}-Rank
-                </span>
-              )}
+              <h3 className="text-lg font-semibold">{dungeonTitle}</h3>
             </div>
             
             <div className="flex flex-wrap gap-1 text-sm">

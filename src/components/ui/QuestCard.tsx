@@ -51,6 +51,11 @@ const QuestCard: React.FC<QuestCardProps> = ({
     }
   };
 
+  // Format the title with rank for dungeon quests
+  const displayTitle = quest.type === "dungeon" && quest.difficulty 
+    ? `${quest.title} - ${quest.difficulty} Rank` 
+    : quest.title;
+
   return (
     <div 
       onClick={handleCardClick}
@@ -68,7 +73,7 @@ const QuestCard: React.FC<QuestCardProps> = ({
           {/* Header section with quest type and title */}
           <div className="flex flex-col gap-2 mb-3">
             <QuestTypeIndicator type={quest.type} difficulty={quest.difficulty} />
-            <h3 className="font-semibold text-sm">{quest.title}</h3>
+            <h3 className="font-semibold text-sm">{displayTitle}</h3>
           </div>
           
           {/* Description */}
