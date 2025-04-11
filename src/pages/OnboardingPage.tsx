@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Navigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
@@ -51,7 +50,7 @@ const OnboardingPage: React.FC = () => {
   });
 
   // If not a new user or no user is logged in, redirect to home
-  if (!isNewUser || !user) {
+  if (!user || !isNewUser) {
     return <Navigate to="/" replace />;
   }
 

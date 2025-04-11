@@ -1,11 +1,12 @@
 
 import React from "react";
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 import { Loader2 } from "lucide-react";
 
 const ProtectedRoute: React.FC = () => {
   const { user, loading, isNewUser } = useAuth();
+  const location = useLocation();
 
   if (loading) {
     return (
@@ -20,8 +21,8 @@ const ProtectedRoute: React.FC = () => {
     return <Navigate to="/auth" replace />;
   }
   
-  // Redirect new users to onboarding
-  if (isNewUser) {
+  // Redirect new users to onboarding, but only if they're not already on the onboarding page
+  if (isNewUser && location.pathname !== "/onboarding") {
     return <Navigate to="/onboarding" replace />;
   }
 
