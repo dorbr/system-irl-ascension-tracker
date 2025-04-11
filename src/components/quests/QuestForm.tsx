@@ -1,12 +1,12 @@
 
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Switch } from "@/components/ui/switch";
 import { toast } from "@/hooks/use-toast";
 import { QuestDifficulty } from "@/context/QuestContext";
+import QuestTypeSelector from "./form/QuestTypeSelector";
+import QuestDetails from "./form/QuestDetails";
+import StatSelector from "./form/StatSelector";
+import TagSelector from "./form/TagSelector";
 
 interface QuestFormProps {
   availableStats: string[];
@@ -121,150 +121,41 @@ const QuestForm: React.FC<QuestFormProps> = ({ availableStats, onCreateQuest }) 
 
   return (
     <div className="space-y-3">
-      <div className="flex items-center justify-between pb-2 border-b border-secondary">
-        <h3 className="font-medium">
-          {isDungeon ? "Create Dungeon Challenge" : "Create Quest"}
-        </h3>
-        <div className="flex items-center gap-2">
-          <span className="text-xs text-muted-foreground">Quest</span>
-          <Switch 
-            checked={isDungeon} 
-            onCheckedChange={setIsDungeon} 
-          />
-          <span className="text-xs text-muted-foreground">Dungeon</span>
-        </div>
-      </div>
+      <QuestTypeSelector 
+        isDungeon={isDungeon} 
+        setIsDungeon={setIsDungeon} 
+      />
       
-      <div>
-        <Label htmlFor="title">{isDungeon ? "Dungeon Title" : "Quest Title"}</Label>
-        <Input
-          id="title"
-          value={newQuest.title}
-          onChange={(e) => setNewQuest({...newQuest, title: e.target.value})}
-          className="bg-secondary/50 border-secondary"
-          placeholder={isDungeon ? "Enter challenge title" : "Enter quest title"}
-        />
-      </div>
+      <QuestDetails
+        title={newQuest.title}
+        setTitle={(title) => setNewQuest({...newQuest, title})}
+        description={newQuest.description}
+        setDescription={(description) => setNewQuest({...newQuest, description})}
+        xpReward={newQuest.xpReward}
+        setXpReward={(xpReward) => setNewQuest({...newQuest, xpReward})}
+        type={newQuest.type}
+        setType={(type) => setNewQuest({...newQuest, type})}
+        difficulty={newQuest.difficulty}
+        setDifficulty={(difficulty) => setNewQuest({...newQuest, difficulty})}
+        isDungeon={isDungeon}
+      />
       
-      <div>
-        <Label htmlFor="description">Description</Label>
-        <Textarea
-          id="description"
-          value={newQuest.description}
-          onChange={(e) => setNewQuest({...newQuest, description: e.target.value})}
-          className="bg-secondary/50 border-secondary"
-          placeholder={isDungeon ? "What's this challenge about?" : "What's this quest about?"}
-        />
-      </div>
+      <StatSelector
+        availableStats={availableStats}
+        selectedStats={newQuest.stats}
+        onAddStat={handleAddStat}
+        onRemoveStat={handleRemoveStat}
+        newStat={newStat}
+        setNewStat={setNewStat}
+      />
       
-      <div className="grid grid-cols-2 gap-3">
-        <div>
-          <Label htmlFor="xp">XP Reward</Label>
-          <Input
-            id="xp"
-            type="number"
-            value={newQuest.xpReward}
-            onChange={(e) => setNewQuest({...newQuest, xpReward: Number(e.target.value)})}
-            className="bg-secondary/50 border-secondary"
-          />
-        </div>
-        
-        {!isDungeon ? (
-          <div>
-            <Label htmlFor="type">Quest Type</Label>
-            <select
-              id="type"
-              value={newQuest.type}
-              onChange={(e) => setNewQuest({...newQuest, type: e.target.value as "daily" | "main"})}
-              className="w-full h-10 rounded-md bg-secondary/50 border-secondary text-sm"
-            >
-              <option value="daily">Daily Quest</option>
-              <option value="main">Main Quest</option>
-            </select>
-          </div>
-        ) : (
-          <div>
-            <Label htmlFor="difficulty">Difficulty Rank</Label>
-            <select
-              id="difficulty"
-              value={newQuest.difficulty}
-              onChange={(e) => setNewQuest({...newQuest, difficulty: e.target.value as QuestDifficulty})}
-              className="w-full h-10 rounded-md bg-secondary/50 border-secondary text-sm"
-            >
-              <option value="E">E Rank (Easiest)</option>
-              <option value="D">D Rank</option>
-              <option value="C">C Rank (Average)</option>
-              <option value="B">B Rank</option>
-              <option value="A">A Rank</option>
-              <option value="S">S Rank (Hardest)</option>
-            </select>
-          </div>
-        )}
-      </div>
-      
-      <div>
-        <Label>Stats</Label>
-        <div className="flex items-center gap-2 mb-2">
-          <select
-            value={newStat}
-            onChange={(e) => setNewStat(e.target.value)}
-            className="flex-1 h-10 rounded-md bg-secondary/50 border-secondary text-sm"
-          >
-            <option value="">Select a Stat</option>
-            {availableStats.map(stat => (
-              <option key={stat} value={stat}>{stat}</option>
-            ))}
-          </select>
-          <Button type="button" onClick={handleAddStat} size="sm">Add</Button>
-        </div>
-        
-        <div className="flex flex-wrap gap-1 mb-3">
-          {newQuest.stats.map(stat => (
-            <div 
-              key={stat} 
-              className="px-2 py-1 rounded-full bg-rpg-primary/20 text-rpg-primary text-xs flex items-center"
-            >
-              {stat}
-              <button 
-                onClick={() => handleRemoveStat(stat)} 
-                className="ml-1 w-4 h-4 rounded-full bg-rpg-primary/30 flex items-center justify-center"
-              >
-                ×
-              </button>
-            </div>
-          ))}
-        </div>
-      </div>
-      
-      <div>
-        <Label>Tags</Label>
-        <div className="flex items-center gap-2 mb-2">
-          <Input
-            value={newTag}
-            onChange={(e) => setNewTag(e.target.value)}
-            className="flex-1 bg-secondary/50 border-secondary"
-            placeholder="Health, Focus, etc."
-          />
-          <Button type="button" onClick={handleAddTag} size="sm">Add</Button>
-        </div>
-        
-        <div className="flex flex-wrap gap-1">
-          {newQuest.tags.map(tag => (
-            <div 
-              key={tag} 
-              className="px-2 py-1 rounded-full bg-secondary/50 text-muted-foreground text-xs flex items-center"
-            >
-              {tag}
-              <button 
-                onClick={() => handleRemoveTag(tag)} 
-                className="ml-1 w-4 h-4 rounded-full bg-secondary/80 flex items-center justify-center"
-              >
-                ×
-              </button>
-            </div>
-          ))}
-        </div>
-      </div>
+      <TagSelector
+        tags={newQuest.tags}
+        onAddTag={handleAddTag}
+        onRemoveTag={handleRemoveTag}
+        newTag={newTag}
+        setNewTag={setNewTag}
+      />
       
       <Button onClick={handleCreateQuest} className="w-full">
         {isDungeon ? "Create Dungeon Challenge" : "Create Quest"}
