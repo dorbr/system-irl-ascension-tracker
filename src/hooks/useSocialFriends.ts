@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Friend } from "@/types/social";
 import { 
@@ -7,7 +6,7 @@ import {
   rejectFriendRequest as rejectFriendRequestUtil,
   removeFriend as removeFriendUtil,
   fetchFriendships as fetchFriendshipsUtil
-} from "@/utils/friendUtils";
+} from "@/utils/friends";
 import { toast } from "@/hooks/use-toast";
 
 export function useSocialFriends(userId: string | undefined, refreshCallback: () => Promise<void>) {
