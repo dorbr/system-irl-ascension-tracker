@@ -18,6 +18,19 @@ export interface Quest {
   difficulty?: QuestDifficulty; // For dungeon difficulty
 }
 
+// Helper function to get XP reward based on dungeon difficulty
+const getDungeonXpReward = (difficulty?: QuestDifficulty): number => {
+  switch (difficulty) {
+    case "S": return 10000;
+    case "A": return 5000;
+    case "B": return 2500;
+    case "C": return 1000;
+    case "D": return 500;
+    case "E": return 250;
+    default: return 1000;
+  }
+};
+
 const defaultQuests: Quest[] = [
   {
     id: "1",
@@ -142,7 +155,7 @@ const defaultQuests: Quest[] = [
     id: "6",
     title: "Public Speaking",
     description: "Prepare and deliver a presentation",
-    xpReward: 100,
+    xpReward: getDungeonXpReward("B"),
     type: "dungeon",
     completed: false,
     stats: ["PER", "INT", "SEN"],
@@ -153,7 +166,7 @@ const defaultQuests: Quest[] = [
     id: "dungeon-2",
     title: "Marathon Challenge",
     description: "Train for and complete a marathon",
-    xpReward: 200,
+    xpReward: getDungeonXpReward("A"),
     type: "dungeon",
     completed: false,
     stats: ["STR", "VIT", "WIL"],
@@ -164,7 +177,7 @@ const defaultQuests: Quest[] = [
     id: "dungeon-3",
     title: "Tech Detox",
     description: "Go 48 hours without technology",
-    xpReward: 80,
+    xpReward: getDungeonXpReward("C"),
     type: "dungeon",
     completed: false,
     stats: ["WIL", "SEN"],
@@ -175,7 +188,7 @@ const defaultQuests: Quest[] = [
     id: "dungeon-4",
     title: "Cold Shower Challenge",
     description: "Take cold showers for 7 consecutive days",
-    xpReward: 70,
+    xpReward: getDungeonXpReward("D"),
     type: "dungeon",
     completed: false,
     stats: ["WIL", "VIT"],
@@ -186,7 +199,7 @@ const defaultQuests: Quest[] = [
     id: "dungeon-5",
     title: "Ultimate Interview Prep",
     description: "Prepare for and excel at a critical job interview",
-    xpReward: 150,
+    xpReward: getDungeonXpReward("A"),
     type: "dungeon",
     completed: false,
     stats: ["CHA", "INT", "PER"],
@@ -197,7 +210,7 @@ const defaultQuests: Quest[] = [
     id: "dungeon-6",
     title: "Social Networking Challenge",
     description: "Attend three networking events and make five new professional connections",
-    xpReward: 120,
+    xpReward: getDungeonXpReward("B"),
     type: "dungeon",
     completed: false,
     stats: ["CHA", "PER", "SEN"],
@@ -208,7 +221,7 @@ const defaultQuests: Quest[] = [
     id: "dungeon-7",
     title: "Master the Elements",
     description: "Complete an extreme outdoor challenge (mountain climbing, deep diving, etc.)",
-    xpReward: 250,
+    xpReward: getDungeonXpReward("S"),
     type: "dungeon",
     completed: false,
     stats: ["STR", "AGI", "VIT"],
@@ -318,11 +331,18 @@ export const QuestProvider: React.FC<{ children: React.ReactNode }> = ({
   }, [quests]);
 
   const addQuest = (quest: Omit<Quest, "id" | "completed">) => {
-    const newQuest: Quest = {
+    // Update XP reward for new dungeon quests based on rank
+    let newQuest: Quest = {
       ...quest,
       id: Date.now().toString(),
       completed: false,
     };
+    
+    // If it's a dungeon, set XP reward based on difficulty
+    if (quest.type === "dungeon" && quest.difficulty) {
+      newQuest.xpReward = getDungeonXpReward(quest.difficulty);
+    }
+    
     setQuests((prev) => [...prev, newQuest]);
   };
 

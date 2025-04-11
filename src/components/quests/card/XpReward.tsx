@@ -1,16 +1,12 @@
-
 import React from "react";
 
 interface XpRewardProps {
   xpReward: number;
 }
 
+// Keeping the component but making it return null
 const XpReward: React.FC<XpRewardProps> = ({ xpReward }) => {
-  return (
-    <div className="text-sm font-semibold text-rpg-primary absolute bottom-3 right-3">
-      +{xpReward} XP
-    </div>
-  );
+  return null;
 };
 
 export default XpReward;
