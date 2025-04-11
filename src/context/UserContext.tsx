@@ -1,5 +1,6 @@
 
 import React, { createContext, useContext, useState, useEffect } from "react";
+import { useLanguage } from "@/context/LanguageContext";
 
 export interface Stat {
   name: string;
@@ -51,12 +52,21 @@ const defaultUserData: UserData = {
   netWorth: 50,
 };
 
+// Hebrew translations for class names
+const classTranslations: { [key: string]: string } = {
+  "Novice": "מתחיל",
+  "Student": "תלמיד",
+  "Apprentice": "שוליה",
+  "Explorer": "חוקר",
+};
+
 interface UserContextType {
   userData: UserData;
   updateUserXp: (amount: number) => void;
   updateUserStat: (statName: string, amount: number) => void;
   updateResources: (gold: number, mana: number) => void;
   updateUserName: (name: string) => void;
+  getLocalizedClassName: (className: string) => string;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -64,6 +74,7 @@ const UserContext = createContext<UserContextType | undefined>(undefined);
 export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
+  const { language } = useLanguage();
   const [userData, setUserData] = useState<UserData>(() => {
     const savedData = localStorage.getItem("system_irl_user");
     
@@ -152,6 +163,13 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
     }));
   };
 
+  const getLocalizedClassName = (className: string) => {
+    if (language === 'hebrew' && classTranslations[className]) {
+      return classTranslations[className];
+    }
+    return className;
+  };
+
   return (
     <UserContext.Provider
       value={{ 
@@ -159,7 +177,8 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
         updateUserXp, 
         updateUserStat, 
         updateResources,
-        updateUserName 
+        updateUserName,
+        getLocalizedClassName
       }}
     >
       {children}

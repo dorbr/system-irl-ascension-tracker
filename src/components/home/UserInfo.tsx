@@ -5,7 +5,7 @@ import XpBar from "../ui/XpBar";
 import { useLanguage } from "@/context/LanguageContext";
 
 const UserInfo: React.FC = () => {
-  const { userData } = useUser();
+  const { userData, getLocalizedClassName } = useUser();
   const { t, isRtl } = useLanguage();
 
   // Format the level display for Hebrew
@@ -20,13 +20,15 @@ const UserInfo: React.FC = () => {
   return (
     <div className="glass-card rounded-lg p-4 mb-4 animate-fade-in text-center">
       <div className="flex justify-between items-center mb-2">
-        <div className={isRtl ? "text-right" : "text-left"}>
+        <div className="text-center flex-1">
           <h2 className="font-bold text-xl">{userData.name}</h2>
           <div className="text-sm text-muted-foreground">
-            <span className="text-rpg-primary font-medium">{userData.class.name}</span>
+            <span className="text-rpg-primary font-medium">
+              {getLocalizedClassName(userData.class.name)}
+            </span>
           </div>
         </div>
-        <div className={isRtl ? "text-left" : "text-right"}>
+        <div className="text-center flex-1">
           <div className="text-xl font-bold text-glow">
             {getFormattedLevel()}
           </div>

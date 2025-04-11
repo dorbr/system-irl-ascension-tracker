@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { useSocial } from "@/context/SocialContext";
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/context/LanguageContext";
+import { useUser } from "@/context/UserContext";
 
 interface ProfileHeaderProps {
   profileUsername: string | null;
@@ -26,6 +27,7 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
 }) => {
   const { userParty, userGuild } = useSocial();
   const { isRtl, t } = useLanguage();
+  const { getLocalizedClassName } = useUser();
   
   return (
     <div className="mb-4 text-center">
@@ -46,7 +48,7 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
       </div>
       
       <h1 className="text-2xl font-bold">{profileUsername || userData.name}</h1>
-      <div className="text-rpg-primary font-medium mt-1">{userData.class.name}</div>
+      <div className="text-rpg-primary font-medium mt-1">{getLocalizedClassName(userData.class.name)}</div>
       
       {/* Social affiliations */}
       <div className="flex justify-center gap-2 mt-2">
