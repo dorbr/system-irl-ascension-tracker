@@ -14,7 +14,7 @@ interface QuestFormProps {
     title: string;
     description: string;
     xpReward: number;
-    type: "daily" | "main" | "dungeon";
+    type: "daily" | "main" | "dungeon" | "penalty" | "reward";
     stats: string[];
     tags: string[];
     difficulty?: QuestDifficulty;
@@ -27,8 +27,8 @@ const QuestForm: React.FC<QuestFormProps> = ({ availableStats, onCreateQuest }) 
   const [newQuest, setNewQuest] = useState({
     title: "",
     description: "",
-    xpReward: 20,
-    type: "daily" as "daily" | "main" | "dungeon",
+    xpReward: isDungeon ? 50 : 20,
+    type: "daily" as "daily" | "main" | "dungeon" | "penalty" | "reward",
     stats: [] as string[],
     tags: [] as string[],
     difficulty: "C" as QuestDifficulty,
@@ -38,20 +38,22 @@ const QuestForm: React.FC<QuestFormProps> = ({ availableStats, onCreateQuest }) 
   const [newTag, setNewTag] = useState("");
   const [newStat, setNewStat] = useState("");
   
-  // Update quest type when isDungeon changes
+  // Update quest type and default XP when isDungeon changes
   useEffect(() => {
     if (isDungeon) {
-      setNewQuest(prev => ({ ...prev, type: "dungeon" }));
-    } else {
-      setNewQuest(prev => ({ ...prev, type: "daily" }));
+      setNewQuest(prev => ({ 
+        ...prev, 
+        type: "dungeon", 
+        xpReward: prev.xpReward < 50 ? 50 : prev.xpReward 
+      }));
     }
   }, [isDungeon]);
   
-  const handleAddStat = () => {
-    if (!newStat || newQuest.stats.includes(newStat)) return;
+  const handleAddStat = (stat: string) => {
+    if (!stat || newQuest.stats.includes(stat)) return;
     setNewQuest({
       ...newQuest,
-      stats: [...newQuest.stats, newStat],
+      stats: [...newQuest.stats, stat],
     });
     setNewStat("");
   };
@@ -89,6 +91,15 @@ const QuestForm: React.FC<QuestFormProps> = ({ availableStats, onCreateQuest }) 
       return;
     }
     
+    if (newQuest.stats.length === 0) {
+      toast({
+        title: "Error",
+        description: "Please select at least one stat",
+        variant: "destructive",
+      });
+      return;
+    }
+    
     const questToCreate = {
       ...newQuest,
     };
@@ -111,7 +122,7 @@ const QuestForm: React.FC<QuestFormProps> = ({ availableStats, onCreateQuest }) 
     setNewQuest({
       title: "",
       description: "",
-      xpReward: isDungeon ? 50 : 20, // Higher default XP for dungeons
+      xpReward: isDungeon ? 50 : 20,
       type: isDungeon ? "dungeon" : "daily",
       stats: [],
       tags: [],
@@ -120,44 +131,53 @@ const QuestForm: React.FC<QuestFormProps> = ({ availableStats, onCreateQuest }) 
   };
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-4 pb-1">
       <QuestTypeSelector 
         isDungeon={isDungeon} 
         setIsDungeon={setIsDungeon} 
       />
       
-      <QuestDetails
-        title={newQuest.title}
-        setTitle={(title) => setNewQuest({...newQuest, title})}
-        description={newQuest.description}
-        setDescription={(description) => setNewQuest({...newQuest, description})}
-        xpReward={newQuest.xpReward}
-        setXpReward={(xpReward) => setNewQuest({...newQuest, xpReward})}
-        type={newQuest.type}
-        setType={(type) => setNewQuest({...newQuest, type})}
-        difficulty={newQuest.difficulty}
-        setDifficulty={(difficulty) => setNewQuest({...newQuest, difficulty})}
-        isDungeon={isDungeon}
-      />
+      <div className="bg-background/30 p-3 rounded-md border border-secondary/50">
+        <QuestDetails
+          title={newQuest.title}
+          setTitle={(title) => setNewQuest({...newQuest, title})}
+          description={newQuest.description}
+          setDescription={(description) => setNewQuest({...newQuest, description})}
+          xpReward={newQuest.xpReward}
+          setXpReward={(xpReward) => setNewQuest({...newQuest, xpReward})}
+          type={newQuest.type}
+          setType={(type) => setNewQuest({...newQuest, type})}
+          difficulty={newQuest.difficulty}
+          setDifficulty={(difficulty) => setNewQuest({...newQuest, difficulty})}
+          isDungeon={isDungeon}
+        />
+      </div>
       
-      <StatSelector
-        availableStats={availableStats}
-        selectedStats={newQuest.stats}
-        onAddStat={handleAddStat}
-        onRemoveStat={handleRemoveStat}
-        newStat={newStat}
-        setNewStat={setNewStat}
-      />
+      <div className="bg-background/30 p-3 rounded-md border border-secondary/50">
+        <StatSelector
+          availableStats={availableStats}
+          selectedStats={newQuest.stats}
+          onAddStat={handleAddStat}
+          onRemoveStat={handleRemoveStat}
+          newStat={newStat}
+          setNewStat={setNewStat}
+        />
+      </div>
       
-      <TagSelector
-        tags={newQuest.tags}
-        onAddTag={handleAddTag}
-        onRemoveTag={handleRemoveTag}
-        newTag={newTag}
-        setNewTag={setNewTag}
-      />
+      <div className="bg-background/30 p-3 rounded-md border border-secondary/50">
+        <TagSelector
+          tags={newQuest.tags}
+          onAddTag={handleAddTag}
+          onRemoveTag={handleRemoveTag}
+          newTag={newTag}
+          setNewTag={setNewTag}
+        />
+      </div>
       
-      <Button onClick={handleCreateQuest} className="w-full">
+      <Button 
+        onClick={handleCreateQuest} 
+        className={`w-full ${isDungeon ? "bg-rpg-accent hover:bg-rpg-accent/90" : "bg-rpg-primary hover:bg-rpg-primary/90"}`}
+      >
         {isDungeon ? "Create Dungeon Challenge" : "Create Quest"}
       </Button>
     </div>

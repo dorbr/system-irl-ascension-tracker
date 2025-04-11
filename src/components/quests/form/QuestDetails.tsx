@@ -3,7 +3,9 @@ import React from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { QuestDifficulty } from "@/context/QuestContext";
+import { Shield, Star, Calendar, Award } from "lucide-react";
 
 interface QuestDetailsProps {
   title: string;
@@ -12,12 +14,22 @@ interface QuestDetailsProps {
   setDescription: (description: string) => void;
   xpReward: number;
   setXpReward: (xp: number) => void;
-  type: "daily" | "main" | "dungeon";
-  setType: (type: "daily" | "main" | "dungeon") => void;
+  type: "daily" | "main" | "dungeon" | "penalty" | "reward";
+  setType: (type: "daily" | "main" | "dungeon" | "penalty" | "reward") => void;
   difficulty: QuestDifficulty;
   setDifficulty: (difficulty: QuestDifficulty) => void;
   isDungeon: boolean;
 }
+
+const getTypeIcon = (type: string) => {
+  switch(type) {
+    case "main": return <Star size={16} className="text-yellow-400" />;
+    case "daily": return <Calendar size={16} className="text-blue-400" />;
+    case "penalty": return <Shield size={16} className="text-red-400" />;
+    case "reward": return <Award size={16} className="text-green-400" />;
+    default: return <Calendar size={16} className="text-blue-400" />;
+  }
+};
 
 const QuestDetails: React.FC<QuestDetailsProps> = ({
   title,
@@ -35,68 +47,104 @@ const QuestDetails: React.FC<QuestDetailsProps> = ({
   return (
     <>
       <div>
-        <Label htmlFor="title">{isDungeon ? "Dungeon Title" : "Quest Title"}</Label>
+        <Label htmlFor="title" className="text-sm font-medium">
+          {isDungeon ? "Dungeon Title" : "Quest Title"}
+        </Label>
         <Input
           id="title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          className="bg-secondary/50 border-secondary"
+          className="bg-secondary/50 border-secondary focus:border-rpg-primary focus:ring-rpg-primary/20"
           placeholder={isDungeon ? "Enter challenge title" : "Enter quest title"}
         />
       </div>
       
       <div>
-        <Label htmlFor="description">Description</Label>
+        <Label htmlFor="description" className="text-sm font-medium">Description</Label>
         <Textarea
           id="description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          className="bg-secondary/50 border-secondary"
+          className="bg-secondary/50 border-secondary focus:border-rpg-primary focus:ring-rpg-primary/20 min-h-[80px]"
           placeholder={isDungeon ? "What's this challenge about?" : "What's this quest about?"}
         />
       </div>
       
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <Label htmlFor="xp">XP Reward</Label>
+          <Label htmlFor="xp" className="text-sm font-medium">XP Reward</Label>
           <Input
             id="xp"
             type="number"
             value={xpReward}
             onChange={(e) => setXpReward(Number(e.target.value))}
-            className="bg-secondary/50 border-secondary"
+            className="bg-secondary/50 border-secondary focus:border-rpg-primary focus:ring-rpg-primary/20"
           />
         </div>
         
         {!isDungeon ? (
           <div>
-            <Label htmlFor="type">Quest Type</Label>
-            <select
-              id="type"
+            <Label htmlFor="type" className="text-sm font-medium">Quest Type</Label>
+            <Select
               value={type}
-              onChange={(e) => setType(e.target.value as "daily" | "main")}
-              className="w-full h-10 rounded-md bg-secondary/50 border-secondary text-sm"
+              onValueChange={(value) => setType(value as "daily" | "main" | "penalty" | "reward")}
             >
-              <option value="daily">Daily Quest</option>
-              <option value="main">Main Quest</option>
-            </select>
+              <SelectTrigger 
+                id="type" 
+                className="bg-secondary/50 border-secondary focus:border-rpg-primary focus:ring-rpg-primary/20"
+              >
+                <SelectValue placeholder="Select quest type" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="daily" className="flex items-center gap-2">
+                  <div className="flex items-center gap-2">
+                    <Calendar size={16} className="text-blue-400" />
+                    <span>Daily Quest</span>
+                  </div>
+                </SelectItem>
+                <SelectItem value="main">
+                  <div className="flex items-center gap-2">
+                    <Star size={16} className="text-yellow-400" />
+                    <span>Main Quest</span>
+                  </div>
+                </SelectItem>
+                <SelectItem value="penalty">
+                  <div className="flex items-center gap-2">
+                    <Shield size={16} className="text-red-400" />
+                    <span>Penalty Quest</span>
+                  </div>
+                </SelectItem>
+                <SelectItem value="reward">
+                  <div className="flex items-center gap-2">
+                    <Award size={16} className="text-green-400" />
+                    <span>Reward Quest</span>
+                  </div>
+                </SelectItem>
+              </SelectContent>
+            </Select>
           </div>
         ) : (
           <div>
-            <Label htmlFor="difficulty">Difficulty Rank</Label>
-            <select
-              id="difficulty"
+            <Label htmlFor="difficulty" className="text-sm font-medium">Difficulty Rank</Label>
+            <Select
               value={difficulty}
-              onChange={(e) => setDifficulty(e.target.value as QuestDifficulty)}
-              className="w-full h-10 rounded-md bg-secondary/50 border-secondary text-sm"
+              onValueChange={(value) => setDifficulty(value as QuestDifficulty)}
             >
-              <option value="E">E Rank (Easiest)</option>
-              <option value="D">D Rank</option>
-              <option value="C">C Rank (Average)</option>
-              <option value="B">B Rank</option>
-              <option value="A">A Rank</option>
-              <option value="S">S Rank (Hardest)</option>
-            </select>
+              <SelectTrigger 
+                id="difficulty" 
+                className="bg-secondary/50 border-secondary focus:border-rpg-primary focus:ring-rpg-primary/20"
+              >
+                <SelectValue placeholder="Select difficulty" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="E" className="text-gray-400 font-bold">E Rank (Easiest)</SelectItem>
+                <SelectItem value="D" className="text-green-500 font-bold">D Rank</SelectItem>
+                <SelectItem value="C" className="text-blue-500 font-bold">C Rank (Average)</SelectItem>
+                <SelectItem value="B" className="text-purple-500 font-bold">B Rank</SelectItem>
+                <SelectItem value="A" className="text-orange-500 font-bold">A Rank</SelectItem>
+                <SelectItem value="S" className="text-red-500 font-bold">S Rank (Hardest)</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
         )}
       </div>

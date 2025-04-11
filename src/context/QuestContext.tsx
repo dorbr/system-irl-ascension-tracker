@@ -8,7 +8,7 @@ export interface Quest {
   title: string;
   description: string;
   xpReward: number;
-  type: "daily" | "main" | "dungeon";
+  type: "daily" | "main" | "dungeon" | "penalty" | "reward";
   completed: boolean;
   completedDate?: string;
   stats: string[];
@@ -83,6 +83,26 @@ const defaultQuests: Quest[] = [
     stats: ["PER", "INT", "SEN"],
     tags: ["Communication", "Challenge"],
     difficulty: "B", // Adding difficulty rank
+  },
+  {
+    id: "7",
+    title: "Skip Bad Habits",
+    description: "Skip social media for one day",
+    xpReward: 40,
+    type: "penalty",
+    completed: false,
+    stats: ["WIL", "INT"],
+    tags: ["Discipline", "Focus"],
+  },
+  {
+    id: "8",
+    title: "Reward: Movie Night",
+    description: "Enjoy a movie after completing all daily quests",
+    xpReward: 15,
+    type: "reward",
+    completed: false,
+    stats: ["SEN", "VIT"],
+    tags: ["Relaxation", "Entertainment"],
   },
 ];
 

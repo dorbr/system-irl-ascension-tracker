@@ -2,7 +2,7 @@
 import React from "react";
 import { Quest } from "@/context/QuestContext";
 import StatBadge from "./StatBadge";
-import { CheckCircle, Circle, Shield } from "lucide-react";
+import { CheckCircle, Circle, Shield, Star, Calendar, Award, Swords } from "lucide-react";
 import { useUser } from "@/context/UserContext";
 import { cn } from "@/lib/utils";
 
@@ -24,12 +24,60 @@ const getDifficultyColor = (difficulty?: string): string => {
   }
 };
 
+const getQuestTypeStyles = (type: string): { 
+  icon: React.ReactNode; 
+  borderColor: string;
+  bgColor: string;
+} => {
+  switch (type) {
+    case "main":
+      return { 
+        icon: <Star size={16} className="text-yellow-400" />,
+        borderColor: "border-yellow-500/30",
+        bgColor: "bg-yellow-500/5"
+      };
+    case "daily":
+      return { 
+        icon: <Calendar size={16} className="text-blue-400" />,
+        borderColor: "border-blue-500/30",
+        bgColor: "bg-blue-500/5"
+      };
+    case "penalty":
+      return { 
+        icon: <Shield size={16} className="text-red-400" />,
+        borderColor: "border-red-500/30",
+        bgColor: "bg-red-500/5"
+      };
+    case "reward":
+      return { 
+        icon: <Award size={16} className="text-green-400" />,
+        borderColor: "border-green-500/30", 
+        bgColor: "bg-green-500/5"
+      };
+    case "dungeon":
+      return { 
+        icon: <Swords size={16} className="text-rpg-accent" />,
+        borderColor: "border-rpg-accent/30",
+        bgColor: "bg-rpg-accent/5"
+      };
+    default:
+      return { 
+        icon: <Calendar size={16} className="text-blue-400" />,
+        borderColor: "border-blue-500/30",
+        bgColor: "bg-blue-500/5"
+      };
+  }
+};
+
 const QuestCard: React.FC<QuestCardProps> = ({
   quest,
   onComplete,
   className,
 }) => {
   const { userData } = useUser();
+  
+  // Get visual styles based on quest type
+  const typeStyles = getQuestTypeStyles(quest.type);
   
   // Get stat colors for badges
   const getStatColor = (abbreviation: string) => {
@@ -38,13 +86,22 @@ const QuestCard: React.FC<QuestCardProps> = ({
   };
 
   return (
-    <div className={cn("quest-item glass-card", quest.completed && "opacity-60", className)}>
+    <div 
+      className={cn(
+        "quest-item glass-card", 
+        typeStyles.borderColor,
+        typeStyles.bgColor,
+        quest.completed && "opacity-60", 
+        className
+      )}
+    >
       <div className="flex justify-between items-start gap-3">
         <div className="flex-1">
           <div className="flex items-center gap-2">
+            {typeStyles.icon}
             <h3 className="font-semibold text-sm mb-1">{quest.title}</h3>
             {quest.type === "dungeon" && quest.difficulty && (
-              <div className={cn("text-xs font-bold", getDifficultyColor(quest.difficulty))}>
+              <div className={cn("text-xs font-bold px-1.5 py-0.5 rounded", getDifficultyColor(quest.difficulty))}>
                 {quest.difficulty}-Rank
               </div>
             )}
@@ -63,7 +120,7 @@ const QuestCard: React.FC<QuestCardProps> = ({
           </div>
           
           <div className="flex items-center justify-between">
-            <div className="flex gap-1">
+            <div className="flex flex-wrap gap-1">
               {quest.tags.map((tag) => (
                 <span key={tag} className="text-xs text-muted-foreground bg-secondary/30 px-1.5 py-0.5 rounded">
                   {tag}
