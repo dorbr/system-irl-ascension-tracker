@@ -8,6 +8,15 @@ const UserInfo: React.FC = () => {
   const { userData } = useUser();
   const { t, isRtl } = useLanguage();
 
+  // Format the level display for Hebrew
+  const getFormattedLevel = () => {
+    if (isRtl) {
+      return `רמה ${userData.level}`;
+    } else {
+      return `${t("level")} ${userData.level}`;
+    }
+  };
+
   return (
     <div className="glass-card rounded-lg p-4 mb-4 animate-fade-in">
       <div className={`flex justify-between items-center mb-2 ${isRtl ? "flex-row-reverse" : ""}`}>
@@ -19,7 +28,7 @@ const UserInfo: React.FC = () => {
         </div>
         <div className={isRtl ? "text-left" : "text-right"}>
           <div className="text-xl font-bold text-glow">
-            {isRtl ? userData.level : ""} {t("level")} {!isRtl ? userData.level : ""}
+            {getFormattedLevel()}
           </div>
           <div className="text-xs text-muted-foreground">
             {userData.xp} / {userData.xpToNextLevel} {t("xp")}
