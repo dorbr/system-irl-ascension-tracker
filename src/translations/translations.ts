@@ -1,43 +1,47 @@
 
-import { Translations, TranslationKey, Languages } from './types';
+import { Translations, TranslationKey } from './types';
 import { englishCommon, hebrewCommon } from './common';
-import { englishSettings, hebrewSettings } from './settings';
-import { englishQuests, hebrewQuests } from './quests';
 import { englishProfile, hebrewProfile } from './profile';
-import { englishSocial, hebrewSocial } from './social';
-import { englishShadows, hebrewShadows } from './shadows';
+import { englishQuests, hebrewQuests } from './quests';
 import { englishStats, hebrewStats } from './stats';
+import { englishShadows, hebrewShadows } from './shadows';
+import { englishSettings, hebrewSettings } from './settings';
+import { englishSocial, hebrewSocial } from './social';
 
-// English translations (default)
-export const englishTranslations: Translations = {
-  ...englishCommon,
-  ...englishSettings,
-  ...englishQuests,
-  ...englishProfile,
-  ...englishSocial,
-  ...englishShadows,
-  ...englishStats,
-} as Translations;
+export type Languages = 'english' | 'hebrew' | 'spanish' | 'french' | 'german' | 'chinese' | 'japanese' | 'korean' | 'arabic';
 
-// Hebrew translations
-export const hebrewTranslations: Translations = {
-  ...hebrewCommon,
-  ...hebrewSettings,
-  ...hebrewQuests,
-  ...hebrewProfile,
-  ...hebrewSocial,
-  ...hebrewShadows,
-  ...hebrewStats,
-} as Translations;
-
-// Get translations based on selected language
-export const getTranslations = (language: string): Translations => {
-  if (language === 'hebrew') {
-    return hebrewTranslations;
-  }
-  // Add support for other languages as needed
-  return englishTranslations;
+// Combine all translation segments
+const translations: Record<Languages, Translations> = {
+  english: {
+    ...englishCommon,
+    ...englishProfile,
+    ...englishQuests,
+    ...englishStats,
+    ...englishShadows,
+    ...englishSettings,
+    ...englishSocial
+  },
+  hebrew: {
+    ...hebrewCommon,
+    ...hebrewProfile,
+    ...hebrewQuests,
+    ...hebrewStats,
+    ...hebrewShadows,
+    ...hebrewSettings,
+    ...hebrewSocial
+  },
+  // Add placeholders for future languages (using English as fallback)
+  spanish: { ...englishCommon },
+  french: { ...englishCommon },
+  german: { ...englishCommon },
+  chinese: { ...englishCommon },
+  japanese: { ...englishCommon },
+  korean: { ...englishCommon },
+  arabic: { ...englishCommon }
 };
 
-// Re-export types for easier importing
-export type { TranslationKey, Translations, Languages };
+export function getTranslations(language: string): Translations {
+  return translations[language as Languages] || translations.english;
+}
+
+export { TranslationKey, Translations };
