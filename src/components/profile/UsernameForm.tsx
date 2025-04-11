@@ -8,6 +8,7 @@ import { Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/context/AuthContext";
 import { toast } from "@/hooks/use-toast";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface UsernameFormValues {
   username: string;
@@ -23,6 +24,7 @@ const UsernameForm: React.FC<UsernameFormProps> = ({
   onUsernameUpdate
 }) => {
   const { user } = useAuth();
+  const { isRtl } = useLanguage();
   const [isSubmitting, setIsSubmitting] = useState(false);
   
   const form = useForm<UsernameFormValues>({
@@ -63,29 +65,29 @@ const UsernameForm: React.FC<UsernameFormProps> = ({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+      <form onSubmit={form.handleSubmit(onSubmit)} className={`space-y-4 ${isRtl ? "text-right" : ""}`}>
         <FormField
           control={form.control}
           name="username"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Username</FormLabel>
+              <FormLabel className={isRtl ? "block text-right" : ""}>Username</FormLabel>
               <FormControl>
-                <Input {...field} disabled={isSubmitting} />
+                <Input {...field} disabled={isSubmitting} className={isRtl ? "text-right" : ""} />
               </FormControl>
-              <FormMessage />
+              <FormMessage className={isRtl ? "text-right" : ""} />
             </FormItem>
           )}
         />
         
         <Button 
           type="submit" 
-          className="w-full"
+          className={`w-full ${isRtl ? "flex-row-reverse" : ""}`}
           disabled={isSubmitting}
         >
           {isSubmitting ? (
             <>
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              <Loader2 className={`h-4 w-4 animate-spin ${isRtl ? "ml-2" : "mr-2"}`} />
               Saving...
             </>
           ) : (

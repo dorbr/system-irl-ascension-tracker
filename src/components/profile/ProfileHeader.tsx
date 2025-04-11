@@ -7,6 +7,7 @@ import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Badge } from "@/components/ui/badge";
 import { useSocial } from "@/context/SocialContext";
 import { Link } from "react-router-dom";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface ProfileHeaderProps {
   profileUsername: string | null;
@@ -24,6 +25,7 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
   toggleEditForm
 }) => {
   const { userParty, userGuild } = useSocial();
+  const { isRtl } = useLanguage();
   
   return (
     <div className="mb-4 text-center">
@@ -50,7 +52,7 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
       <div className="flex justify-center gap-2 mt-2">
         {userParty && (
           <Link to="/social/party">
-            <Badge variant="outline" className="flex items-center gap-1 bg-primary/10">
+            <Badge variant="outline" className={`flex items-center gap-1 bg-primary/10 ${isRtl ? "flex-row-reverse" : ""}`}>
               <Users className="w-3 h-3" />
               {userParty.name}
             </Badge>
@@ -59,7 +61,7 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
         
         {userGuild && (
           <Link to="/social/guild">
-            <Badge variant="outline" className="flex items-center gap-1 bg-secondary/10">
+            <Badge variant="outline" className={`flex items-center gap-1 bg-secondary/10 ${isRtl ? "flex-row-reverse" : ""}`}>
               <Shield className="w-3 h-3" />
               {userGuild.name}
             </Badge>
@@ -70,17 +72,17 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
       <Button 
         variant="outline" 
         size="sm" 
-        className="mt-2"
+        className={`mt-2 ${isRtl ? "flex-row-reverse" : ""}`}
         onClick={toggleEditForm}
       >
         {showEditForm ? (
           <>
-            <ChevronUp className="w-4 h-4 mr-1" />
+            <ChevronUp className={`w-4 h-4 ${isRtl ? "ml-1" : "mr-1"}`} />
             Hide Editor
           </>
         ) : (
           <>
-            <User className="w-4 h-4 mr-1" />
+            <User className={`w-4 h-4 ${isRtl ? "ml-1" : "mr-1"}`} />
             Edit Profile
           </>
         )}

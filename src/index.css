@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -127,6 +128,22 @@
   
   /* Settings item text alignment */
   .rtl .settings-item-text {
+    text-align: right;
+  }
+  
+  /* RTL Card content alignment */
+  .rtl .card-content {
+    text-align: right;
+  }
+  
+  /* RTL Button content alignment */
+  .rtl button {
+    text-align: right;
+  }
+  
+  /* RTL Input fields alignment */
+  .rtl input, 
+  .rtl textarea {
     text-align: right;
   }
 }

@@ -66,21 +66,21 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ signOut }) => {
         {t('manageAccount')}
       </div>
       
-      <Card className={`${isRtl ? "text-right" : "text-left"}`}>
+      <Card className={isRtl ? "text-right" : "text-left"}>
         <CardHeader className="text-center">
           <CardTitle className="text-base">{t('preferences')}</CardTitle>
           <CardDescription>{t('customizeExperience')}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           {/* Notifications Setting */}
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3 rtl:flex-row-reverse">
-              <div className="flex-shrink-0 w-6 flex justify-center">
+          <div className="settings-row">
+            <div className={`flex items-center gap-3 ${isRtl ? "flex-row-reverse" : ""}`}>
+              <div className="settings-icon-wrapper">
                 <Bell size={18} className="text-muted-foreground" />
               </div>
-              <div className="flex flex-col">
-                <p className="text-sm font-medium leading-none mb-1">{t('notifications')}</p>
-                <p className="text-xs text-muted-foreground">{t('notificationsDesc')}</p>
+              <div className="settings-text-wrapper">
+                <p className="settings-title">{t('notifications')}</p>
+                <p className="settings-description">{t('notificationsDesc')}</p>
               </div>
             </div>
             <Switch 
@@ -90,14 +90,14 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ signOut }) => {
           </div>
           
           {/* Dark Mode Setting */}
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3 rtl:flex-row-reverse">
-              <div className="flex-shrink-0 w-6 flex justify-center">
+          <div className="settings-row">
+            <div className={`flex items-center gap-3 ${isRtl ? "flex-row-reverse" : ""}`}>
+              <div className="settings-icon-wrapper">
                 <Moon size={18} className="text-muted-foreground" />
               </div>
-              <div className="flex flex-col">
-                <p className="text-sm font-medium leading-none mb-1">{t('darkMode')}</p>
-                <p className="text-xs text-muted-foreground">{t('darkModeDesc')}</p>
+              <div className="settings-text-wrapper">
+                <p className="settings-title">{t('darkMode')}</p>
+                <p className="settings-description">{t('darkModeDesc')}</p>
               </div>
             </div>
             <Switch 
@@ -107,14 +107,14 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ signOut }) => {
           </div>
           
           {/* Sound Effect Setting */}
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3 rtl:flex-row-reverse">
-              <div className="flex-shrink-0 w-6 flex justify-center">
+          <div className="settings-row">
+            <div className={`flex items-center gap-3 ${isRtl ? "flex-row-reverse" : ""}`}>
+              <div className="settings-icon-wrapper">
                 <Volume2 size={18} className="text-muted-foreground" />
               </div>
-              <div className="flex flex-col">
-                <p className="text-sm font-medium leading-none mb-1">{t('soundEffects')}</p>
-                <p className="text-xs text-muted-foreground">{t('soundEffectsDesc')}</p>
+              <div className="settings-text-wrapper">
+                <p className="settings-title">{t('soundEffects')}</p>
+                <p className="settings-description">{t('soundEffectsDesc')}</p>
               </div>
             </div>
             <Switch 
@@ -124,14 +124,14 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ signOut }) => {
           </div>
           
           {/* Language Setting */}
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3 rtl:flex-row-reverse">
-              <div className="flex-shrink-0 w-6 flex justify-center">
+          <div className="settings-row">
+            <div className={`flex items-center gap-3 ${isRtl ? "flex-row-reverse" : ""}`}>
+              <div className="settings-icon-wrapper">
                 <Languages size={18} className="text-muted-foreground" />
               </div>
-              <div className="flex flex-col">
-                <p className="text-sm font-medium leading-none mb-1">{t('language')}</p>
-                <p className="text-xs text-muted-foreground">{t('languageDesc')}</p>
+              <div className="settings-text-wrapper">
+                <p className="settings-title">{t('language')}</p>
+                <p className="settings-description">{t('languageDesc')}</p>
               </div>
             </div>
             <Select value={language} onValueChange={handleLanguageChange}>
@@ -150,7 +150,7 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ signOut }) => {
         </CardContent>
       </Card>
       
-      <Card className={`${isRtl ? "text-right" : "text-left"}`}>
+      <Card className={isRtl ? "text-right" : "text-left"}>
         <CardHeader className="text-center">
           <CardTitle className="text-base">{t('account')}</CardTitle>
           <CardDescription>{t('manageAccount')}</CardDescription>
@@ -158,9 +158,9 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ signOut }) => {
         <CardContent className="space-y-2">
           <Button 
             variant="outline" 
-            className="w-full justify-start rtl:flex-row-reverse rtl:justify-end"
+            className={`w-full ${isRtl ? "flex-row-reverse justify-end" : "justify-start"}`}
           >
-            <div className="flex-shrink-0 w-6 flex justify-center">
+            <div className="settings-icon-wrapper">
               <Shield size={18} />
             </div>
             <span className="mx-2">{t('privacySettings')}</span>
@@ -168,10 +168,10 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ signOut }) => {
           
           <Button 
             variant="outline" 
-            className="w-full justify-start text-destructive hover:text-destructive rtl:flex-row-reverse rtl:justify-end"
+            className={`w-full text-destructive hover:text-destructive ${isRtl ? "flex-row-reverse justify-end" : "justify-start"}`}
             onClick={handleDeleteAccount}
           >
-            <div className="flex-shrink-0 w-6 flex justify-center">
+            <div className="settings-icon-wrapper">
               <Trash2 size={18} />
             </div>
             <span className="mx-2">{t('deleteAccount')}</span>
@@ -180,10 +180,10 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ signOut }) => {
         <CardFooter>
           <Button 
             variant="outline" 
-            className="w-full bg-destructive/10 border-destructive/20 hover:bg-destructive/20 justify-start rtl:flex-row-reverse rtl:justify-end"
+            className={`w-full bg-destructive/10 border-destructive/20 hover:bg-destructive/20 ${isRtl ? "flex-row-reverse justify-end" : "justify-start"}`}
             onClick={signOut}
           >
-            <div className="flex-shrink-0 w-6 flex justify-center">
+            <div className="settings-icon-wrapper">
               <LogOut size={16} />
             </div>
             <span className="mx-2">{t('signOut')}</span>
