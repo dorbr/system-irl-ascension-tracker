@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { Session, User } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
@@ -45,14 +46,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         }
 
         // Check for new signups or first login based on metadata
-        if (session?.user && event === 'SIGNED_IN') {
+        if (session?.user) {
           // Check if this is the first time signing in (no onboarding_completed flag)
-          const onboardingCompleted = session.user.app_metadata.onboarding_completed;
-          if (onboardingCompleted === undefined || onboardingCompleted === false) {
-            setIsNewUser(true);
-          } else {
-            setIsNewUser(false);
-          }
+          const onboardingCompleted = session.user.user_metadata.onboarding_completed;
+          setIsNewUser(onboardingCompleted === undefined || onboardingCompleted === false);
+        } else {
+          // If no session or user, we're not a new user
+          setIsNewUser(false);
         }
       }
     );
@@ -64,12 +64,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       
       // Check if user is new (hasn't completed onboarding)
       if (session?.user) {
-        const onboardingCompleted = session.user.app_metadata.onboarding_completed;
-        if (onboardingCompleted === undefined || onboardingCompleted === false) {
-          setIsNewUser(true);
-        } else {
-          setIsNewUser(false);
-        }
+        const onboardingCompleted = session.user.user_metadata.onboarding_completed;
+        setIsNewUser(onboardingCompleted === undefined || onboardingCompleted === false);
+      } else {
+        // If no session or user, we're not a new user
+        setIsNewUser(false);
       }
       
       setLoading(false);
@@ -138,6 +137,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   
   const completeOnboarding = async () => {
     try {
+      if (!user) {
+        throw new Error("User not authenticated");
+      }
+      
       // Update user metadata to mark onboarding as completed
       const { error } = await supabase.auth.updateUser({
         data: { onboarding_completed: true }
@@ -157,6 +160,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         description: error.message,
         variant: "destructive",
       });
+      throw error;
     }
   };
 

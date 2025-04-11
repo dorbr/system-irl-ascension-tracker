@@ -17,6 +17,7 @@ const ProtectedRoute: React.FC = () => {
     );
   }
 
+  // If no user is logged in, redirect to auth page
   if (!user) {
     return <Navigate to="/auth" replace />;
   }

@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Navigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
@@ -49,8 +50,12 @@ const OnboardingPage: React.FC = () => {
     },
   });
 
-  // If not a new user or no user is logged in, redirect to home
-  if (!user || !isNewUser) {
+  // If no user is logged in or user is not new, redirect to home
+  if (!user) {
+    return <Navigate to="/auth" replace />;
+  }
+  
+  if (!isNewUser) {
     return <Navigate to="/" replace />;
   }
 
@@ -76,7 +81,11 @@ const OnboardingPage: React.FC = () => {
   };
 
   const finishOnboarding = async () => {
-    await completeOnboarding();
+    try {
+      await completeOnboarding();
+    } catch (error) {
+      console.error("Error completing onboarding:", error);
+    }
   };
 
   return (
