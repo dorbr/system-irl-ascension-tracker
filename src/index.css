@@ -104,15 +104,25 @@
     text-align: right;
   }
   
-  .rtl .radix-select-trigger {
-    text-align: right;
-  }
-  
-  .rtl .radix-select-content {
-    text-align: right;
-  }
-  
+  .rtl .radix-select-trigger,
+  .rtl .radix-select-content,
   .rtl .radix-select-item {
+    text-align: right;
+  }
+  
+  /* Fix RTL button alignment */
+  .rtl button svg {
+    margin-left: 0.5rem;
+    margin-right: 0;
+  }
+  
+  /* Ensure RTL forms have correct alignment */
+  .rtl label {
+    text-align: right;
+  }
+  
+  /* Fix RTL tab content alignment */
+  .rtl .tabs-content {
     text-align: right;
   }
 }
@@ -152,5 +162,15 @@
   .space-x-reverse > * + * {
     margin-right: var(--tw-space-x-reverse);
     margin-left: 0;
+  }
+  
+  /* Center content in both RTL and LTR */
+  .centered-content {
+    @apply mx-auto text-center;
+  }
+  
+  /* RTL flex direction utility */
+  .rtl-row-reverse {
+    @apply rtl:flex-row-reverse;
   }
 }

@@ -6,8 +6,6 @@ import { useShadows } from "@/context/ShadowContext";
 import { useAuth } from "@/context/AuthContext";
 import { useLanguage } from "@/context/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
-import { Button } from "@/components/ui/button";
-import { LogOut } from "lucide-react";
 import EditProfileForm from "@/components/auth/EditProfileForm";
 import ProfileHeader from "@/components/profile/ProfileHeader";
 import ProfileStats from "@/components/profile/ProfileStats";
@@ -81,7 +79,7 @@ const ProfilePage = () => {
   const toggleEditForm = () => setShowEditForm(!showEditForm);
 
   return (
-    <div className="py-4">
+    <div className="py-4 text-center">
       <div className="glass-card rounded-lg p-4 mb-4 animate-fade-in">
         <ProfileHeader 
           profileUsername={profileData.username} 
