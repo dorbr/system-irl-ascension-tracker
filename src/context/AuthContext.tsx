@@ -45,7 +45,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           });
         }
 
-        if (event === 'SIGNED_UP') {
+        // Check for new signups based on metadata instead of event type
+        if (session?.user && !session.user.app_metadata.onboarding_completed) {
           setIsNewUser(true);
         }
       }
@@ -55,6 +56,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       setUser(session?.user ?? null);
+      
+      // Check if user is new (hasn't completed onboarding)
+      if (session?.user && !session.user.app_metadata.onboarding_completed) {
+        setIsNewUser(true);
+      }
+      
       setLoading(false);
     });
 
@@ -122,10 +129,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const completeOnboarding = async () => {
     try {
       // Update user metadata to mark onboarding as completed
-      await supabase
-        .from('profiles')
-        .update({ onboarding_completed: true })
-        .eq('id', user?.id);
+      const { error } = await supabase.auth.updateUser({
+        data: { onboarding_completed: true }
+      });
+      
+      if (error) throw error;
         
       setIsNewUser(false);
       
