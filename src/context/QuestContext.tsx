@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { toast } from "@/hooks/use-toast";
 import { generatePenaltyQuest } from "@/utils/penaltyQuestGenerator";
@@ -20,7 +19,6 @@ export interface Quest {
   difficulty?: QuestDifficulty; // For dungeon difficulty
 }
 
-// Helper function to get XP reward based on dungeon difficulty
 const getDungeonXpReward = (difficulty?: QuestDifficulty): number => {
   switch (difficulty) {
     case "S": return 10000;
@@ -343,12 +341,16 @@ export const QuestProvider: React.FC<{ children: React.ReactNode }> = ({
     
     setQuests((prev) => [...prev, newQuest]);
     
-    // Show notification for newly added quest
     if (quest.type === "penalty") {
       toast({
         title: "Penalty Quest Added",
         description: `${quest.title} has been added to your quests.`,
         variant: "destructive",
+      });
+    } else {
+      toast({
+        title: "Quest Added",
+        description: `${quest.title} has been added to your quests.`,
       });
     }
   };
@@ -428,7 +430,6 @@ export const QuestProvider: React.FC<{ children: React.ReactNode }> = ({
     if (unfinishedDailyQuests.length > 0) {
       const penaltyQuest = generatePenaltyQuest(unfinishedDailyQuests);
       
-      // Add penalty quest
       const newPenaltyQuest: Quest = {
         ...penaltyQuest,
         id: `penalty-${Date.now()}`,
@@ -445,7 +446,6 @@ export const QuestProvider: React.FC<{ children: React.ReactNode }> = ({
         variant: "destructive",
       });
       
-      // Mark unfinished quests as processed for today
       setQuests(prev => 
         prev.map(quest => {
           if (quest.type === "daily" && !quest.completed && (!quest.lastCompleted || quest.lastCompleted !== today)) {

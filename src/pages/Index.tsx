@@ -20,14 +20,18 @@ const Index = () => {
   }, [resetDailyQuests]);
   
   const handleDayEnd = () => {
+    console.log("Day end triggered from timer on home page");
     checkUnfinishedDailyQuests();
   };
   
   const handleDebugTimerEnd = () => {
+    console.log("Debug button pressed on home page - checking unfinished quests");
     toast({
       title: "Debug Mode",
       description: "Simulating end of day penalty check",
     });
+    
+    // Force check unfinished quests
     checkUnfinishedDailyQuests();
   };
   

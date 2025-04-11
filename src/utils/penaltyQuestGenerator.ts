@@ -53,6 +53,18 @@ const penaltyQuestTemplates = [
 export const generatePenaltyQuest = (unfinishedQuests: Quest[]): Omit<Quest, "id" | "completed"> => {
   console.log("Generating penalty quest for unfinished quests:", unfinishedQuests);
   
+  // Ensure we have unfinished quests to base penalties on
+  if (!unfinishedQuests || unfinishedQuests.length === 0) {
+    console.log("No unfinished quests provided, using default penalty quest");
+    // Return a default penalty quest if no unfinished quests
+    const defaultTemplate = penaltyQuestTemplates[0];
+    return {
+      ...defaultTemplate,
+      type: "penalty",
+      stats: ["WIL"],
+    };
+  }
+  
   // Extract stats from unfinished quests
   const unfinishedStats = unfinishedQuests.flatMap(quest => quest.stats);
   console.log("Unfinished quest stats:", unfinishedStats);
