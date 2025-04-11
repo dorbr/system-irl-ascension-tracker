@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,6 +62,15 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				// System IRL custom colors
+				rpg: {
+					dark: '#1A1F2C',
+					primary: '#9b87f5',
+					secondary: '#7E69AB',
+					accent: '#8B5CF6',
+					gray: '#8E9196',
+					charcoal: '#221F26'
 				}
 			},
 			borderRadius: {
@@ -84,11 +94,49 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				'fade-in': {
+					'0%': {
+						opacity: '0',
+						transform: 'translateY(10px)'
+					},
+					'100%': {
+						opacity: '1',
+						transform: 'translateY(0)'
+					}
+				},
+				'stat-increase': {
+					'0%': {
+						transform: 'scale(1)',
+						opacity: '1'
+					},
+					'50%': {
+						transform: 'scale(1.1)',
+						opacity: '0.8'
+					},
+					'100%': {
+						transform: 'scale(1)',
+						opacity: '1'
+					}
+				},
+				'pulse-glow': {
+					'0%': {
+						boxShadow: '0 0 5px 0 rgba(155, 135, 245, 0.5)'
+					},
+					'50%': {
+						boxShadow: '0 0 15px 0 rgba(155, 135, 245, 0.8)'
+					},
+					'100%': {
+						boxShadow: '0 0 5px 0 rgba(155, 135, 245, 0.5)'
+					}
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'fade-in': 'fade-in 0.4s ease-out',
+				'stat-increase': 'stat-increase 0.5s ease-in-out',
+				'pulse-glow': 'pulse-glow 2s infinite ease-in-out'
 			}
 		}
 	},
