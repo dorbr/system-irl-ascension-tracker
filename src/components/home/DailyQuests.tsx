@@ -34,14 +34,14 @@ const DailyQuests: React.FC = () => {
   };
 
   return (
-    <div className="glass-card rounded-lg p-4 mb-4 animate-fade-in">
-      <div className={`flex justify-between items-center mb-3 ${isRtl ? "flex-row-reverse" : ""}`}>
-        <h3 className={`text-sm uppercase font-medium text-muted-foreground ${isRtl ? "text-right" : ""}`}>
+    <div className="glass-card rounded-lg p-4 mb-4 animate-fade-in text-center">
+      <div className="flex justify-between items-center mb-3">
+        <h3 className="text-sm uppercase font-medium text-muted-foreground">
           {t("dailyQuests")}
         </h3>
         
         {incompleteDailyQuests.length > 0 && (
-          <div className={`flex items-center gap-1.5 text-xs text-amber-400 ${isRtl ? "flex-row-reverse" : ""}`}>
+          <div className="flex items-center gap-1.5 text-xs text-amber-400">
             <AlertTriangle size={14} />
             <span>
               {incompleteDailyQuests.length} {" "}
@@ -68,8 +68,8 @@ const DailyQuests: React.FC = () => {
       </div>
       
       {incompleteDailyQuests.length > 0 && (
-        <div className={`mt-4 text-xs text-muted-foreground border-t border-border pt-3 ${isRtl ? "text-right" : ""}`}>
-          <p className={`flex items-center gap-1.5 ${isRtl ? "flex-row-reverse" : ""}`}>
+        <div className="mt-4 text-xs text-muted-foreground border-t border-border pt-3">
+          <p className="flex items-center justify-center gap-1.5">
             <AlertTriangle size={14} className="text-amber-400" />
             <span>{t("incompleteQuestsWarning")}</span>
           </p>

@@ -33,7 +33,7 @@ const StatCard: React.FC<StatCardProps> = ({
         borderRight: isRtl ? `3px solid ${stat.color}` : 'none'
       }}
     >
-      <div className={`flex items-center gap-2 ${isRtl ? "flex-row-reverse" : ""}`}>
+      <div className="flex items-center gap-2">
         <div 
           className="w-8 h-8 rounded-md flex items-center justify-center text-white font-medium"
           style={{ backgroundColor: stat.color }}

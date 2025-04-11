@@ -4,7 +4,7 @@
   direction: rtl;
 }
 
-/* Text alignment override - keep text centered */
+/* Text alignment - centered approach */
 .rtl p,
 .rtl h1, 
 .rtl h2, 
@@ -15,7 +15,15 @@
 .rtl li,
 .rtl label,
 .rtl .rtl-text {
-  /* Remove text-align: right; to keep text centered as defined in components */
+  /* Removed text-align: right to keep text centered */
+}
+
+/* Prevent centered items from being affected by RTL */
+.text-center,
+.items-center,
+.justify-center,
+.mx-auto {
+  /* These classes remain unaffected by RTL direction */
 }
 
 /* Form Controls - only direction */
@@ -32,19 +40,9 @@
   @apply rtl:text-right ltr:text-left;
 }
 
-/* Selective layout reversal only when needed with specific class */
-.rtl-reverse {
-  @apply rtl:flex-row-reverse;
-}
-
-/* For content that should always be centered regardless of text direction */
+/* Ensure layout remains consistent regardless of language */
 .centered-content {
   @apply mx-auto text-center;
-}
-
-/* Explicitly exclude navigation from RTL changes */
-.rtl nav {
-  direction: ltr;
 }
 
 /* Prevent grid layout inversion in RTL mode */
@@ -60,17 +58,21 @@
 /* Ensure stat cards maintain their layout */
 .rtl .stat-card {
   direction: rtl;
-  display: flex;
-  justify-content: space-between;
-  flex-direction: row-reverse; /* Reverse the main axis for RTL */
 }
 
-/* Fix stat value alignment in RTL mode */
-.rtl .stat-card .stat-value {
-  text-align: left;
+/* Ensure centered components stay centered in both RTL and LTR */
+.flex.justify-center,
+.flex.items-center,
+.grid.place-items-center,
+.text-center {
+  /* These will appear the same in both RTL and LTR modes */
 }
 
-/* Prevent the internal flex container from being reversed again */
-.rtl .stat-card .flex-row-reverse {
-  flex-direction: row-reverse !important;
+/* Apply RTL-friendly tweaks to the navbar */
+.rtl nav .container {
+  direction: ltr; /* Keep navigation layout consistent */
+}
+
+.rtl nav .container span {
+  direction: rtl; /* But allow text to follow RTL */
 }

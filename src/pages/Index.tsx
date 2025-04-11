@@ -39,14 +39,14 @@ const Index = () => {
   
   return (
     <div className="py-4">
-      <div className={`flex justify-between items-center mb-4 px-4 ${isRtl ? "flex-row-reverse" : ""}`}>
+      <div className="flex justify-between items-center mb-4 px-4">
         <DailyQuestTimer onTimeExpired={handleDayEnd} />
         
         <Button 
           variant="outline"
           size="sm"
           onClick={handleDebugTimerEnd}
-          className={`flex items-center gap-1.5 text-sm ${isRtl ? "flex-row-reverse" : ""}`}
+          className="flex items-center gap-1.5 text-sm"
         >
           <Clock size={14} className="text-amber-400" />
           {t("debugTimer")}

@@ -9,8 +9,8 @@ const StatsOverview: React.FC = () => {
   const { t, isRtl } = useLanguage();
 
   return (
-    <div className="glass-card rounded-lg p-4 mb-4 animate-fade-in">
-      <h3 className={`text-sm uppercase font-medium text-muted-foreground mb-3 ${isRtl ? "text-right" : ""}`}>
+    <div className="glass-card rounded-lg p-4 mb-4 animate-fade-in text-center">
+      <h3 className="text-sm uppercase font-medium text-muted-foreground mb-3">
         {t("stats")}
       </h3>
       <div className="grid grid-cols-4 sm:grid-cols-8 gap-2 mb-1" dir="ltr">
