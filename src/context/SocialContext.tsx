@@ -156,28 +156,28 @@ export const SocialProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         setUserGuild(null);
       }
 
-      // Fetch friends
+      // Fetch friends - Manually getting the profile data to fix the relationship issue
       const { data: friendships } = await supabase
         .from('friendships')
-        .select(`
-          id, 
-          user_id, 
-          friend_id, 
-          status, 
-          created_at, 
-          user_profile:profiles!friendships_user_id_fkey(username, avatar_url),
-          friend_profile:profiles!friendships_friend_id_fkey(username, avatar_url)
-        `)
+        .select('id, user_id, friend_id, status, created_at')
         .or(`user_id.eq.${user.id},friend_id.eq.${user.id}`);
 
-      if (friendships) {
+      if (friendships && friendships.length > 0) {
         const acceptedFriends: Friend[] = [];
         const pending: Friend[] = [];
         
-        friendships.forEach(friendship => {
+        // Process each friendship to get profile data
+        for (const friendship of friendships) {
           // Determine if the current user is the requester or recipient
           const isRequester = friendship.user_id === user.id;
-          const friendProfile = isRequester ? friendship.friend_profile : friendship.user_profile;
+          const profileId = isRequester ? friendship.friend_id : friendship.user_id;
+          
+          // Get the friend's profile data
+          const { data: profileData } = await supabase
+            .from('profiles')
+            .select('username, avatar_url')
+            .eq('id', profileId)
+            .single();
           
           const enhancedFriendship: Friend = {
             id: friendship.id,
@@ -185,8 +185,8 @@ export const SocialProvider: React.FC<{ children: React.ReactNode }> = ({ childr
             friend_id: friendship.friend_id,
             status: friendship.status,
             created_at: friendship.created_at,
-            username: friendProfile.username,
-            avatar_url: friendProfile.avatar_url
+            username: profileData?.username || null,
+            avatar_url: profileData?.avatar_url || null
           };
           
           if (friendship.status === 'accepted') {
@@ -194,10 +194,13 @@ export const SocialProvider: React.FC<{ children: React.ReactNode }> = ({ childr
           } else if (friendship.status === 'pending') {
             pending.push(enhancedFriendship);
           }
-        });
+        }
         
         setFriends(acceptedFriends);
         setPendingFriends(pending);
+      } else {
+        setFriends([]);
+        setPendingFriends([]);
       }
 
       // Update social stats
