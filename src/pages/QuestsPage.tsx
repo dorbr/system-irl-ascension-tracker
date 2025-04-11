@@ -4,9 +4,10 @@ import { useQuests } from "@/context/QuestContext";
 import { useUser } from "@/context/UserContext";
 import { toast } from "@/hooks/use-toast";
 import QuestTabs from "@/components/quests/QuestTabs";
+import DailyQuestTimer from "@/components/quests/DailyQuestTimer";
 
 const QuestsPage = () => {
-  const { quests, addQuest, completeQuest, resetAllQuests } = useQuests();
+  const { quests, addQuest, completeQuest, resetAllQuests, checkUnfinishedDailyQuests } = useQuests();
   const { updateUserXp, updateUserStat, userData } = useUser();
   
   const availableStats = userData.stats.map(stat => stat.abbreviation);
@@ -40,9 +41,16 @@ const QuestsPage = () => {
   const handleCreateQuest = (questData: any) => {
     addQuest(questData);
   };
+  
+  const handleDayEnd = () => {
+    checkUnfinishedDailyQuests();
+  };
 
   return (
     <div className="p-4">
+      <div className="flex justify-end mb-4">
+        <DailyQuestTimer onTimeExpired={handleDayEnd} />
+      </div>
       <div className="glass-card rounded-lg p-4">
         <QuestTabs
           dailyQuests={dailyQuests}

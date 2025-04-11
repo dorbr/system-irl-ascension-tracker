@@ -1,5 +1,6 @@
-
 import React, { createContext, useContext, useState, useEffect } from "react";
+import { toast } from "@/hooks/use-toast";
+import { generatePenaltyQuest } from "@/utils/penaltyQuestGenerator";
 
 export type QuestDifficulty = "E" | "D" | "C" | "B" | "A" | "S";
 
@@ -298,6 +299,7 @@ interface QuestContextType {
   completeQuest: (id: string) => void;
   resetDailyQuests: () => void;
   resetAllQuests: () => void;
+  checkUnfinishedDailyQuests: () => void;
 }
 
 const QuestContext = createContext<QuestContextType | undefined>(undefined);
@@ -307,11 +309,9 @@ export const QuestProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [quests, setQuests] = useState<Quest[]>(() => {
     const savedQuests = localStorage.getItem("system_irl_quests");
-    // Check if we have saved quests in localStorage
     if (savedQuests) {
       try {
         const parsedQuests = JSON.parse(savedQuests);
-        // If the saved quests array is empty or invalid, use default quests
         if (!Array.isArray(parsedQuests) || parsedQuests.length === 0) {
           return defaultQuests;
         }
@@ -321,7 +321,6 @@ export const QuestProvider: React.FC<{ children: React.ReactNode }> = ({
         return defaultQuests;
       }
     } else {
-      // If no saved quests, use default quests
       return defaultQuests;
     }
   });
@@ -331,14 +330,12 @@ export const QuestProvider: React.FC<{ children: React.ReactNode }> = ({
   }, [quests]);
 
   const addQuest = (quest: Omit<Quest, "id" | "completed">) => {
-    // Update XP reward for new dungeon quests based on rank
     let newQuest: Quest = {
       ...quest,
       id: Date.now().toString(),
       completed: false,
     };
     
-    // If it's a dungeon, set XP reward based on difficulty
     if (quest.type === "dungeon" && quest.difficulty) {
       newQuest.xpReward = getDungeonXpReward(quest.difficulty);
     }
@@ -401,15 +398,59 @@ export const QuestProvider: React.FC<{ children: React.ReactNode }> = ({
     );
   };
 
-  // Add a function to reset all quests back to defaults
   const resetAllQuests = () => {
     localStorage.removeItem("system_irl_quests");
     setQuests(defaultQuests);
   };
 
+  const checkUnfinishedDailyQuests = () => {
+    const today = new Date().toISOString().split("T")[0];
+    const unfinishedDailyQuests = quests.filter(
+      quest => quest.type === "daily" && !quest.completed && (!quest.lastCompleted || quest.lastCompleted !== today)
+    );
+    
+    if (unfinishedDailyQuests.length > 0) {
+      const penaltyQuest = generatePenaltyQuest(unfinishedDailyQuests);
+      
+      setQuests(prev => [
+        ...prev, 
+        {
+          ...penaltyQuest,
+          id: Date.now().toString(),
+          completed: false
+        }
+      ]);
+      
+      toast({
+        title: "Daily Quests Missed!",
+        description: `${unfinishedDailyQuests.length} quests were not completed. A penalty quest has been added.`,
+        variant: "destructive",
+      });
+      
+      setQuests(prev => 
+        prev.map(quest => {
+          if (quest.type === "daily" && !quest.completed && (!quest.lastCompleted || quest.lastCompleted !== today)) {
+            return {
+              ...quest,
+              lastCompleted: today,
+            };
+          }
+          return quest;
+        })
+      );
+    }
+  };
+
   return (
     <QuestContext.Provider
-      value={{ quests, addQuest, completeQuest, resetDailyQuests, resetAllQuests }}
+      value={{ 
+        quests, 
+        addQuest, 
+        completeQuest, 
+        resetDailyQuests, 
+        resetAllQuests,
+        checkUnfinishedDailyQuests
+      }}
     >
       {children}
     </QuestContext.Provider>
