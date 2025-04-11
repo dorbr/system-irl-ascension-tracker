@@ -25,13 +25,38 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [isNewUser, setIsNewUser] = useState(false);
 
   useEffect(() => {
-    // Set up auth state listener first
+    // First get the current session
+    const initializeAuth = async () => {
+      const { data: sessionData } = await supabase.auth.getSession();
+      setSession(sessionData.session);
+      setUser(sessionData.session?.user ?? null);
+      
+      // Check if user is new (hasn't completed onboarding)
+      if (sessionData.session?.user) {
+        const onboardingCompleted = sessionData.session.user.user_metadata.onboarding_completed;
+        setIsNewUser(onboardingCompleted === undefined || onboardingCompleted === false);
+      }
+      
+      setLoading(false);
+    };
+    
+    initializeAuth();
+    
+    // Then set up auth state listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        setSession(session);
-        setUser(session?.user ?? null);
+      (event, newSession) => {
+        // Update session and user state synchronously
+        setSession(newSession);
+        setUser(newSession?.user ?? null);
         
+        // Handle auth events
         if (event === 'SIGNED_IN') {
+          // Check if this is the first time signing in (no onboarding_completed flag)
+          if (newSession?.user) {
+            const onboardingCompleted = newSession.user.user_metadata.onboarding_completed;
+            setIsNewUser(onboardingCompleted === undefined || onboardingCompleted === false);
+          }
+          
           toast({
             title: "Signed in",
             description: "Welcome to System IRL!",
@@ -44,35 +69,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             description: "You have been signed out",
           });
         }
-
-        // Check for new signups or first login based on metadata
-        if (session?.user) {
-          // Check if this is the first time signing in (no onboarding_completed flag)
-          const onboardingCompleted = session.user.user_metadata.onboarding_completed;
-          setIsNewUser(onboardingCompleted === undefined || onboardingCompleted === false);
-        } else {
-          // If no session or user, we're not a new user
-          setIsNewUser(false);
-        }
       }
     );
-
-    // Then check for existing session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setUser(session?.user ?? null);
-      
-      // Check if user is new (hasn't completed onboarding)
-      if (session?.user) {
-        const onboardingCompleted = session.user.user_metadata.onboarding_completed;
-        setIsNewUser(onboardingCompleted === undefined || onboardingCompleted === false);
-      } else {
-        // If no session or user, we're not a new user
-        setIsNewUser(false);
-      }
-      
-      setLoading(false);
-    });
 
     return () => {
       subscription.unsubscribe();

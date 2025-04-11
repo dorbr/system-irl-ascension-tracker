@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Navigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
@@ -64,11 +65,15 @@ const AuthPage: React.FC = () => {
     }
   };
 
-  if (user) {
-    if (isNewUser) {
-      return <Navigate to="/onboarding" replace />;
-    }
+  // If user is logged in and has completed onboarding, redirect to home
+  // If user is logged in but is new, they'll be redirected to onboarding by ProtectedRoute
+  if (user && !isNewUser) {
     return <Navigate to="/" replace />;
+  }
+
+  // If user is logged in and is new, let ProtectedRoute handle the redirect to onboarding
+  if (user && isNewUser) {
+    return <Navigate to="/onboarding" replace />;
   }
 
   return (
