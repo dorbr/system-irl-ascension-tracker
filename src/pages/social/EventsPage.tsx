@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { useSocial } from "@/context/SocialContext";
 import { useAuth } from "@/context/AuthContext";
@@ -151,8 +152,8 @@ const EventsPage = () => {
   };
   
   const handleBack = () => {
-    sessionStorage.setItem("crew-section", "social");
-    navigate("/social");
+    // Navigate to the Road page instead of Social
+    navigate("/crew");
   };
   
   return (
