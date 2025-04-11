@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useSocial } from "@/context/SocialContext";
 import { useAuth } from "@/context/AuthContext";
@@ -7,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ArrowLeft, Calendar, Trophy, CalendarCheck, Timer, User, Users } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 
 interface Event {
@@ -24,6 +23,7 @@ interface Event {
 }
 
 const EventsPage = () => {
+  const navigate = useNavigate();
   const { user } = useAuth();
   const [events, setEvents] = useState<Event[]>([]);
   const [activeTab, setActiveTab] = useState("upcoming");
@@ -37,9 +37,6 @@ const EventsPage = () => {
     setIsLoading(true);
     
     try {
-      // For demonstration purposes, creating mock events
-      // In a real app, you would query the Supabase database
-      
       const today = new Date();
       const nextWeek = new Date(today);
       nextWeek.setDate(today.getDate() + 7);
@@ -107,7 +104,6 @@ const EventsPage = () => {
   };
   
   const handleJoinEvent = async (eventId: string) => {
-    // In a real app, this would create an entry in event_participants table
     setEvents(events.map(event => 
       event.id === eventId ? { ...event, has_joined: true, participant_count: (event.participant_count || 0) + 1 } : event
     ));
@@ -154,12 +150,22 @@ const EventsPage = () => {
     return `${diffHours} hour${diffHours !== 1 ? 's' : ''} left`;
   };
   
+  const handleBack = () => {
+    sessionStorage.setItem("crew-section", "social");
+    navigate("/social");
+  };
+  
   return (
     <div className="py-4">
       <div className="mb-4 flex items-center">
-        <Link to="/social" className="text-muted-foreground hover:text-foreground">
-          <ArrowLeft className="h-5 w-5 mr-2" />
-        </Link>
+        <Button 
+          variant="ghost" 
+          size="icon" 
+          onClick={handleBack}
+          className="text-muted-foreground hover:text-foreground"
+        >
+          <ArrowLeft className="h-5 w-5" />
+        </Button>
         <h1 className="text-xl font-bold">Events & Competitions</h1>
       </div>
       

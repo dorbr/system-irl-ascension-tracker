@@ -1,15 +1,28 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Users, ScrollText } from "lucide-react";
+import { useLocation } from "react-router-dom";
 import QuestsPage from "./QuestsPage";
 import SocialPage from "./SocialPage";
 
 const CrewPage = () => {
   const [section, setSection] = useState<"quests" | "social">("quests");
+  const location = useLocation();
+  
+  // When returning from another page, ensure state is properly initialized
+  useEffect(() => {
+    // Optional: restore section from sessionStorage to maintain state between page visits
+    const savedSection = sessionStorage.getItem("crew-section");
+    if (savedSection === "quests" || savedSection === "social") {
+      setSection(savedSection);
+    }
+  }, [location.pathname]);
   
   const handleSwitch = (newSection: "quests" | "social") => {
     setSection(newSection);
+    // Save current section to sessionStorage
+    sessionStorage.setItem("crew-section", newSection);
   };
 
   return (
