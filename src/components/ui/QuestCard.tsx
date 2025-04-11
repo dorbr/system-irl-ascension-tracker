@@ -129,54 +129,67 @@ const QuestCard: React.FC<QuestCardProps> = ({
         className
       )}
     >
-      <div className="flex justify-between items-start gap-3">
+      <div className="flex justify-between items-start gap-4">
         <div className="flex-1">
-          <div className="flex flex-col gap-1">
-            <div className="flex items-center gap-1.5">
-              {typeStyles.icon}
-              <span className={`text-xs font-medium px-1.5 py-0.5 rounded-full bg-secondary/40 ${typeStyles.textColor}`}>
-                {typeStyles.label}
-              </span>
+          {/* Header section with quest type and title */}
+          <div className="flex flex-col gap-2 mb-3">
+            <div className="flex items-center gap-2 flex-wrap">
+              <div className="flex items-center gap-1.5">
+                {typeStyles.icon}
+                <span className={`text-xs font-medium px-1.5 py-0.5 rounded-full bg-secondary/40 ${typeStyles.textColor}`}>
+                  {typeStyles.label}
+                </span>
+              </div>
+              
               {quest.type === "dungeon" && quest.difficulty && (
-                <div className={cn("text-xs font-bold px-1.5 py-0.5 rounded ml-1", getDifficultyColor(quest.difficulty))}>
+                <div className={cn("text-xs font-bold px-1.5 py-0.5 rounded", getDifficultyColor(quest.difficulty))}>
                   {quest.difficulty}-Rank
                 </div>
               )}
             </div>
             <h3 className="font-semibold text-sm">{quest.title}</h3>
           </div>
-          <p className="text-xs text-muted-foreground mb-2">{quest.description}</p>
           
-          <div className="flex flex-wrap gap-1 mb-2">
-            {quest.stats.map((stat) => (
-              <StatBadge
-                key={stat}
-                name=""
-                abbreviation={stat}
-                color={getStatColor(stat)}
-              />
-            ))}
-          </div>
+          {/* Description */}
+          <p className="text-xs text-muted-foreground mb-3">{quest.description}</p>
           
-          <div className="flex items-center justify-between">
-            <div className="flex flex-wrap gap-1">
-              {quest.tags.map((tag) => (
-                <span key={tag} className="text-xs text-muted-foreground bg-secondary/30 px-1.5 py-0.5 rounded">
-                  {tag}
-                </span>
+          {/* Stats */}
+          {quest.stats.length > 0 && (
+            <div className="flex flex-wrap gap-1 mb-3">
+              {quest.stats.map((stat) => (
+                <StatBadge
+                  key={stat}
+                  name=""
+                  abbreviation={stat}
+                  color={getStatColor(stat)}
+                />
               ))}
             </div>
+          )}
+          
+          {/* Tags and streak */}
+          <div className="flex items-center justify-between mt-2">
+            {quest.tags.length > 0 && (
+              <div className="flex flex-wrap gap-1">
+                {quest.tags.map((tag) => (
+                  <span key={tag} className="text-xs text-muted-foreground bg-secondary/30 px-1.5 py-0.5 rounded">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            )}
             
             {quest.type === "daily" && quest.streak && quest.streak > 1 && (
-              <div className="text-xs font-medium text-rpg-primary">
+              <div className="text-xs font-medium text-rpg-primary ml-2">
                 🔥 {quest.streak} days
               </div>
             )}
           </div>
         </div>
         
+        {/* Right side with XP and complete button */}
         <div className="flex flex-col items-end">
-          <div className="text-sm font-semibold text-rpg-primary mb-1">+{quest.xpReward} XP</div>
+          <div className="text-sm font-semibold text-rpg-primary mb-2">+{quest.xpReward} XP</div>
           <button
             onClick={(e) => {
               e.stopPropagation();
@@ -196,7 +209,7 @@ const QuestCard: React.FC<QuestCardProps> = ({
       
       {/* Strategy planning indicator for dungeons */}
       {quest.type === "dungeon" && isClickable && (
-        <div className="absolute top-2 right-2 text-xs flex items-center gap-1 bg-rpg-accent/10 px-1.5 py-0.5 rounded-full">
+        <div className="absolute top-3 right-3 text-xs flex items-center gap-1 bg-rpg-accent/10 px-1.5 py-0.5 rounded-full">
           <Scroll size={12} className="text-rpg-accent" />
           <span className="text-rpg-accent font-medium">Strategy</span>
         </div>

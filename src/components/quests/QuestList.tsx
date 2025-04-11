@@ -21,7 +21,7 @@ const QuestList: React.FC<QuestListProps> = ({
   }
 
   return (
-    <div className="space-y-3 mt-3">
+    <div className="space-y-4 mt-4">
       {quests.map(quest => (
         <QuestCard
           key={quest.id}
