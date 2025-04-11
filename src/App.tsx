@@ -8,6 +8,7 @@ import { UserProvider } from "@/context/UserContext";
 import { QuestProvider } from "@/context/QuestContext";
 import { ShadowProvider } from "@/context/ShadowContext";
 import { AuthProvider } from "@/context/AuthContext";
+import { SocialProvider } from "@/context/SocialContext";
 import MobileLayout from "@/components/layout/MobileLayout";
 import ProtectedRoute from "@/components/auth/ProtectedRoute";
 import Index from "@/pages/Index";
@@ -17,6 +18,12 @@ import ShadowsPage from "@/pages/ShadowsPage";
 import ProfilePage from "@/pages/ProfilePage";
 import AuthPage from "@/pages/AuthPage";
 import NotFound from "@/pages/NotFound";
+import SocialPage from "@/pages/SocialPage";
+import PartyPage from "@/pages/social/PartyPage";
+import GuildPage from "@/pages/social/GuildPage";
+import FriendsPage from "@/pages/social/FriendsPage";
+import LeaderboardPage from "@/pages/social/LeaderboardPage";
+import EventsPage from "@/pages/social/EventsPage";
 
 const queryClient = new QueryClient();
 
@@ -27,25 +34,33 @@ const App = () => (
         <UserProvider>
           <QuestProvider>
             <ShadowProvider>
-              <Toaster />
-              <Sonner />
-              <BrowserRouter>
-                <Routes>
-                  <Route path="/auth" element={<AuthPage />} />
-                  
-                  <Route element={<ProtectedRoute />}>
-                    <Route element={<MobileLayout />}>
-                      <Route path="/" element={<Index />} />
-                      <Route path="/quests" element={<QuestsPage />} />
-                      <Route path="/stats" element={<StatsPage />} />
-                      <Route path="/shadows" element={<ShadowsPage />} />
-                      <Route path="/profile" element={<ProfilePage />} />
+              <SocialProvider>
+                <Toaster />
+                <Sonner />
+                <BrowserRouter>
+                  <Routes>
+                    <Route path="/auth" element={<AuthPage />} />
+                    
+                    <Route element={<ProtectedRoute />}>
+                      <Route element={<MobileLayout />}>
+                        <Route path="/" element={<Index />} />
+                        <Route path="/quests" element={<QuestsPage />} />
+                        <Route path="/stats" element={<StatsPage />} />
+                        <Route path="/shadows" element={<ShadowsPage />} />
+                        <Route path="/profile" element={<ProfilePage />} />
+                        <Route path="/social" element={<SocialPage />} />
+                        <Route path="/social/party" element={<PartyPage />} />
+                        <Route path="/social/guild" element={<GuildPage />} />
+                        <Route path="/social/friends" element={<FriendsPage />} />
+                        <Route path="/social/leaderboard" element={<LeaderboardPage />} />
+                        <Route path="/social/events" element={<EventsPage />} />
+                      </Route>
                     </Route>
-                  </Route>
-                  
-                  <Route path="*" element={<NotFound />} />
-                </Routes>
-              </BrowserRouter>
+                    
+                    <Route path="*" element={<NotFound />} />
+                  </Routes>
+                </BrowserRouter>
+              </SocialProvider>
             </ShadowProvider>
           </QuestProvider>
         </UserProvider>

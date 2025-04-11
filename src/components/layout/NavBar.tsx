@@ -1,7 +1,7 @@
 
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { Home, ScrollText, BarChart2, History, User } from "lucide-react";
+import { Home, ScrollText, BarChart2, History, User, Users } from "lucide-react";
 
 const NavBar = () => {
   const navItems = [
@@ -9,6 +9,7 @@ const NavBar = () => {
     { to: "/quests", icon: ScrollText, label: "Quests" },
     { to: "/stats", icon: BarChart2, label: "Stats" },
     { to: "/shadows", icon: History, label: "Shadows" },
+    { to: "/social", icon: Users, label: "Social" },
     { to: "/profile", icon: User, label: "Profile" },
   ];
 

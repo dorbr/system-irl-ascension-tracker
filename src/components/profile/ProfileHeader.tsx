@@ -1,10 +1,12 @@
 
 import React from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { User, ChevronUp, ChevronDown } from "lucide-react";
+import { User, ChevronUp, ChevronDown, Users, Shield } from "lucide-react";
 import { UserData } from "@/context/UserContext";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { Badge } from "@/components/ui/badge";
+import { useSocial } from "@/context/SocialContext";
+import { Link } from "react-router-dom";
 
 interface ProfileHeaderProps {
   profileUsername: string | null;
@@ -21,6 +23,8 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
   showEditForm,
   toggleEditForm
 }) => {
+  const { userParty, userGuild } = useSocial();
+  
   return (
     <div className="mb-4 text-center">
       <div className="w-24 h-24 mx-auto mb-2 rounded-full overflow-hidden border-2 border-rpg-primary/30">
@@ -41,6 +45,27 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
       
       <h1 className="text-2xl font-bold">{profileUsername || userData.name}</h1>
       <div className="text-rpg-primary font-medium mt-1">{userData.class.name}</div>
+      
+      {/* Social affiliations */}
+      <div className="flex justify-center gap-2 mt-2">
+        {userParty && (
+          <Link to="/social/party">
+            <Badge variant="outline" className="flex items-center gap-1 bg-primary/10">
+              <Users className="w-3 h-3" />
+              {userParty.name}
+            </Badge>
+          </Link>
+        )}
+        
+        {userGuild && (
+          <Link to="/social/guild">
+            <Badge variant="outline" className="flex items-center gap-1 bg-secondary/10">
+              <Shield className="w-3 h-3" />
+              {userGuild.name}
+            </Badge>
+          </Link>
+        )}
+      </div>
       
       <Button 
         variant="outline" 
