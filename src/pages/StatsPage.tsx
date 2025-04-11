@@ -56,7 +56,7 @@ const StatsPage = () => {
       <div className="glass-card rounded-lg p-4 mb-4">
         <h1 className="text-xl font-bold mb-4">Stat Tracker</h1>
         
-        <div className="grid grid-cols-2 gap-3 mb-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 mb-4">
           {userData.stats.map((stat) => (
             <StatCard
               key={stat.name}

@@ -43,6 +43,8 @@ const defaultUserData: UserData = {
     { name: "Perception", value: 5, abbreviation: "PER", color: "#8B5CF6" },
     { name: "Vitality", value: 5, abbreviation: "VIT", color: "#F59E0B" },
     { name: "Sense", value: 5, abbreviation: "SEN", color: "#EC4899" },
+    { name: "Charisma", value: 5, abbreviation: "CHA", color: "#D946EF" },
+    { name: "Luck", value: 5, abbreviation: "LUK", color: "#F97316" },
   ],
   gold: 100,
   mana: 50,
