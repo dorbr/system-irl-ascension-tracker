@@ -144,8 +144,8 @@ const StatsPage = () => {
           </DialogContent>
         </Dialog>
         
-        {/* Stat Cards Grid - Don't use rtl-reverse class here */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 mb-6">
+        {/* Stat Cards Grid - Fixed for RTL */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 mb-6" dir="ltr">
           {userData.stats.map((stat) => {
             console.log(`Rendering stat: ${stat.name}`);
             return (

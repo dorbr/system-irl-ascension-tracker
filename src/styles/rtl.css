@@ -62,3 +62,8 @@
   direction: rtl;
   text-align: right;
 }
+
+/* Specifically target the stat value to ensure consistent alignment */
+.rtl .stat-card .text-xl {
+  text-align: left;
+}
