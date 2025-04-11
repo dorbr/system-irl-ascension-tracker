@@ -22,7 +22,7 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
 }) => {
   return (
     <div className="mb-4 text-center">
-      <Avatar className="w-24 h-24 mx-auto mb-2 bg-rpg-primary/20">
+      <Avatar className="w-24 h-24 mx-auto mb-2 bg-rpg-primary/20 border-2 border-rpg-primary/30">
         {avatarUrl ? (
           <AvatarImage src={avatarUrl} alt={profileUsername || userData.name} />
         ) : (

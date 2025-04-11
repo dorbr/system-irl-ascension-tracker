@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Camera, Loader2, User } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -17,7 +17,12 @@ const AvatarUploader: React.FC<AvatarUploaderProps> = ({
 }) => {
   const { user } = useAuth();
   const [isUploading, setIsUploading] = useState(false);
-  const [previewUrl, setPreviewUrl] = useState<string | null>(currentAvatarUrl);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  
+  // Set the preview URL when the component mounts or currentAvatarUrl changes
+  useEffect(() => {
+    setPreviewUrl(currentAvatarUrl);
+  }, [currentAvatarUrl]);
   
   const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -88,6 +93,8 @@ const AvatarUploader: React.FC<AvatarUploaderProps> = ({
         description: error.message,
         variant: "destructive",
       });
+      // Reset preview to current avatar if update fails
+      setPreviewUrl(currentAvatarUrl);
     } finally {
       setIsUploading(false);
     }
