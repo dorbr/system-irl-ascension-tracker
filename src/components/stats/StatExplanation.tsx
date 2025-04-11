@@ -4,6 +4,7 @@ import { Stat } from "@/context/UserContext";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface StatExplanationProps {
   stats: Stat[];
@@ -78,6 +79,7 @@ const statDescriptions: Record<string, { description: string, benefits: string[]
 };
 
 const StatExplanation: React.FC<StatExplanationProps> = ({ stats, onClose }) => {
+  const { t, isRtl } = useLanguage();
   const stat = stats[0];
   
   if (!stat) return null;
@@ -105,17 +107,21 @@ const StatExplanation: React.FC<StatExplanationProps> = ({ stats, onClose }) => 
         <h2 className="text-lg font-semibold">{stat.name}</h2>
       </div>
       
-      <p className="text-sm mb-4">{statDescriptions[stat.name]?.description || "No description available."}</p>
+      <p className={`text-sm mb-4 ${isRtl ? "text-right" : ""}`}>{statDescriptions[stat.name]?.description || "No description available."}</p>
       
-      <h4 className="text-sm font-medium mb-2">Benefits of high {stat.name}:</h4>
-      <ul className="text-sm space-y-2 list-disc pl-5">
+      <h4 className={`text-sm font-medium mb-2 ${isRtl ? "text-right" : ""}`}>
+        {t("benefits").replace("{stat}", stat.name)}
+      </h4>
+      <ul className={`text-sm space-y-2 list-disc pl-5 ${isRtl ? "text-right" : ""}`}>
         {statDescriptions[stat.name]?.benefits.map((benefit, index) => (
           <li key={index}>{benefit}</li>
         ))}
       </ul>
       
-      <h4 className="text-sm font-medium mt-4 mb-2">How to improve {stat.name}:</h4>
-      <ul className="text-sm list-disc pl-5">
+      <h4 className={`text-sm font-medium mt-4 mb-2 ${isRtl ? "text-right" : ""}`}>
+        {t("howToImprove").replace("{stat}", stat.name)}
+      </h4>
+      <ul className={`text-sm list-disc pl-5 ${isRtl ? "text-right" : ""}`}>
         {getSuggestionsByStatName(stat.name).map((suggestion, index) => (
           <li key={index}>{suggestion}</li>
         ))}

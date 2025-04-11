@@ -74,14 +74,25 @@ export type TranslationKey =
   | 'relatedStats'
   | 'selectStat'
   | 'add'
-  | 'archiveShadow'
   | 'shadowsDesc'
   | 'noShadows'
   | 'error'
   | 'shadowRequired'
   | 'shadowArchived'
   | 'home'  // Add this for the Home navigation item
-  | 'stats'; // Add this for the Stats navigation item
+  | 'stats' // Add this for the Stats navigation item
+  | 'statTracker'
+  | 'logProgress'
+  | 'selectStatToImprove'
+  | 'journalEntry'
+  | 'journalEntryPlaceholder'
+  | 'statGain'
+  | 'earnXp'
+  | 'logImprovement'
+  | 'progressLogged'
+  | 'improvedStat'
+  | 'benefits'
+  | 'howToImprove';
 
 export type Translations = {
   [key in TranslationKey]: string;

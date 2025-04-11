@@ -11,9 +11,11 @@ import { toast } from "@/hooks/use-toast";
 import StatExplanation from "@/components/stats/StatExplanation";
 import ProgressGuide from "@/components/stats/ProgressGuide";
 import { Card, CardContent } from "@/components/ui/card";
+import { useLanguage } from "@/context/LanguageContext";
 
 const StatsPage = () => {
   const { userData, updateUserStat, updateUserXp } = useUser();
+  const { t, isRtl } = useLanguage();
   const [selectedStat, setSelectedStat] = useState("");
   const [journalEntry, setJournalEntry] = useState("");
   const [statGain, setStatGain] = useState(1);
@@ -36,8 +38,8 @@ const StatsPage = () => {
   const handleLogProgress = () => {
     if (!selectedStat) {
       toast({
-        title: "Error",
-        description: "Please select a stat to improve",
+        title: t("error"),
+        description: t("selectStatToImprove"),
         variant: "destructive",
       });
       return;
@@ -55,8 +57,11 @@ const StatsPage = () => {
     updateUserXp(statGain * 10); // Give XP for stat improvement
 
     toast({
-      title: "Progress Logged",
-      description: `You improved ${selectedStat} by ${statGain} and earned ${statGain * 10} XP!`,
+      title: t("progressLogged"),
+      description: t("improvedStat")
+        .replace("{stat}", selectedStat)
+        .replace("{amount}", String(statGain))
+        .replace("{xp}", String(statGain * 10)),
     });
 
     // Reset form
@@ -70,30 +75,30 @@ const StatsPage = () => {
   return (
     <div className="py-4">
       <div className="glass-card rounded-lg p-4 mb-4">
-        <h1 className="text-xl font-bold mb-4">Stat Tracker</h1>
+        <h1 className={`text-xl font-bold mb-4 ${isRtl ? "text-right" : ""}`}>{t("statTracker")}</h1>
         
         {/* Log Progress Button - Moved up */}
         <Dialog>
           <DialogTrigger asChild>
-            <Button className="w-full mb-6">Log Progress</Button>
+            <Button className="w-full mb-6">{t("logProgress")}</Button>
           </DialogTrigger>
           <DialogContent className="glass-card">
             <DialogHeader>
-              <DialogTitle>Log Stat Progress</DialogTitle>
+              <DialogTitle>{t("logProgress")}</DialogTitle>
               <DialogDescription>
-                Record your improvement and gain stats.
+                {t("selectStatToImprove")}
               </DialogDescription>
             </DialogHeader>
             <div className="space-y-4 pt-4">
               <div>
-                <Label htmlFor="stat">Select Stat</Label>
+                <Label htmlFor="stat" className={isRtl ? "block text-right" : ""}>{t("selectStat")}</Label>
                 <select
                   id="stat"
                   value={selectedStat}
                   onChange={(e) => setSelectedStat(e.target.value)}
                   className="w-full h-10 rounded-md bg-secondary/50 border-secondary text-sm"
                 >
-                  <option value="">Choose a stat to improve</option>
+                  <option value="">{t("selectStatToImprove")}</option>
                   {userData.stats.map((stat) => (
                     <option key={stat.name} value={stat.name}>
                       {stat.name} ({stat.abbreviation})
@@ -103,18 +108,18 @@ const StatsPage = () => {
               </div>
               
               <div>
-                <Label htmlFor="journal">Journal Entry (Optional)</Label>
+                <Label htmlFor="journal" className={isRtl ? "block text-right" : ""}>{t("journalEntry")}</Label>
                 <Textarea
                   id="journal"
                   value={journalEntry}
                   onChange={(e) => setJournalEntry(e.target.value)}
-                  placeholder="What did you do to improve this stat?"
+                  placeholder={t("journalEntryPlaceholder")}
                   className="bg-secondary/50 border-secondary"
                 />
               </div>
               
               <div>
-                <Label htmlFor="gain">Stat Gain</Label>
+                <Label htmlFor="gain" className={isRtl ? "block text-right" : ""}>{t("statGain")}</Label>
                 <Input
                   id="gain"
                   type="number"
@@ -124,12 +129,12 @@ const StatsPage = () => {
                   max={5}
                   className="bg-secondary/50 border-secondary"
                 />
-                <p className="text-xs text-muted-foreground mt-1">
-                  You'll earn {statGain * 10} XP for this improvement
+                <p className={`text-xs text-muted-foreground mt-1 ${isRtl ? "text-right" : ""}`}>
+                  {t("earnXp").replace("{amount}", String(statGain * 10))}
                 </p>
               </div>
               
-              <Button onClick={handleLogProgress}>Log Improvement</Button>
+              <Button onClick={handleLogProgress}>{t("logImprovement")}</Button>
             </div>
           </DialogContent>
         </Dialog>

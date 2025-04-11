@@ -6,6 +6,7 @@ import { englishQuests, hebrewQuests } from './quests';
 import { englishProfile, hebrewProfile } from './profile';
 import { englishSocial, hebrewSocial } from './social';
 import { englishShadows, hebrewShadows } from './shadows';
+import { englishStats, hebrewStats } from './stats';
 
 // English translations (default)
 export const englishTranslations: Translations = {
@@ -15,6 +16,7 @@ export const englishTranslations: Translations = {
   ...englishProfile,
   ...englishSocial,
   ...englishShadows,
+  ...englishStats,
 } as Translations;
 
 // Hebrew translations
@@ -25,6 +27,7 @@ export const hebrewTranslations: Translations = {
   ...hebrewProfile,
   ...hebrewSocial,
   ...hebrewShadows,
+  ...hebrewStats,
 } as Translations;
 
 // Get translations based on selected language
