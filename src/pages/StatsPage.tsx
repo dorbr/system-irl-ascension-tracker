@@ -8,6 +8,8 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
+import StatExplanation from "@/components/stats/StatExplanation";
+import ProgressGuide from "@/components/stats/ProgressGuide";
 
 const StatsPage = () => {
   const { userData, updateUserStat, updateUserXp } = useUser();
@@ -56,7 +58,8 @@ const StatsPage = () => {
       <div className="glass-card rounded-lg p-4 mb-4">
         <h1 className="text-xl font-bold mb-4">Stat Tracker</h1>
         
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 mb-4">
+        {/* Stat Cards Grid */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 mb-6">
           {userData.stats.map((stat) => (
             <StatCard
               key={stat.name}
@@ -68,6 +71,13 @@ const StatsPage = () => {
           ))}
         </div>
 
+        {/* Progress Guide */}
+        <ProgressGuide />
+        
+        {/* Stat Explanations */}
+        <StatExplanation stats={userData.stats} />
+
+        {/* Log Progress Dialog */}
         <Dialog>
           <DialogTrigger asChild>
             <Button className="w-full">Log Progress</Button>
