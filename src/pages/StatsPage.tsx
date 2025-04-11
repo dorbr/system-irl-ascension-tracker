@@ -134,9 +134,6 @@ const StatsPage = () => {
           </DialogContent>
         </Dialog>
         
-        {/* Progress Guide */}
-        <ProgressGuide />
-        
         {/* Stat Cards Grid */}
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 mb-6">
           {userData.stats.map((stat) => {
@@ -164,6 +161,9 @@ const StatsPage = () => {
             </CardContent>
           </Card>
         )}
+        
+        {/* Progress Guide - Moved to the bottom */}
+        <ProgressGuide />
       </div>
     </div>
   );
