@@ -10,6 +10,7 @@ import QuestStreak from "@/components/quests/card/QuestStreak";
 import CompleteButton from "@/components/quests/card/CompleteButton";
 import StrategyIndicator from "@/components/quests/card/StrategyIndicator";
 import XpReward from "@/components/quests/card/XpReward";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface QuestCardProps {
   quest: Quest;
@@ -25,6 +26,7 @@ const QuestCard: React.FC<QuestCardProps> = ({
   className,
 }) => {
   const { userData } = useUser();
+  const { isRtl } = useLanguage();
   
   // Get visual styles based on quest type
   const typeStyles = getQuestTypeStyles(quest.type);
@@ -90,17 +92,19 @@ const QuestCard: React.FC<QuestCardProps> = ({
         isClickable && "cursor-pointer hover:border-rpg-accent/50 transition-colors",
         className
       )}
+      // Remove RTL-specific styling to prevent layout inversion
+      dir="ltr"
     >
       <div className="flex justify-between items-start gap-4">
         <div className="flex-1">
           {/* Header section with quest type and title */}
           <div className="flex flex-col gap-2 mb-3">
             <QuestTypeIndicator type={quest.type} difficulty={quest.difficulty} />
-            <h3 className="font-semibold text-sm">{displayTitle()}</h3>
+            <h3 className="font-semibold text-sm text-center">{displayTitle()}</h3>
           </div>
           
           {/* Description */}
-          <p className="text-xs text-muted-foreground mb-3">{quest.description}</p>
+          <p className="text-xs text-muted-foreground mb-3 text-center">{quest.description}</p>
           
           {/* Stats */}
           <QuestStats stats={quest.stats} getStatColor={getStatColor} />

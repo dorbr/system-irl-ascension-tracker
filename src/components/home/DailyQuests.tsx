@@ -53,7 +53,7 @@ const DailyQuests: React.FC = () => {
         )}
       </div>
       
-      <div className="space-y-3">
+      <div className="space-y-3" dir="ltr">
         {dailyQuests.length === 0 ? (
           <p className="text-center text-muted-foreground py-3">{t("noDailyQuests")}</p>
         ) : (

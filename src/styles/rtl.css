@@ -60,6 +60,26 @@
   direction: rtl;
 }
 
+/* Quest and dungeon cards should maintain consistent layout */
+.rtl .quest-item {
+  direction: ltr;
+}
+
+.rtl .quest-item h3,
+.rtl .quest-item p {
+  /* Allow text to be centered properly */
+  text-align: center;
+}
+
+/* Ensure buttons maintain consistent alignment across LTR and RTL */
+.rtl button {
+  direction: ltr;
+}
+
+.rtl button span {
+  direction: rtl;
+}
+
 /* Ensure centered components stay centered in both RTL and LTR */
 .flex.justify-center,
 .flex.items-center,
@@ -75,4 +95,15 @@
 
 .rtl nav .container span {
   direction: rtl; /* But allow text to follow RTL */
+}
+
+/* Make sure strategy planners maintain layout */
+.rtl .dungeon-strategy {
+  direction: ltr;
+}
+
+/* Ensure consistent padding direction in cards */
+.rtl .card-wrapper {
+  padding-left: 1rem;
+  padding-right: 1rem;
 }

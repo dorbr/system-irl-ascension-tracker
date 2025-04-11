@@ -2,6 +2,7 @@
 import React from "react";
 import { Quest } from "@/context/QuestContext";
 import QuestCard from "@/components/ui/QuestCard";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface QuestListProps {
   quests: Quest[];
@@ -16,12 +17,14 @@ const QuestList: React.FC<QuestListProps> = ({
   onQuestClick,
   emptyMessage = "No quests available" 
 }) => {
+  const { isRtl } = useLanguage();
+
   if (quests.length === 0) {
     return <p className="text-center text-muted-foreground py-4">{emptyMessage}</p>;
   }
 
   return (
-    <div className="space-y-4 mt-4">
+    <div className="space-y-4 mt-4" dir="ltr">
       {quests.map(quest => (
         <QuestCard
           key={quest.id}
