@@ -79,8 +79,8 @@ export type TranslationKey =
   | 'error'
   | 'shadowRequired'
   | 'shadowArchived'
-  | 'home'  // Add this for the Home navigation item
-  | 'stats' // Add this for the Stats navigation item
+  | 'home'
+  | 'stats'
   | 'statTracker'
   | 'logProgress'
   | 'selectStatToImprove'
@@ -92,7 +92,8 @@ export type TranslationKey =
   | 'progressLogged'
   | 'improvedStat'
   | 'benefits'
-  | 'howToImprove';
+  | 'howToImprove'
+  | 'archiveShadow';  // Added this new key for archiving shadows
 
 export type Translations = {
   [key in TranslationKey]: string;
