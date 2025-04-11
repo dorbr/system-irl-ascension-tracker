@@ -3,14 +3,17 @@ import React from "react";
 import { useUser } from "@/context/UserContext";
 import { useQuests } from "@/context/QuestContext";
 import { useShadows } from "@/context/ShadowContext";
+import { useAuth } from "@/context/AuthContext";
 import XpBar from "@/components/ui/XpBar";
 import StatBadge from "@/components/ui/StatBadge";
-import { CheckCircle, Swords, History } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { CheckCircle, Swords, History, LogOut } from "lucide-react";
 
 const ProfilePage = () => {
   const { userData } = useUser();
   const { quests } = useQuests();
   const { shadows } = useShadows();
+  const { signOut } = useAuth();
   
   // Calculate quest stats
   const completedQuests = quests.filter(quest => quest.completed).length;
@@ -125,6 +128,15 @@ const ProfilePage = () => {
             </div>
           )}
         </div>
+        
+        <Button 
+          variant="outline" 
+          className="w-full mt-4 bg-destructive/10 border-destructive/20 hover:bg-destructive/20"
+          onClick={signOut}
+        >
+          <LogOut size={16} className="mr-2" />
+          Sign Out
+        </Button>
       </div>
     </div>
   );
