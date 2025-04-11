@@ -3,6 +3,7 @@ import React from "react";
 import XpBar from "@/components/ui/XpBar";
 import StatBadge from "@/components/ui/StatBadge";
 import { UserData } from "@/context/UserContext";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface ProfileStatsProps {
   userData: UserData;
@@ -15,12 +16,14 @@ interface ProfileStatsProps {
 }
 
 const ProfileStats: React.FC<ProfileStatsProps> = ({ userData, topStats }) => {
+  const { t, isRtl } = useLanguage();
+  
   return (
     <>
-      <div className="flex justify-between items-center mb-1 px-4">
-        <div className="text-sm">Level {userData.level}</div>
+      <div className={`flex justify-between items-center mb-1 px-4 ${isRtl ? "flex-row-reverse" : ""}`}>
+        <div className="text-sm">{t('level')} {userData.level}</div>
         <div className="text-sm text-muted-foreground">
-          {userData.xp} / {userData.xpToNextLevel} XP
+          {userData.xp} / {userData.xpToNextLevel} {t('xp')}
         </div>
       </div>
       
@@ -31,7 +34,7 @@ const ProfileStats: React.FC<ProfileStatsProps> = ({ userData, topStats }) => {
       />
       
       <div className="mb-6">
-        <h3 className="text-sm uppercase font-medium text-muted-foreground mb-2">Top Stats</h3>
+        <h3 className={`text-sm uppercase font-medium text-muted-foreground mb-2 ${isRtl ? "text-right" : ""}`}>{t('topStats')}</h3>
         <div className="grid grid-cols-3 gap-2">
           {topStats.map((stat) => (
             <div key={stat.name} className="glass-card p-3 text-center rounded-lg">

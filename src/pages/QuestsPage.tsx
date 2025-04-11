@@ -7,10 +7,12 @@ import QuestTabs from "@/components/quests/QuestTabs";
 import DailyQuestTimer from "@/components/quests/DailyQuestTimer";
 import { Button } from "@/components/ui/button";
 import { Clock } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
 
 const QuestsPage = () => {
   const { quests, addQuest, completeQuest, resetAllQuests, checkUnfinishedDailyQuests } = useQuests();
   const { updateUserXp, updateUserStat, userData } = useUser();
+  const { t, isRtl } = useLanguage();
   
   const availableStats = userData.stats.map(stat => stat.abbreviation);
   
@@ -33,7 +35,7 @@ const QuestsPage = () => {
     });
     
     // Different toast message depending on quest type
-    const questType = quest.type === "dungeon" ? "Dungeon" : "Quest";
+    const questType = quest.type === "dungeon" ? t('dungeon') : t('quests');
     
     toast({
       title: `${questType} Completed!`,
@@ -63,14 +65,14 @@ const QuestsPage = () => {
 
   return (
     <div className="p-4">
-      <div className="flex justify-between items-center mb-4">
+      <div className={`flex justify-between items-center mb-4 ${isRtl ? "flex-row-reverse" : ""}`}>
         <DailyQuestTimer onTimeExpired={handleDayEnd} />
         
         <Button 
           variant="outline"
           size="sm"
           onClick={handleDebugTimerEnd}
-          className="flex items-center gap-1.5 text-sm"
+          className={`flex items-center gap-1.5 text-sm ${isRtl ? "flex-row-reverse" : ""}`}
         >
           <Clock size={14} className="text-amber-400" />
           Debug Timer

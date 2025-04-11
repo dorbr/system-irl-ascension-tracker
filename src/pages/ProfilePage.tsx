@@ -24,7 +24,7 @@ const ProfilePage = () => {
   const { quests } = useQuests();
   const { shadows } = useShadows();
   const { user, signOut } = useAuth();
-  const { t } = useLanguage();
+  const { t, isRtl } = useLanguage();
   const [profileData, setProfileData] = useState<ProfileData>({ username: null, avatar_url: null });
   const [showEditForm, setShowEditForm] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -91,8 +91,8 @@ const ProfilePage = () => {
         
         <Tabs defaultValue="profile" className="mt-4">
           <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="profile">Profile</TabsTrigger>
-            <TabsTrigger value="settings">{t('preferences')}</TabsTrigger>
+            <TabsTrigger value="profile">{t('profile')}</TabsTrigger>
+            <TabsTrigger value="settings">{t('settings')}</TabsTrigger>
           </TabsList>
           
           <TabsContent value="profile">

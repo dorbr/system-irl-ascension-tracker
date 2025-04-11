@@ -24,7 +24,7 @@ const UsernameForm: React.FC<UsernameFormProps> = ({
   onUsernameUpdate
 }) => {
   const { user } = useAuth();
-  const { isRtl } = useLanguage();
+  const { isRtl, t } = useLanguage();
   const [isSubmitting, setIsSubmitting] = useState(false);
   
   const form = useForm<UsernameFormValues>({
@@ -71,7 +71,7 @@ const UsernameForm: React.FC<UsernameFormProps> = ({
           name="username"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className={isRtl ? "block text-right" : ""}>Username</FormLabel>
+              <FormLabel className={isRtl ? "block text-right" : ""}>{t('username')}</FormLabel>
               <FormControl>
                 <Input {...field} disabled={isSubmitting} className={isRtl ? "text-right" : ""} />
               </FormControl>
@@ -88,10 +88,10 @@ const UsernameForm: React.FC<UsernameFormProps> = ({
           {isSubmitting ? (
             <>
               <Loader2 className={`h-4 w-4 animate-spin ${isRtl ? "ml-2" : "mr-2"}`} />
-              Saving...
+              {t('saving')}
             </>
           ) : (
-            "Save Changes"
+            t('saveChanges')
           )}
         </Button>
       </form>

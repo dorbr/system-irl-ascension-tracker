@@ -29,7 +29,36 @@ export type TranslationKey =
   | 'privacySettingsTitle'
   | 'privacySettingsDesc'
   | 'profile'
-  | 'settings';
+  | 'settings'
+  | 'quests'
+  | 'daily'
+  | 'main'
+  | 'dungeon'
+  | 'completed'
+  | 'createQuest'
+  | 'questName'
+  | 'questDescription'
+  | 'questType'
+  | 'questReward'
+  | 'save'
+  | 'cancel'
+  | 'level'
+  | 'xp'
+  | 'class'
+  | 'editProfile'
+  | 'hideEditor'
+  | 'questCompletion'
+  | 'topStats'
+  | 'progressStats'
+  | 'dungeons'
+  | 'shadows'
+  | 'classEvolution'
+  | 'nextClasses'
+  | 'saveChanges'
+  | 'saving'
+  | 'username'
+  | 'crew'
+  | 'road';
 
 export type Translations = {
   [key in TranslationKey]: string;
@@ -67,7 +96,36 @@ export const englishTranslations: Translations = {
   privacySettingsTitle: 'Privacy Settings',
   privacySettingsDesc: 'This feature is not yet implemented.',
   profile: 'Profile',
-  settings: 'Settings'
+  settings: 'Settings',
+  quests: 'Quests',
+  daily: 'Daily',
+  main: 'Main',
+  dungeon: 'Dungeon',
+  completed: 'Completed',
+  createQuest: 'Create Quest',
+  questName: 'Quest Name',
+  questDescription: 'Quest Description',
+  questType: 'Quest Type',
+  questReward: 'Reward',
+  save: 'Save',
+  cancel: 'Cancel',
+  level: 'Level',
+  xp: 'XP',
+  class: 'Class',
+  editProfile: 'Edit Profile',
+  hideEditor: 'Hide Editor',
+  questCompletion: 'Quest Completion',
+  topStats: 'Top Stats',
+  progressStats: 'Progress Stats',
+  dungeons: 'Dungeons',
+  shadows: 'Shadows',
+  classEvolution: 'Class Evolution',
+  nextClasses: 'Next potential classes',
+  saveChanges: 'Save Changes',
+  saving: 'Saving...',
+  username: 'Username',
+  crew: 'Crew',
+  road: 'Road'
 };
 
 // Hebrew translations
@@ -100,7 +158,36 @@ export const hebrewTranslations: Translations = {
   privacySettingsTitle: 'הגדרות פרטיות',
   privacySettingsDesc: 'תכונה זו עדיין לא מיושמת.',
   profile: 'פרופיל',
-  settings: 'הגדרות'
+  settings: 'הגדרות',
+  quests: 'משימות',
+  daily: 'יומיות',
+  main: 'ראשיות',
+  dungeon: 'מבוכים',
+  completed: 'הושלמו',
+  createQuest: 'צור משימה',
+  questName: 'שם המשימה',
+  questDescription: 'תיאור המשימה',
+  questType: 'סוג המשימה',
+  questReward: 'פרס',
+  save: 'שמור',
+  cancel: 'בטל',
+  level: 'רמה',
+  xp: 'ניסיון',
+  class: 'מקצוע',
+  editProfile: 'ערוך פרופיל',
+  hideEditor: 'הסתר עורך',
+  questCompletion: 'השלמת משימות',
+  topStats: 'סטטיסטיקות מובילות',
+  progressStats: 'סטטיסטיקות התקדמות',
+  dungeons: 'מבוכים',
+  shadows: 'צללים',
+  classEvolution: 'התפתחות מקצוע',
+  nextClasses: 'מקצועות פוטנציאליים הבאים',
+  saveChanges: 'שמור שינויים',
+  saving: 'שומר...',
+  username: 'שם משתמש',
+  crew: 'צוות',
+  road: 'דרך'
 };
 
 // Get translations based on selected language

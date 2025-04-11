@@ -16,6 +16,7 @@ const CompleteButton: React.FC<CompleteButtonProps> = ({ completed, onComplete }
       onClick={onComplete}
       disabled={completed}
       className={`p-1 transition-transform hover:scale-110 disabled:opacity-50 disabled:hover:scale-100 ${isRtl ? "text-right" : ""}`}
+      aria-label={completed ? "Completed" : "Mark as completed"}
     >
       {completed ? (
         <CheckCircle size={24} className="text-rpg-primary" />

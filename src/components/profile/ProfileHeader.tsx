@@ -25,7 +25,7 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
   toggleEditForm
 }) => {
   const { userParty, userGuild } = useSocial();
-  const { isRtl } = useLanguage();
+  const { isRtl, t } = useLanguage();
   
   return (
     <div className="mb-4 text-center">
@@ -78,12 +78,12 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
         {showEditForm ? (
           <>
             <ChevronUp className={`w-4 h-4 ${isRtl ? "ml-1" : "mr-1"}`} />
-            Hide Editor
+            {t('hideEditor')}
           </>
         ) : (
           <>
             <User className={`w-4 h-4 ${isRtl ? "ml-1" : "mr-1"}`} />
-            Edit Profile
+            {t('editProfile')}
           </>
         )}
       </Button>

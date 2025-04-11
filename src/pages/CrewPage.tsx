@@ -5,10 +5,12 @@ import { Users, ScrollText } from "lucide-react";
 import { useLocation } from "react-router-dom";
 import QuestsPage from "./QuestsPage";
 import SocialPage from "./SocialPage";
+import { useLanguage } from "@/context/LanguageContext";
 
 const CrewPage = () => {
   const [section, setSection] = useState<"quests" | "social">("quests");
   const location = useLocation();
+  const { t, isRtl } = useLanguage();
   
   // When returning from another page, ensure state is properly initialized
   useEffect(() => {
@@ -30,25 +32,25 @@ const CrewPage = () => {
       {/* Header with navigation controls */}
       <div className="sticky top-0 z-10 bg-background/80 backdrop-blur-sm">
         <div className="flex items-center justify-between p-4 border-b">
-          <h1 className="text-xl font-bold">Road</h1>
-          <div className="flex items-center space-x-2">
+          <h1 className="text-xl font-bold">{t('road')}</h1>
+          <div className={`flex items-center space-x-2 ${isRtl ? "flex-row-reverse space-x-reverse" : ""}`}>
             <Button 
               variant={section === "quests" ? "default" : "outline"} 
               size="sm"
               onClick={() => handleSwitch("quests")}
-              className="flex items-center gap-1"
+              className={`flex items-center gap-1 ${isRtl ? "flex-row-reverse" : ""}`}
             >
               <ScrollText className="w-4 h-4" />
-              <span>Quests</span>
+              <span>{t('quests')}</span>
             </Button>
             <Button 
               variant={section === "social" ? "default" : "outline"} 
               size="sm"
               onClick={() => handleSwitch("social")}
-              className="flex items-center gap-1"
+              className={`flex items-center gap-1 ${isRtl ? "flex-row-reverse" : ""}`}
             >
               <Users className="w-4 h-4" />
-              <span>Crew</span>
+              <span>{t('crew')}</span>
             </Button>
           </div>
         </div>
