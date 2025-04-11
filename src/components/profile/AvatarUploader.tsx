@@ -58,6 +58,18 @@ const AvatarUploader: React.FC<AvatarUploaderProps> = ({
       };
       reader.readAsDataURL(file);
       
+      // First, make sure the avatars bucket exists
+      const { data: bucketData, error: bucketError } = await supabase
+        .storage
+        .getBucket('avatars');
+      
+      // Create bucket if it doesn't exist
+      if (bucketError && bucketError.message.includes('does not exist')) {
+        await supabase.storage.createBucket('avatars', {
+          public: true
+        });
+      }
+      
       // Upload to Supabase Storage
       const fileExt = file.name.split('.').pop();
       const fileName = `${user.id}-${Date.now()}.${fileExt}`;
