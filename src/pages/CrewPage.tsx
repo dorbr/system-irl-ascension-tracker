@@ -33,12 +33,12 @@ const CrewPage = () => {
       <div className="sticky top-0 z-10 bg-background/80 backdrop-blur-sm">
         <div className="flex items-center justify-between p-4 border-b">
           <h1 className="text-xl font-bold">{t('road')}</h1>
-          <div className={`flex items-center space-x-2 ${isRtl ? "flex-row-reverse space-x-reverse" : ""}`}>
+          <div className="flex items-center space-x-2">
             <Button 
               variant={section === "quests" ? "default" : "outline"} 
               size="sm"
               onClick={() => handleSwitch("quests")}
-              className={`flex items-center gap-1 ${isRtl ? "flex-row-reverse" : ""}`}
+              className="flex items-center gap-1"
             >
               <ScrollText className="w-4 h-4" />
               <span>{t('quests')}</span>
@@ -47,7 +47,7 @@ const CrewPage = () => {
               variant={section === "social" ? "default" : "outline"} 
               size="sm"
               onClick={() => handleSwitch("social")}
-              className={`flex items-center gap-1 ${isRtl ? "flex-row-reverse" : ""}`}
+              className="flex items-center gap-1"
             >
               <Users className="w-4 h-4" />
               <span>{t('crew')}</span>
@@ -62,15 +62,13 @@ const CrewPage = () => {
           className="flex transition-transform duration-300 h-full"
           style={{ 
             width: "200%", 
-            transform: section === "quests" 
-              ? isRtl ? "translateX(50%)" : "translateX(0)" 
-              : isRtl ? "translateX(0)" : "translateX(-50%)" 
+            transform: section === "quests" ? "translateX(0)" : "translateX(-50%)" 
           }}
         >
-          <div className={`w-full h-full overflow-y-auto ${isRtl ? "order-2" : "order-1"}`}>
+          <div className="w-full h-full overflow-y-auto">
             <QuestsPage />
           </div>
-          <div className={`w-full h-full overflow-y-auto ${isRtl ? "order-1" : "order-2"}`}>
+          <div className="w-full h-full overflow-y-auto">
             <SocialPage />
           </div>
         </div>

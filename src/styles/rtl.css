@@ -1,48 +1,44 @@
 
-/* RTL Support */
+/* RTL Support - Selective approach */
 .rtl {
   direction: rtl;
   text-align: right;
 }
 
-/* Form Controls */
+/* Text alignment for content */
+.rtl p,
+.rtl h1, 
+.rtl h2, 
+.rtl h3, 
+.rtl h4, 
+.rtl h5, 
+.rtl h6,
+.rtl li,
+.rtl label,
+.rtl .rtl-text {
+  text-align: right;
+}
+
+/* Form Controls - only text alignment */
 .rtl .radix-select-trigger,
 .rtl .radix-select-content,
 .rtl .radix-select-item,
 .rtl input, 
-.rtl textarea,
-.rtl label {
+.rtl textarea {
   text-align: right;
 }
 
-/* Button Alignment */
-.rtl button {
-  text-align: right;
+/* Base utility classes for RTL text alignment without layout inversion */
+.rtl-text {
+  @apply rtl:text-right ltr:text-left;
 }
 
-.rtl button svg {
-  margin-left: 0;
-  margin-right: 0;
-}
-
-/* Tab and Card Content */
-.rtl .tabs-content,
-.rtl .card-content,
-.rtl .settings-item-text {
-  text-align: right;
-}
-
-/* Utility classes for RTL support */
-.rtl-row-reverse {
+/* Selective layout reversal only when needed with specific class */
+.rtl-reverse {
   @apply rtl:flex-row-reverse;
 }
 
-.space-x-reverse > * + * {
-  margin-right: var(--tw-space-x-reverse);
-  margin-left: 0;
-}
-
-/* Center content in both RTL and LTR */
+/* For content that should always be centered regardless of text direction */
 .centered-content {
   @apply mx-auto text-center;
 }
