@@ -56,6 +56,9 @@ const StatsPage = () => {
     setStatGain(1);
   };
 
+  // Force a log to ensure all stats are being processed
+  console.log("All stats:", userData.stats);
+
   return (
     <div className="py-4">
       <div className="glass-card rounded-lg p-4 mb-4">
@@ -128,15 +131,18 @@ const StatsPage = () => {
         
         {/* Stat Cards Grid */}
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 mb-6">
-          {userData.stats.map((stat) => (
-            <StatCard
-              key={stat.name}
-              stat={stat}
-              onClick={() => handleStatClick(stat.name)}
-              className={selectedStat === stat.name ? "border border-rpg-primary/50" : ""}
-              animate={statAnimations[stat.name]}
-            />
-          ))}
+          {userData.stats.map((stat) => {
+            console.log(`Rendering stat: ${stat.name}`);
+            return (
+              <StatCard
+                key={stat.name}
+                stat={stat}
+                onClick={() => handleStatClick(stat.name)}
+                className={selectedStat === stat.name ? "border border-rpg-primary/50" : ""}
+                animate={statAnimations[stat.name]}
+              />
+            );
+          })}
         </div>
 
         {/* Show stat explanation when a stat is selected */}
