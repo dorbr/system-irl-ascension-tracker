@@ -65,21 +65,21 @@ const QuestTabs: React.FC<QuestTabsProps> = ({
   };
   
   return (
-    <Tabs defaultValue="quests">
+    <Tabs defaultValue="dungeons">
       <div className="flex justify-between items-center mb-4">
         <TabsList className="grid grid-cols-4 bg-secondary/50">
-          <TabsTrigger value="quests" className="flex items-center gap-1">
-            <ScrollText size={14} />
-            <span className="hidden sm:inline">All Quests</span>
-            <span className="inline-flex items-center justify-center bg-secondary/60 text-xs rounded-full h-5 min-w-5 px-1">
-              {allQuests.length}
-            </span>
-          </TabsTrigger>
           <TabsTrigger value="dungeons" className="flex items-center gap-1">
             <Swords size={14} />
             <span className="hidden sm:inline">Dungeons</span>
             <span className="inline-flex items-center justify-center bg-secondary/60 text-xs rounded-full h-5 min-w-5 px-1">
               {dungeonQuests.length}
+            </span>
+          </TabsTrigger>
+          <TabsTrigger value="quests" className="flex items-center gap-1">
+            <ScrollText size={14} />
+            <span className="hidden sm:inline">All Quests</span>
+            <span className="inline-flex items-center justify-center bg-secondary/60 text-xs rounded-full h-5 min-w-5 px-1">
+              {allQuests.length}
             </span>
           </TabsTrigger>
           <TabsTrigger value="penalties" className="flex items-center gap-1">
@@ -109,6 +109,25 @@ const QuestTabs: React.FC<QuestTabsProps> = ({
           </Button>
         )}
       </div>
+      
+      <TabsContent value="dungeons">
+        {dungeonQuests.length > 0 ? (
+          <QuestList 
+            quests={dungeonQuests} 
+            onComplete={onCompleteQuest}
+            onQuestClick={handleQuestClick}
+            emptyMessage="No dungeons available" 
+          />
+        ) : (
+          <div className="text-center py-8 px-4">
+            <h3 className="font-medium text-lg mb-2">No Dungeon Challenges</h3>
+            <p className="text-muted-foreground text-sm mb-4">
+              You haven't created any dungeon challenges yet. Create your first challenge to test your limits!
+            </p>
+            <Swords size={40} className="mx-auto text-muted-foreground/50" />
+          </div>
+        )}
+      </TabsContent>
       
       <TabsContent value="quests">
         <div className="flex items-center justify-between mb-2 px-1">
@@ -147,25 +166,6 @@ const QuestTabs: React.FC<QuestTabsProps> = ({
               Your quest log is empty. Create your first quest to get started!
             </p>
             <PlusCircle size={40} className="mx-auto text-muted-foreground/50" />
-          </div>
-        )}
-      </TabsContent>
-      
-      <TabsContent value="dungeons">
-        {dungeonQuests.length > 0 ? (
-          <QuestList 
-            quests={dungeonQuests} 
-            onComplete={onCompleteQuest}
-            onQuestClick={handleQuestClick}
-            emptyMessage="No dungeons available" 
-          />
-        ) : (
-          <div className="text-center py-8 px-4">
-            <h3 className="font-medium text-lg mb-2">No Dungeon Challenges</h3>
-            <p className="text-muted-foreground text-sm mb-4">
-              You haven't created any dungeon challenges yet. Create your first challenge to test your limits!
-            </p>
-            <Swords size={40} className="mx-auto text-muted-foreground/50" />
           </div>
         )}
       </TabsContent>
