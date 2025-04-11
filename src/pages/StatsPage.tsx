@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useUser } from "@/context/UserContext";
 import StatCard from "@/components/ui/StatCard";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from "@/components/ui/dialog";
@@ -19,6 +19,14 @@ const StatsPage = () => {
   const [statGain, setStatGain] = useState(1);
   const [statAnimations, setStatAnimations] = useState<Record<string, boolean>>({});
   const [showStatDetail, setShowStatDetail] = useState(false);
+
+  // Ensure the stats are available on initial load
+  useEffect(() => {
+    console.log("Stats loaded:", userData.stats.length, "stats found");
+    userData.stats.forEach(stat => {
+      console.log(`Available stat: ${stat.name} (${stat.abbreviation})`);
+    });
+  }, [userData.stats]);
 
   const handleStatClick = (statName: string) => {
     setSelectedStat(statName);
