@@ -6,7 +6,7 @@ import { Home, BarChart2, History, User, Users } from "lucide-react";
 const NavBar = () => {
   const navItems = [
     { to: "/", icon: Home, label: "Home" },
-    { to: "/crew", icon: Users, label: "Crew" },
+    { to: "/crew", icon: Users, label: "Road" },
     { to: "/stats", icon: BarChart2, label: "Stats" },
     { to: "/shadows", icon: History, label: "Shadows" },
     { to: "/profile", icon: User, label: "Profile" },
