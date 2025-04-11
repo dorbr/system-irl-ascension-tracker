@@ -15,7 +15,7 @@ export interface Quest {
   tags: string[];
   streak?: number;
   lastCompleted?: string;
-  difficulty?: QuestDifficulty; // New field for dungeon difficulty
+  difficulty?: QuestDifficulty; // For dungeon difficulty
 }
 
 const defaultQuests: Quest[] = [
