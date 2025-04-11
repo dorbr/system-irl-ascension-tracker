@@ -1,6 +1,8 @@
 
 import React, { createContext, useContext, useState, useEffect } from "react";
 
+export type QuestDifficulty = "E" | "D" | "C" | "B" | "A" | "S";
+
 export interface Quest {
   id: string;
   title: string;
@@ -13,6 +15,7 @@ export interface Quest {
   tags: string[];
   streak?: number;
   lastCompleted?: string;
+  difficulty?: QuestDifficulty; // New field for dungeon difficulty
 }
 
 const defaultQuests: Quest[] = [
@@ -79,6 +82,7 @@ const defaultQuests: Quest[] = [
     completed: false,
     stats: ["PER", "INT", "SEN"],
     tags: ["Communication", "Challenge"],
+    difficulty: "B", // Adding difficulty rank
   },
 ];
 

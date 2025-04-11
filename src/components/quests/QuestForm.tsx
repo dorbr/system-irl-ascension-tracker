@@ -1,10 +1,11 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/hooks/use-toast";
+import { QuestDifficulty } from "@/context/QuestContext";
 
 interface QuestFormProps {
   availableStats: string[];
@@ -15,6 +16,7 @@ interface QuestFormProps {
     type: "daily" | "main" | "dungeon";
     stats: string[];
     tags: string[];
+    difficulty?: QuestDifficulty;
   }) => void;
 }
 
@@ -26,11 +28,19 @@ const QuestForm: React.FC<QuestFormProps> = ({ availableStats, onCreateQuest }) 
     type: "daily" as "daily" | "main" | "dungeon",
     stats: [] as string[],
     tags: [] as string[],
+    difficulty: "C" as QuestDifficulty,
   });
   
   // State for new tag/stat input
   const [newTag, setNewTag] = useState("");
   const [newStat, setNewStat] = useState("");
+  
+  const [showDifficultySelect, setShowDifficultySelect] = useState(false);
+  
+  // Update showDifficultySelect when type changes
+  useEffect(() => {
+    setShowDifficultySelect(newQuest.type === "dungeon");
+  }, [newQuest.type]);
   
   const handleAddStat = () => {
     if (!newStat || newQuest.stats.includes(newStat)) return;
@@ -74,7 +84,16 @@ const QuestForm: React.FC<QuestFormProps> = ({ availableStats, onCreateQuest }) 
       return;
     }
     
-    onCreateQuest(newQuest);
+    const questToCreate = {
+      ...newQuest,
+    };
+    
+    // Only include difficulty if it's a dungeon
+    if (newQuest.type !== "dungeon") {
+      delete questToCreate.difficulty;
+    }
+    
+    onCreateQuest(questToCreate);
     
     toast({
       title: "Quest Created",
@@ -89,6 +108,7 @@ const QuestForm: React.FC<QuestFormProps> = ({ availableStats, onCreateQuest }) 
       type: "daily",
       stats: [],
       tags: [],
+      difficulty: "C",
     });
   };
 
@@ -142,6 +162,25 @@ const QuestForm: React.FC<QuestFormProps> = ({ availableStats, onCreateQuest }) 
           </select>
         </div>
       </div>
+      
+      {showDifficultySelect && (
+        <div>
+          <Label htmlFor="difficulty">Dungeon Difficulty</Label>
+          <select
+            id="difficulty"
+            value={newQuest.difficulty}
+            onChange={(e) => setNewQuest({...newQuest, difficulty: e.target.value as QuestDifficulty})}
+            className="w-full h-10 rounded-md bg-secondary/50 border-secondary text-sm"
+          >
+            <option value="E">E Rank (Easiest)</option>
+            <option value="D">D Rank</option>
+            <option value="C">C Rank (Average)</option>
+            <option value="B">B Rank</option>
+            <option value="A">A Rank</option>
+            <option value="S">S Rank (Hardest)</option>
+          </select>
+        </div>
+      )}
       
       <div>
         <Label>Stats</Label>

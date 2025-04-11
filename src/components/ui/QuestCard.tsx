@@ -2,7 +2,7 @@
 import React from "react";
 import { Quest } from "@/context/QuestContext";
 import StatBadge from "./StatBadge";
-import { CheckCircle, Circle } from "lucide-react";
+import { CheckCircle, Circle, Shield } from "lucide-react";
 import { useUser } from "@/context/UserContext";
 import { cn } from "@/lib/utils";
 
@@ -11,6 +11,18 @@ interface QuestCardProps {
   onComplete: () => void;
   className?: string;
 }
+
+const getDifficultyColor = (difficulty?: string): string => {
+  switch (difficulty) {
+    case "E": return "text-gray-400";
+    case "D": return "text-green-500";
+    case "C": return "text-blue-500";
+    case "B": return "text-purple-500";
+    case "A": return "text-orange-500";
+    case "S": return "text-red-500";
+    default: return "text-gray-500";
+  }
+};
 
 const QuestCard: React.FC<QuestCardProps> = ({
   quest,
@@ -29,7 +41,14 @@ const QuestCard: React.FC<QuestCardProps> = ({
     <div className={cn("quest-item glass-card", quest.completed && "opacity-60", className)}>
       <div className="flex justify-between items-start gap-3">
         <div className="flex-1">
-          <h3 className="font-semibold text-sm mb-1">{quest.title}</h3>
+          <div className="flex items-center gap-2">
+            <h3 className="font-semibold text-sm mb-1">{quest.title}</h3>
+            {quest.type === "dungeon" && quest.difficulty && (
+              <div className={cn("text-xs font-bold", getDifficultyColor(quest.difficulty))}>
+                {quest.difficulty}-Rank
+              </div>
+            )}
+          </div>
           <p className="text-xs text-muted-foreground mb-2">{quest.description}</p>
           
           <div className="flex flex-wrap gap-1 mb-2">

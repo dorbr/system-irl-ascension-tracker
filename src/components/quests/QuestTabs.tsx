@@ -20,6 +20,7 @@ interface QuestTabsProps {
     type: "daily" | "main" | "dungeon";
     stats: string[];
     tags: string[];
+    difficulty?: "E" | "D" | "C" | "B" | "A" | "S";
   }) => void;
 }
 
@@ -45,7 +46,7 @@ const QuestTabs: React.FC<QuestTabsProps> = ({
         </TabsTrigger>
         <TabsTrigger value="dungeon" className="flex items-center gap-1">
           <Swords size={14} />
-          <span className="hidden sm:inline">Dungeon</span>
+          <span className="hidden sm:inline">Dungeons</span>
         </TabsTrigger>
         <TabsTrigger value="completed" className="flex items-center gap-1">
           <CheckCircle size={14} />
@@ -77,7 +78,7 @@ const QuestTabs: React.FC<QuestTabsProps> = ({
         <QuestList 
           quests={dungeonQuests} 
           onComplete={onCompleteQuest} 
-          emptyMessage="No dungeon quests" 
+          emptyMessage="No dungeons" 
         />
       </TabsContent>
       
