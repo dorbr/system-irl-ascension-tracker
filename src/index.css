@@ -97,6 +97,24 @@
   html {
     @apply scroll-smooth;
   }
+  
+  /* RTL Support */
+  .rtl {
+    direction: rtl;
+    text-align: right;
+  }
+  
+  .rtl .radix-select-trigger {
+    text-align: right;
+  }
+  
+  .rtl .radix-select-content {
+    text-align: right;
+  }
+  
+  .rtl .radix-select-item {
+    text-align: right;
+  }
 }
 
 @layer components {
@@ -128,5 +146,11 @@
   
   .text-glow {
     @apply text-rpg-primary drop-shadow-[0_0_8px_rgba(155,135,245,0.5)];
+  }
+  
+  /* RTL utilities */
+  .space-x-reverse > * + * {
+    margin-right: var(--tw-space-x-reverse);
+    margin-left: 0;
   }
 }

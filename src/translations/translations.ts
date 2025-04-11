@@ -27,13 +27,15 @@ export type TranslationKey =
   | 'deleteAccountTitle'
   | 'deleteAccountDesc'
   | 'privacySettingsTitle'
-  | 'privacySettingsDesc';
+  | 'privacySettingsDesc'
+  | 'profile'
+  | 'settings';
 
 export type Translations = {
   [key in TranslationKey]: string;
 };
 
-export type Languages = 'english' | 'hebrew';
+export type Languages = 'english' | 'hebrew' | 'arabic';
 
 // English translations (default)
 export const englishTranslations: Translations = {
@@ -63,7 +65,9 @@ export const englishTranslations: Translations = {
   deleteAccountTitle: 'Delete account',
   deleteAccountDesc: 'This feature is not yet implemented.',
   privacySettingsTitle: 'Privacy Settings',
-  privacySettingsDesc: 'This feature is not yet implemented.'
+  privacySettingsDesc: 'This feature is not yet implemented.',
+  profile: 'Profile',
+  settings: 'Settings'
 };
 
 // Hebrew translations
@@ -94,7 +98,9 @@ export const hebrewTranslations: Translations = {
   deleteAccountTitle: 'מחק חשבון',
   deleteAccountDesc: 'תכונה זו עדיין לא מיושמת.',
   privacySettingsTitle: 'הגדרות פרטיות',
-  privacySettingsDesc: 'תכונה זו עדיין לא מיושמת.'
+  privacySettingsDesc: 'תכונה זו עדיין לא מיושמת.',
+  profile: 'פרופיל',
+  settings: 'הגדרות'
 };
 
 // Get translations based on selected language
@@ -102,5 +108,6 @@ export const getTranslations = (language: string): Translations => {
   if (language === 'hebrew') {
     return hebrewTranslations;
   }
+  // Add support for other languages as needed
   return englishTranslations;
 };

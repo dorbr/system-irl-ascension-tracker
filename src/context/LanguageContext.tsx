@@ -7,11 +7,13 @@ interface LanguageContextType {
   textDirection: "ltr" | "rtl";
   setLanguage: (language: string) => void;
   t: (key: TranslationKey) => string;
+  isRtl: boolean;
 }
 
 const LanguageContext = createContext<LanguageContextType>({
   language: 'english',
   textDirection: 'ltr',
+  isRtl: false,
   setLanguage: () => {},
   t: () => '',
 });
@@ -26,6 +28,7 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
   const [language, setLanguageState] = useState<string>('english');
   const [translations, setTranslations] = useState<Translations>(getTranslations('english'));
   const [textDirection, setTextDirection] = useState<"ltr" | "rtl">('ltr');
+  const [isRtl, setIsRtl] = useState<boolean>(false);
 
   const setLanguage = (newLanguage: string) => {
     setLanguageState(newLanguage);
@@ -34,10 +37,14 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
     // Set direction based on language
     if (newLanguage === 'hebrew' || newLanguage === 'arabic') {
       setTextDirection('rtl');
+      setIsRtl(true);
       document.documentElement.dir = 'rtl';
+      document.body.classList.add('rtl');
     } else {
       setTextDirection('ltr');
+      setIsRtl(false);
       document.documentElement.dir = 'ltr';
+      document.body.classList.remove('rtl');
     }
   };
 
@@ -46,7 +53,7 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
   };
 
   return (
-    <LanguageContext.Provider value={{ language, textDirection, setLanguage, t }}>
+    <LanguageContext.Provider value={{ language, textDirection, isRtl, setLanguage, t }}>
       {children}
     </LanguageContext.Provider>
   );

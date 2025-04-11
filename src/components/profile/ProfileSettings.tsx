@@ -29,7 +29,7 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ signOut }) => {
   const [notifications, setNotifications] = useState(true);
   const [darkMode, setDarkMode] = useState(false);
   const [sound, setSound] = useState(true);
-  const { language, setLanguage, textDirection, t } = useLanguage();
+  const { language, setLanguage, textDirection, t, isRtl } = useLanguage();
   
   // Language options with direction information
   const languageOptions: LanguageOption[] = [
@@ -83,7 +83,7 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ signOut }) => {
   };
   
   return (
-    <div className="space-y-4" dir={textDirection}>
+    <div className="space-y-4">
       <div className="text-sm text-muted-foreground mb-2">
         {t('manageAccount')}
       </div>
@@ -94,8 +94,8 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ signOut }) => {
           <CardDescription>{t('customizeExperience')}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className={`flex items-center justify-between ${textDirection === "rtl" ? "flex-row-reverse" : ""}`}>
-            <div className={`flex items-center space-x-4 ${textDirection === "rtl" ? "flex-row-reverse space-x-reverse" : ""}`}>
+          <div className="flex items-center justify-between">
+            <div className={`flex items-center ${isRtl ? "space-x-reverse space-x-4" : "space-x-4"}`}>
               <Bell size={18} className="text-muted-foreground" />
               <div>
                 <p className="text-sm font-medium">{t('notifications')}</p>
@@ -108,8 +108,8 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ signOut }) => {
             />
           </div>
           
-          <div className={`flex items-center justify-between ${textDirection === "rtl" ? "flex-row-reverse" : ""}`}>
-            <div className={`flex items-center space-x-4 ${textDirection === "rtl" ? "flex-row-reverse space-x-reverse" : ""}`}>
+          <div className="flex items-center justify-between">
+            <div className={`flex items-center ${isRtl ? "space-x-reverse space-x-4" : "space-x-4"}`}>
               <Moon size={18} className="text-muted-foreground" />
               <div>
                 <p className="text-sm font-medium">{t('darkMode')}</p>
@@ -122,8 +122,8 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ signOut }) => {
             />
           </div>
           
-          <div className={`flex items-center justify-between ${textDirection === "rtl" ? "flex-row-reverse" : ""}`}>
-            <div className={`flex items-center space-x-4 ${textDirection === "rtl" ? "flex-row-reverse space-x-reverse" : ""}`}>
+          <div className="flex items-center justify-between">
+            <div className={`flex items-center ${isRtl ? "space-x-reverse space-x-4" : "space-x-4"}`}>
               <Volume2 size={18} className="text-muted-foreground" />
               <div>
                 <p className="text-sm font-medium">{t('soundEffects')}</p>
@@ -136,8 +136,8 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ signOut }) => {
             />
           </div>
           
-          <div className={`flex items-center justify-between ${textDirection === "rtl" ? "flex-row-reverse" : ""}`}>
-            <div className={`flex items-center space-x-4 ${textDirection === "rtl" ? "flex-row-reverse space-x-reverse" : ""}`}>
+          <div className="flex items-center justify-between">
+            <div className={`flex items-center ${isRtl ? "space-x-reverse space-x-4" : "space-x-4"}`}>
               <Languages size={18} className="text-muted-foreground" />
               <div>
                 <p className="text-sm font-medium">{t('language')}</p>
@@ -174,7 +174,7 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ signOut }) => {
               description: t('privacySettingsDesc')
             })}
           >
-            <Shield size={18} className={textDirection === "rtl" ? "ml-2" : "mr-2"} />
+            <Shield size={18} className={isRtl ? "ml-2" : "mr-2"} />
             {t('privacySettings')}
           </Button>
           
@@ -183,7 +183,7 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ signOut }) => {
             className="w-full justify-start text-destructive hover:text-destructive"
             onClick={handleDeleteAccount}
           >
-            <Trash2 size={18} className={textDirection === "rtl" ? "ml-2" : "mr-2"} />
+            <Trash2 size={18} className={isRtl ? "ml-2" : "mr-2"} />
             {t('deleteAccount')}
           </Button>
         </CardContent>
@@ -193,7 +193,7 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ signOut }) => {
             className="w-full bg-destructive/10 border-destructive/20 hover:bg-destructive/20"
             onClick={signOut}
           >
-            <LogOut size={16} className={textDirection === "rtl" ? "ml-2" : "mr-2"} />
+            <LogOut size={16} className={isRtl ? "ml-2" : "mr-2"} />
             {t('signOut')}
           </Button>
         </CardFooter>
