@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useUser } from "@/context/UserContext";
 import StatCard from "@/components/ui/StatCard";

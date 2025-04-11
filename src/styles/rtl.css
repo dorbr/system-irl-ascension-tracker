@@ -60,10 +60,17 @@
 /* Ensure stat cards maintain their layout */
 .rtl .stat-card {
   direction: rtl;
-  text-align: right;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row-reverse; /* Reverse the main axis for RTL */
 }
 
-/* Specifically target the stat value to ensure consistent alignment */
-.rtl .stat-card .text-xl {
+/* Fix stat value alignment in RTL mode */
+.rtl .stat-card .stat-value {
   text-align: left;
+}
+
+/* Prevent the internal flex container from being reversed again */
+.rtl .stat-card .flex-row-reverse {
+  flex-direction: row-reverse !important;
 }

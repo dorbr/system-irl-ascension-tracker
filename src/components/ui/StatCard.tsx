@@ -42,7 +42,7 @@ const StatCard: React.FC<StatCardProps> = ({
         </div>
         <span className="text-xs">{stat.name}</span>
       </div>
-      <div className="text-xl font-bold">{stat.value}</div>
+      <div className="stat-value text-xl font-bold">{stat.value}</div>
     </div>
   );
 };
