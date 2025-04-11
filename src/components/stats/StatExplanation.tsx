@@ -43,7 +43,7 @@ const StatExplanation: React.FC<StatExplanationProps> = ({ stats, onClose }) => 
           {t('benefits').replace('{stat}', stat.name)}
         </h4>
         <p className={`text-sm ${isRtl ? "text-right" : ""}`}>
-          {stat.benefit || "No benefits information available"}
+          {stat.benefits || "No benefits information available"}
         </p>
       </div>
       

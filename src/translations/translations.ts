@@ -45,5 +45,4 @@ export function getTranslations(language: string): Translations {
 }
 
 // Fix re-exports to use 'export type' for TypeScript types with isolatedModules
-export { Translations };
-export type { TranslationKey };
+export type { Translations, TranslationKey };
