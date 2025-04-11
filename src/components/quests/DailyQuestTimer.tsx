@@ -39,6 +39,7 @@ const DailyQuestTimer: React.FC<DailyQuestTimerProps> = ({ onTimeExpired }) => {
       
       // Check if the day has ended
       if (newTimeLeft === "00:00:00") {
+        console.log("Timer reached 00:00:00, triggering onTimeExpired callback");
         if (onTimeExpired) {
           onTimeExpired();
         }

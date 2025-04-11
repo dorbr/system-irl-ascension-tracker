@@ -51,11 +51,15 @@ const penaltyQuestTemplates = [
  * Generates a penalty quest based on unfinished daily quests
  */
 export const generatePenaltyQuest = (unfinishedQuests: Quest[]): Omit<Quest, "id" | "completed"> => {
+  console.log("Generating penalty quest for unfinished quests:", unfinishedQuests);
+  
   // Extract stats from unfinished quests
   const unfinishedStats = unfinishedQuests.flatMap(quest => quest.stats);
+  console.log("Unfinished quest stats:", unfinishedStats);
   
   // Pick a random template
   const template = penaltyQuestTemplates[Math.floor(Math.random() * penaltyQuestTemplates.length)];
+  console.log("Selected penalty template:", template);
   
   // Get at least one stat from unfinished quests, or default to WIL if none
   let penaltyStats: string[] = ["WIL"]; // Default to willpower
@@ -73,6 +77,8 @@ export const generatePenaltyQuest = (unfinishedQuests: Quest[]): Omit<Quest, "id
       penaltyStats = [randomStat];
     }
   }
+  
+  console.log("Generated penalty quest with stats:", penaltyStats);
   
   return {
     title: template.title,

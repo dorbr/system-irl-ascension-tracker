@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { toast } from "@/hooks/use-toast";
 import { generatePenaltyQuest } from "@/utils/penaltyQuestGenerator";
@@ -341,6 +342,15 @@ export const QuestProvider: React.FC<{ children: React.ReactNode }> = ({
     }
     
     setQuests((prev) => [...prev, newQuest]);
+    
+    // Show notification for newly added quest
+    if (quest.type === "penalty") {
+      toast({
+        title: "Penalty Quest Added",
+        description: `${quest.title} has been added to your quests.`,
+        variant: "destructive",
+      });
+    }
   };
 
   const completeQuest = (id: string) => {
@@ -382,11 +392,13 @@ export const QuestProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const resetDailyQuests = () => {
     const today = new Date().toISOString().split("T")[0];
+    console.log("Resetting daily quests, today is:", today);
     
     setQuests((prev) =>
       prev.map((quest) => {
         if (quest.type === "daily") {
           if (quest.lastCompleted !== today) {
+            console.log("Resetting quest:", quest.title);
             return {
               ...quest,
               completed: false,
@@ -404,22 +416,28 @@ export const QuestProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const checkUnfinishedDailyQuests = () => {
+    console.log("Checking for unfinished daily quests...");
     const today = new Date().toISOString().split("T")[0];
+    
     const unfinishedDailyQuests = quests.filter(
       quest => quest.type === "daily" && !quest.completed && (!quest.lastCompleted || quest.lastCompleted !== today)
     );
     
+    console.log(`Found ${unfinishedDailyQuests.length} unfinished daily quests:`, unfinishedDailyQuests);
+    
     if (unfinishedDailyQuests.length > 0) {
       const penaltyQuest = generatePenaltyQuest(unfinishedDailyQuests);
       
-      setQuests(prev => [
-        ...prev, 
-        {
-          ...penaltyQuest,
-          id: Date.now().toString(),
-          completed: false
-        }
-      ]);
+      // Add penalty quest
+      const newPenaltyQuest: Quest = {
+        ...penaltyQuest,
+        id: `penalty-${Date.now()}`,
+        completed: false
+      };
+      
+      setQuests(prev => [...prev, newPenaltyQuest]);
+      
+      console.log("Added penalty quest:", newPenaltyQuest);
       
       toast({
         title: "Daily Quests Missed!",
@@ -427,6 +445,7 @@ export const QuestProvider: React.FC<{ children: React.ReactNode }> = ({
         variant: "destructive",
       });
       
+      // Mark unfinished quests as processed for today
       setQuests(prev => 
         prev.map(quest => {
           if (quest.type === "daily" && !quest.completed && (!quest.lastCompleted || quest.lastCompleted !== today)) {
@@ -438,6 +457,12 @@ export const QuestProvider: React.FC<{ children: React.ReactNode }> = ({
           return quest;
         })
       );
+    } else {
+      console.log("No unfinished daily quests found");
+      toast({
+        title: "All Caught Up!",
+        description: "All daily quests are completed. No penalties today!",
+      });
     }
   };
 
