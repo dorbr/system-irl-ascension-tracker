@@ -217,7 +217,7 @@ const StatExplanation: React.FC<StatExplanationProps> = ({ stats, onClose }) => 
         </Button>
       )}
       
-      <div className={`flex items-center gap-2 mb-4 ${isRtl ? 'flex-row-reverse' : ''}`}>
+      <div className="flex items-center justify-center gap-2 mb-4">
         <div 
           className="w-8 h-8 rounded-md flex items-center justify-center text-white text-xs font-medium"
           style={{ backgroundColor: stat.color }}
