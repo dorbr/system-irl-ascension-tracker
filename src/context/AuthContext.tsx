@@ -8,9 +8,12 @@ interface AuthContextType {
   session: Session | null;
   user: User | null;
   loading: boolean;
+  isNewUser: boolean;
+  setIsNewUser: (value: boolean) => void;
   signIn: (email: string, password: string) => Promise<void>;
   signUp: (email: string, password: string) => Promise<void>;
   signOut: () => Promise<void>;
+  completeOnboarding: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -19,6 +22,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isNewUser, setIsNewUser] = useState(false);
 
   useEffect(() => {
     // Set up auth state listener first
@@ -39,6 +43,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             title: "Signed out",
             description: "You have been signed out",
           });
+        }
+
+        if (event === 'SIGNED_UP') {
+          setIsNewUser(true);
         }
       }
     );
@@ -75,12 +83,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const signUp = async (email: string, password: string) => {
     try {
-      const { error } = await supabase.auth.signUp({
+      const { error, data } = await supabase.auth.signUp({
         email,
         password,
       });
 
       if (error) throw error;
+      
+      // Set new user flag to trigger onboarding
+      setIsNewUser(true);
       
       toast({
         title: "Account created",
@@ -107,6 +118,29 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       });
     }
   };
+  
+  const completeOnboarding = async () => {
+    try {
+      // Update user metadata to mark onboarding as completed
+      await supabase
+        .from('profiles')
+        .update({ onboarding_completed: true })
+        .eq('id', user?.id);
+        
+      setIsNewUser(false);
+      
+      toast({
+        title: "Welcome aboard!",
+        description: "Your adventure begins now",
+      });
+    } catch (error: any) {
+      toast({
+        title: "Error completing onboarding",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+  };
 
   return (
     <AuthContext.Provider
@@ -114,9 +148,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         session,
         user,
         loading,
+        isNewUser,
+        setIsNewUser,
         signIn,
         signUp,
         signOut,
+        completeOnboarding,
       }}
     >
       {children}

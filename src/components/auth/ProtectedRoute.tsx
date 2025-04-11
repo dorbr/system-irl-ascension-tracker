@@ -5,7 +5,7 @@ import { useAuth } from "@/context/AuthContext";
 import { Loader2 } from "lucide-react";
 
 const ProtectedRoute: React.FC = () => {
-  const { user, loading } = useAuth();
+  const { user, loading, isNewUser } = useAuth();
 
   if (loading) {
     return (
@@ -18,6 +18,11 @@ const ProtectedRoute: React.FC = () => {
 
   if (!user) {
     return <Navigate to="/auth" replace />;
+  }
+  
+  // Redirect new users to onboarding
+  if (isNewUser) {
+    return <Navigate to="/onboarding" replace />;
   }
 
   return <Outlet />;

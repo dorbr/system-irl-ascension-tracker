@@ -56,6 +56,7 @@ interface UserContextType {
   updateUserXp: (amount: number) => void;
   updateUserStat: (statName: string, amount: number) => void;
   updateResources: (gold: number, mana: number) => void;
+  updateUserName: (name: string) => void;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -144,9 +145,22 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
     });
   };
 
+  const updateUserName = (name: string) => {
+    setUserData((prev) => ({
+      ...prev,
+      name,
+    }));
+  };
+
   return (
     <UserContext.Provider
-      value={{ userData, updateUserXp, updateUserStat, updateResources }}
+      value={{ 
+        userData, 
+        updateUserXp, 
+        updateUserStat, 
+        updateResources,
+        updateUserName 
+      }}
     >
       {children}
     </UserContext.Provider>

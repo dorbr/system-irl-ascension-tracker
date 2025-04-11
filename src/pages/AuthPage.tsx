@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Navigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
@@ -22,7 +21,7 @@ const signupSchema = loginSchema;
 type AuthFormValues = z.infer<typeof loginSchema>;
 
 const AuthPage: React.FC = () => {
-  const { user, signIn, signUp } = useAuth();
+  const { user, isNewUser, signIn, signUp } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [activeTab, setActiveTab] = useState<"login" | "signup">("login");
 
@@ -57,7 +56,6 @@ const AuthPage: React.FC = () => {
     setIsLoading(true);
     try {
       await signUp(values.email, values.password);
-      // Switch to login tab after successful signup
       setActiveTab("login");
     } catch (error) {
       console.error("Signup error:", error);
@@ -66,8 +64,10 @@ const AuthPage: React.FC = () => {
     }
   };
 
-  // Redirect if already logged in
   if (user) {
+    if (isNewUser) {
+      return <Navigate to="/onboarding" replace />;
+    }
     return <Navigate to="/" replace />;
   }
 
