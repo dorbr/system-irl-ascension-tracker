@@ -50,7 +50,9 @@ const QuestForm: React.FC<QuestFormProps> = ({ availableStats, onCreateQuest }) 
   }, [isDungeon]);
   
   const handleAddStat = (stat: string) => {
-    if (!stat || newQuest.stats.includes(stat)) return;
+    // Skip if stat is empty, the placeholder value, or already included
+    if (!stat || stat === "select-placeholder" || newQuest.stats.includes(stat)) return;
+    
     setNewQuest({
       ...newQuest,
       stats: [...newQuest.stats, stat],
@@ -128,6 +130,8 @@ const QuestForm: React.FC<QuestFormProps> = ({ availableStats, onCreateQuest }) 
       tags: [],
       difficulty: "C",
     });
+    setNewStat("");
+    setNewTag("");
   };
 
   return (

@@ -39,7 +39,8 @@ const StatSelector: React.FC<StatSelectorProps> = ({
             <SelectValue placeholder="Select a Stat" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="">Select a Stat</SelectItem>
+            {/* Replace empty string with a non-empty placeholder value */}
+            <SelectItem value="select-placeholder" disabled>Select a Stat</SelectItem>
             {availableStats.map(stat => (
               <SelectItem key={stat} value={stat}>{stat}</SelectItem>
             ))}
@@ -51,7 +52,7 @@ const StatSelector: React.FC<StatSelectorProps> = ({
           size="sm"
           variant="outline"
           className="border-rpg-primary/50 hover:bg-rpg-primary/10"
-          disabled={!newStat}
+          disabled={!newStat || newStat === "select-placeholder"}
         >
           Add
         </Button>
