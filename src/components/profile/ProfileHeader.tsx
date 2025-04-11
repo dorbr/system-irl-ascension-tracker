@@ -4,6 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { User, ChevronUp, ChevronDown } from "lucide-react";
 import { UserData } from "@/context/UserContext";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
 
 interface ProfileHeaderProps {
   profileUsername: string | null;
@@ -22,15 +23,22 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
 }) => {
   return (
     <div className="mb-4 text-center">
-      <Avatar className="w-24 h-24 mx-auto mb-2 bg-rpg-primary/20 border-2 border-rpg-primary/30">
-        {avatarUrl ? (
-          <AvatarImage src={avatarUrl} alt={profileUsername || userData.name} />
-        ) : (
-          <AvatarFallback className="text-4xl font-bold">
-            {profileUsername?.charAt(0) || userData.name.charAt(0)}
-          </AvatarFallback>
-        )}
-      </Avatar>
+      <div className="w-24 h-24 mx-auto mb-2 rounded-full overflow-hidden border-2 border-rpg-primary/30">
+        <AspectRatio ratio={1} className="h-full">
+          {avatarUrl ? (
+            <img 
+              src={avatarUrl} 
+              alt={profileUsername || userData.name} 
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            <div className="bg-rpg-primary/20 text-4xl font-bold flex items-center justify-center h-full">
+              {profileUsername?.charAt(0) || userData.name.charAt(0)}
+            </div>
+          )}
+        </AspectRatio>
+      </div>
+      
       <h1 className="text-2xl font-bold">{profileUsername || userData.name}</h1>
       <div className="text-rpg-primary font-medium mt-1">{userData.class.name}</div>
       

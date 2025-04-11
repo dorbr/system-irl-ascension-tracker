@@ -5,6 +5,8 @@ import { Camera, Loader2, User } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/context/AuthContext";
 import { toast } from "@/hooks/use-toast";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 
 interface AvatarUploaderProps {
   currentAvatarUrl: string | null;
@@ -18,6 +20,7 @@ const AvatarUploader: React.FC<AvatarUploaderProps> = ({
   const { user } = useAuth();
   const [isUploading, setIsUploading] = useState(false);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [sizeError, setSizeError] = useState<string | null>(null);
   
   // Set the preview URL when the component mounts or currentAvatarUrl changes
   useEffect(() => {
@@ -27,6 +30,9 @@ const AvatarUploader: React.FC<AvatarUploaderProps> = ({
   const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file || !user) return;
+    
+    // Clear previous error
+    setSizeError(null);
     
     // Validate file is an image
     if (!file.type.startsWith("image/")) {
@@ -40,11 +46,7 @@ const AvatarUploader: React.FC<AvatarUploaderProps> = ({
     
     // Validate file size (max 2MB)
     if (file.size > 2 * 1024 * 1024) {
-      toast({
-        title: "File too large",
-        description: "Please upload an image smaller than 2MB",
-        variant: "destructive",
-      });
+      setSizeError("Please upload an image smaller than 2MB");
       return;
     }
     
@@ -104,16 +106,31 @@ const AvatarUploader: React.FC<AvatarUploaderProps> = ({
 
   return (
     <div className="flex flex-col items-center mb-4">
+      {sizeError && (
+        <Alert variant="destructive" className="mb-4">
+          <AlertTitle className="text-center">File too large</AlertTitle>
+          <AlertDescription className="text-center">
+            {sizeError}
+          </AlertDescription>
+        </Alert>
+      )}
+      
       <div className="relative">
-        <Avatar className="w-24 h-24 border-2 border-rpg-primary/30">
-          {previewUrl ? (
-            <AvatarImage src={previewUrl} alt="Profile" />
-          ) : (
-            <AvatarFallback className="bg-rpg-primary/20 text-rpg-primary text-3xl">
-              <User />
-            </AvatarFallback>
-          )}
-        </Avatar>
+        <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-rpg-primary/30">
+          <AspectRatio ratio={1} className="h-full">
+            {previewUrl ? (
+              <img 
+                src={previewUrl} 
+                alt="Profile" 
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <div className="bg-rpg-primary/20 text-rpg-primary text-3xl flex items-center justify-center h-full">
+                <User />
+              </div>
+            )}
+          </AspectRatio>
+        </div>
         
         <label 
           htmlFor="avatar-upload" 
