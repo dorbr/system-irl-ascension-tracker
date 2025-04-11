@@ -4,9 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { LogOut, Bell, Moon, Volume2, Languages, Shield, Trash2 } from "lucide-react";
-import { Toggle } from "@/components/ui/toggle";
 import { Separator } from "@/components/ui/separator";
 import { toast } from "@/hooks/use-toast";
+import { useLanguage } from "@/context/LanguageContext";
 import {
   Select,
   SelectContent,
@@ -29,8 +29,7 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ signOut }) => {
   const [notifications, setNotifications] = useState(true);
   const [darkMode, setDarkMode] = useState(false);
   const [sound, setSound] = useState(true);
-  const [language, setLanguage] = useState("english");
-  const [textDirection, setTextDirection] = useState<"ltr" | "rtl">("ltr");
+  const { language, setLanguage, textDirection, t } = useLanguage();
   
   // Language options with direction information
   const languageOptions: LanguageOption[] = [
@@ -43,51 +42,42 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ signOut }) => {
     { value: "japanese", label: "日本語", dir: "ltr" },
   ];
   
-  // Update document direction when language changes
-  useEffect(() => {
-    const selectedLanguage = languageOptions.find(option => option.value === language);
-    if (selectedLanguage) {
-      setTextDirection(selectedLanguage.dir);
-      document.documentElement.dir = selectedLanguage.dir;
-    }
-  }, [language]);
-  
   const handleDarkModeToggle = () => {
     setDarkMode(!darkMode);
     toast({
-      title: !darkMode ? "Dark mode enabled" : "Dark mode disabled",
-      description: "Your preference has been saved.",
+      title: !darkMode ? t('darkModeEnabled') : t('darkModeDisabled'),
+      description: t('prefSaved'),
     });
   };
   
   const handleNotificationsToggle = () => {
     setNotifications(!notifications);
     toast({
-      title: !notifications ? "Notifications enabled" : "Notifications disabled",
-      description: "Your preference has been saved.",
+      title: !notifications ? t('notificationsEnabled') : t('notificationsDisabled'),
+      description: t('prefSaved'),
     });
   };
   
   const handleSoundToggle = () => {
     setSound(!sound);
     toast({
-      title: !sound ? "Sound enabled" : "Sound disabled",
-      description: "Your preference has been saved.",
+      title: !sound ? t('soundEnabled') : t('soundDisabled'),
+      description: t('prefSaved'),
     });
   };
   
   const handleLanguageChange = (value: string) => {
     setLanguage(value);
     toast({
-      title: "Language updated",
-      description: `Your language preference has been set to ${value.charAt(0).toUpperCase() + value.slice(1)}.`,
+      title: t('languageUpdated'),
+      description: `${t('prefSaved')}`,
     });
   };
   
   const handleDeleteAccount = () => {
     toast({
-      title: "Delete account",
-      description: "This feature is not yet implemented.",
+      title: t('deleteAccountTitle'),
+      description: t('deleteAccountDesc'),
       variant: "destructive",
     });
   };
@@ -95,21 +85,21 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ signOut }) => {
   return (
     <div className="space-y-4" dir={textDirection}>
       <div className="text-sm text-muted-foreground mb-2">
-        Manage your account settings and preferences
+        {t('manageAccount')}
       </div>
       
       <Card>
         <CardHeader>
-          <CardTitle className="text-base">Preferences</CardTitle>
-          <CardDescription>Customize your app experience</CardDescription>
+          <CardTitle className="text-base">{t('preferences')}</CardTitle>
+          <CardDescription>{t('customizeExperience')}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className={`flex items-center justify-between ${textDirection === "rtl" ? "flex-row-reverse" : ""}`}>
             <div className={`flex items-center space-x-4 ${textDirection === "rtl" ? "flex-row-reverse space-x-reverse" : ""}`}>
               <Bell size={18} className="text-muted-foreground" />
               <div>
-                <p className="text-sm font-medium">Notifications</p>
-                <p className="text-xs text-muted-foreground">Receive quest reminders and updates</p>
+                <p className="text-sm font-medium">{t('notifications')}</p>
+                <p className="text-xs text-muted-foreground">{t('notificationsDesc')}</p>
               </div>
             </div>
             <Switch 
@@ -122,8 +112,8 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ signOut }) => {
             <div className={`flex items-center space-x-4 ${textDirection === "rtl" ? "flex-row-reverse space-x-reverse" : ""}`}>
               <Moon size={18} className="text-muted-foreground" />
               <div>
-                <p className="text-sm font-medium">Dark Mode</p>
-                <p className="text-xs text-muted-foreground">Switch between light and dark themes</p>
+                <p className="text-sm font-medium">{t('darkMode')}</p>
+                <p className="text-xs text-muted-foreground">{t('darkModeDesc')}</p>
               </div>
             </div>
             <Switch 
@@ -136,8 +126,8 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ signOut }) => {
             <div className={`flex items-center space-x-4 ${textDirection === "rtl" ? "flex-row-reverse space-x-reverse" : ""}`}>
               <Volume2 size={18} className="text-muted-foreground" />
               <div>
-                <p className="text-sm font-medium">Sound Effects</p>
-                <p className="text-xs text-muted-foreground">Play sounds for actions and achievements</p>
+                <p className="text-sm font-medium">{t('soundEffects')}</p>
+                <p className="text-xs text-muted-foreground">{t('soundEffectsDesc')}</p>
               </div>
             </div>
             <Switch 
@@ -150,8 +140,8 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ signOut }) => {
             <div className={`flex items-center space-x-4 ${textDirection === "rtl" ? "flex-row-reverse space-x-reverse" : ""}`}>
               <Languages size={18} className="text-muted-foreground" />
               <div>
-                <p className="text-sm font-medium">Language</p>
-                <p className="text-xs text-muted-foreground">Choose your preferred language</p>
+                <p className="text-sm font-medium">{t('language')}</p>
+                <p className="text-xs text-muted-foreground">{t('languageDesc')}</p>
               </div>
             </div>
             <Select value={language} onValueChange={handleLanguageChange}>
@@ -172,20 +162,20 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ signOut }) => {
       
       <Card>
         <CardHeader>
-          <CardTitle className="text-base">Account</CardTitle>
-          <CardDescription>Manage your account settings</CardDescription>
+          <CardTitle className="text-base">{t('account')}</CardTitle>
+          <CardDescription>{t('manageAccount')}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-2">
           <Button 
             variant="outline" 
             className="w-full justify-start"
             onClick={() => toast({
-              title: "Privacy Settings",
-              description: "This feature is not yet implemented."
+              title: t('privacySettingsTitle'),
+              description: t('privacySettingsDesc')
             })}
           >
             <Shield size={18} className={textDirection === "rtl" ? "ml-2" : "mr-2"} />
-            Privacy Settings
+            {t('privacySettings')}
           </Button>
           
           <Button 
@@ -194,7 +184,7 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ signOut }) => {
             onClick={handleDeleteAccount}
           >
             <Trash2 size={18} className={textDirection === "rtl" ? "ml-2" : "mr-2"} />
-            Delete Account
+            {t('deleteAccount')}
           </Button>
         </CardContent>
         <CardFooter>
@@ -204,7 +194,7 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ signOut }) => {
             onClick={signOut}
           >
             <LogOut size={16} className={textDirection === "rtl" ? "ml-2" : "mr-2"} />
-            Sign Out
+            {t('signOut')}
           </Button>
         </CardFooter>
       </Card>
