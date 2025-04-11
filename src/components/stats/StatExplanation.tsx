@@ -43,7 +43,7 @@ const StatExplanation: React.FC<StatExplanationProps> = ({ stats, onClose }) => 
           {t('benefits').replace('{stat}', stat.name)}
         </h4>
         <p className={`text-sm ${isRtl ? "text-right" : ""}`}>
-          {stat.benefits}
+          {stat.benefit || "No benefits information available"}
         </p>
       </div>
       
@@ -52,7 +52,7 @@ const StatExplanation: React.FC<StatExplanationProps> = ({ stats, onClose }) => 
           {t('howToImprove').replace('{stat}', stat.name)}
         </h4>
         <p className={`text-sm ${isRtl ? "text-right" : ""}`}>
-          {stat.description}
+          {stat.description || "No improvement information available"}
         </p>
       </div>
     </div>
