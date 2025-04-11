@@ -5,6 +5,8 @@ import { useUser } from "@/context/UserContext";
 import { toast } from "@/hooks/use-toast";
 import QuestTabs from "@/components/quests/QuestTabs";
 import DailyQuestTimer from "@/components/quests/DailyQuestTimer";
+import { Button } from "@/components/ui/button";
+import { Clock } from "lucide-react";
 
 const QuestsPage = () => {
   const { quests, addQuest, completeQuest, resetAllQuests, checkUnfinishedDailyQuests } = useQuests();
@@ -45,11 +47,29 @@ const QuestsPage = () => {
   const handleDayEnd = () => {
     checkUnfinishedDailyQuests();
   };
+  
+  const handleDebugTimerEnd = () => {
+    toast({
+      title: "Debug Mode",
+      description: "Simulating end of day penalty check",
+    });
+    checkUnfinishedDailyQuests();
+  };
 
   return (
     <div className="p-4">
-      <div className="flex justify-end mb-4">
+      <div className="flex justify-between items-center mb-4">
         <DailyQuestTimer onTimeExpired={handleDayEnd} />
+        
+        <Button 
+          variant="outline"
+          size="sm"
+          onClick={handleDebugTimerEnd}
+          className="flex items-center gap-1.5 text-sm"
+        >
+          <Clock size={14} className="text-amber-400" />
+          Debug Timer
+        </Button>
       </div>
       <div className="glass-card rounded-lg p-4">
         <QuestTabs
