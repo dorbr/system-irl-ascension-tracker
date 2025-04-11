@@ -7,6 +7,13 @@ import { LogOut, Bell, Moon, Volume2, Languages, Shield, Trash2 } from "lucide-r
 import { Toggle } from "@/components/ui/toggle";
 import { Separator } from "@/components/ui/separator";
 import { toast } from "@/hooks/use-toast";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 
 interface ProfileSettingsProps {
   signOut: () => void;
@@ -16,7 +23,7 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ signOut }) => {
   const [notifications, setNotifications] = useState(true);
   const [darkMode, setDarkMode] = useState(false);
   const [sound, setSound] = useState(true);
-  const [language, setLanguage] = useState("English");
+  const [language, setLanguage] = useState("english");
   
   const handleDarkModeToggle = () => {
     setDarkMode(!darkMode);
@@ -39,6 +46,14 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ signOut }) => {
     toast({
       title: !sound ? "Sound enabled" : "Sound disabled",
       description: "Your preference has been saved.",
+    });
+  };
+  
+  const handleLanguageChange = (value: string) => {
+    setLanguage(value);
+    toast({
+      title: "Language updated",
+      description: `Your language preference has been set to ${value.charAt(0).toUpperCase() + value.slice(1)}.`,
     });
   };
   
@@ -102,6 +117,28 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ signOut }) => {
               checked={sound} 
               onCheckedChange={handleSoundToggle} 
             />
+          </div>
+          
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-4">
+              <Languages size={18} className="text-muted-foreground" />
+              <div>
+                <p className="text-sm font-medium">Language</p>
+                <p className="text-xs text-muted-foreground">Choose your preferred language</p>
+              </div>
+            </div>
+            <Select value={language} onValueChange={handleLanguageChange}>
+              <SelectTrigger className="w-32">
+                <SelectValue placeholder="Select language" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="english">English</SelectItem>
+                <SelectItem value="spanish">Español</SelectItem>
+                <SelectItem value="french">Français</SelectItem>
+                <SelectItem value="german">Deutsch</SelectItem>
+                <SelectItem value="japanese">日本語</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
         </CardContent>
       </Card>
