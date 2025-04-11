@@ -1,0 +1,42 @@
+
+@layer components {
+  .glass-card {
+    @apply bg-background/30 backdrop-blur-lg border border-white/10 shadow-md;
+  }
+  
+  .stat-card {
+    @apply rounded-lg bg-secondary/50 p-3 flex items-center justify-between transition-all hover:bg-secondary/70;
+  }
+
+  .progress-bar {
+    @apply h-2 rounded-full bg-rpg-primary/20 overflow-hidden;
+  }
+
+  .progress-fill {
+    @apply h-full bg-rpg-primary rounded-full transition-all duration-500;
+  }
+
+  .quest-item {
+    @apply p-3 rounded-md border border-border/50 hover:border-rpg-primary/50 transition-colors;
+  }
+
+  .settings-row {
+    @apply flex items-center justify-between;
+  }
+  
+  .settings-icon-wrapper {
+    @apply flex-shrink-0 w-6 flex justify-center;
+  }
+  
+  .settings-text-wrapper {
+    @apply flex flex-col;
+  }
+  
+  .settings-title {
+    @apply text-sm font-medium leading-none mb-1;
+  }
+  
+  .settings-description {
+    @apply text-xs text-muted-foreground;
+  }
+}

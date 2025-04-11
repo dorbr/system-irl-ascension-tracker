@@ -1,0 +1,48 @@
+
+/* RTL Support */
+.rtl {
+  direction: rtl;
+  text-align: right;
+}
+
+/* Form Controls */
+.rtl .radix-select-trigger,
+.rtl .radix-select-content,
+.rtl .radix-select-item,
+.rtl input, 
+.rtl textarea,
+.rtl label {
+  text-align: right;
+}
+
+/* Button Alignment */
+.rtl button {
+  text-align: right;
+}
+
+.rtl button svg {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+/* Tab and Card Content */
+.rtl .tabs-content,
+.rtl .card-content,
+.rtl .settings-item-text {
+  text-align: right;
+}
+
+/* Utility classes for RTL support */
+.rtl-row-reverse {
+  @apply rtl:flex-row-reverse;
+}
+
+.space-x-reverse > * + * {
+  margin-right: var(--tw-space-x-reverse);
+  margin-left: 0;
+}
+
+/* Center content in both RTL and LTR */
+.centered-content {
+  @apply mx-auto text-center;
+}

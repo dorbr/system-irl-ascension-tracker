@@ -1,0 +1,10 @@
+
+@layer utilities {
+  .rpg-shadow {
+    @apply shadow-[0_4px_12px_-2px_rgba(155,135,245,0.3)];
+  }
+  
+  .text-glow {
+    @apply text-rpg-primary drop-shadow-[0_0_8px_rgba(155,135,245,0.5)];
+  }
+}
