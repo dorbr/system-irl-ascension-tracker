@@ -1,7 +1,7 @@
 
 import React, { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ScrollText, Swords, PlusCircle, Calendar, Star, RotateCcw } from "lucide-react";
+import { ScrollText, Swords, PlusCircle, Calendar, Star, RotateCcw, AlertTriangle } from "lucide-react";
 import { Quest } from "@/context/QuestContext";
 import QuestList from "./QuestList";
 import QuestForm from "./QuestForm";
@@ -41,8 +41,11 @@ const QuestTabs: React.FC<QuestTabsProps> = ({
   const [selectedDungeon, setSelectedDungeon] = useState<Quest | null>(null);
   const [showStrategyPlanner, setShowStrategyPlanner] = useState(false);
   
+  // Get penalty quests from completed quests list
+  const penaltyQuests = completedQuests.filter(quest => quest.type === "penalty" && !quest.completed);
+  
   // Combine daily and main quests for the "All Quests" tab
-  const allQuests = [...dailyQuests, ...mainQuests];
+  const allQuests = [...dailyQuests, ...mainQuests, ...penaltyQuests];
   
   const handleResetQuests = () => {
     if (onResetQuests) {
@@ -64,7 +67,7 @@ const QuestTabs: React.FC<QuestTabsProps> = ({
   return (
     <Tabs defaultValue="quests">
       <div className="flex justify-between items-center mb-4">
-        <TabsList className="grid grid-cols-3 bg-secondary/50">
+        <TabsList className="grid grid-cols-4 bg-secondary/50">
           <TabsTrigger value="quests" className="flex items-center gap-1">
             <ScrollText size={14} />
             <span className="hidden sm:inline">All Quests</span>
@@ -78,6 +81,15 @@ const QuestTabs: React.FC<QuestTabsProps> = ({
             <span className="inline-flex items-center justify-center bg-secondary/60 text-xs rounded-full h-5 min-w-5 px-1">
               {dungeonQuests.length}
             </span>
+          </TabsTrigger>
+          <TabsTrigger value="penalties" className="flex items-center gap-1">
+            <AlertTriangle size={14} />
+            <span className="hidden sm:inline">Penalties</span>
+            {penaltyQuests.length > 0 && (
+              <span className="inline-flex items-center justify-center bg-red-500/60 text-xs rounded-full h-5 min-w-5 px-1">
+                {penaltyQuests.length}
+              </span>
+            )}
           </TabsTrigger>
           <TabsTrigger value="create" className="flex items-center gap-1">
             <PlusCircle size={14} />
@@ -109,6 +121,12 @@ const QuestTabs: React.FC<QuestTabsProps> = ({
               <Star size={14} className="text-yellow-400" />
               <span className="text-yellow-400">Main: {mainQuests.length}</span>
             </div>
+            {penaltyQuests.length > 0 && (
+              <div className="flex items-center gap-1 text-xs">
+                <AlertTriangle size={14} className="text-red-400" />
+                <span className="text-red-400">Penalties: {penaltyQuests.length}</span>
+              </div>
+            )}
           </div>
           <div className="text-xs text-muted-foreground">
             Total: {allQuests.length}
@@ -148,6 +166,24 @@ const QuestTabs: React.FC<QuestTabsProps> = ({
               You haven't created any dungeon challenges yet. Create your first challenge to test your limits!
             </p>
             <Swords size={40} className="mx-auto text-muted-foreground/50" />
+          </div>
+        )}
+      </TabsContent>
+      
+      <TabsContent value="penalties">
+        {penaltyQuests.length > 0 ? (
+          <QuestList 
+            quests={penaltyQuests}
+            onComplete={onCompleteQuest}
+            emptyMessage="No penalty quests" 
+          />
+        ) : (
+          <div className="text-center py-8 px-4">
+            <h3 className="font-medium text-lg mb-2">No Penalty Quests</h3>
+            <p className="text-muted-foreground text-sm mb-4">
+              You don't have any penalty quests. Keep completing your daily quests to avoid penalties!
+            </p>
+            <AlertTriangle size={40} className="mx-auto text-muted-foreground/50" />
           </div>
         )}
       </TabsContent>

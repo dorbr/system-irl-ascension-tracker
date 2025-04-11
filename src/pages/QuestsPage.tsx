@@ -18,6 +18,7 @@ const QuestsPage = () => {
   const dailyQuests = quests.filter(quest => quest.type === "daily" && !quest.completed);
   const mainQuests = quests.filter(quest => quest.type === "main" && !quest.completed);
   const dungeonQuests = quests.filter(quest => quest.type === "dungeon" && !quest.completed);
+  const penaltyQuests = quests.filter(quest => quest.type === "penalty" && !quest.completed);
   const completedQuests = quests.filter(quest => quest.completed);
   
   const handleCompleteQuest = (quest: any) => {
@@ -60,6 +61,9 @@ const QuestsPage = () => {
     checkUnfinishedDailyQuests();
   };
 
+  // Combine all active quests for "All" tab
+  const allActiveQuests = [...dailyQuests, ...mainQuests, ...penaltyQuests];
+
   return (
     <div className="p-4">
       <div className="flex justify-between items-center mb-4">
@@ -80,7 +84,7 @@ const QuestsPage = () => {
           dailyQuests={dailyQuests}
           mainQuests={mainQuests}
           dungeonQuests={dungeonQuests}
-          completedQuests={completedQuests}
+          completedQuests={[...penaltyQuests, ...completedQuests]}
           availableStats={availableStats}
           onCompleteQuest={handleCompleteQuest}
           onCreateQuest={handleCreateQuest}
