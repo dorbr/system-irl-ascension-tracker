@@ -1,6 +1,5 @@
 
 import React, { useState } from "react";
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight, Users, ScrollText } from "lucide-react";
 import QuestsPage from "./QuestsPage";
@@ -42,7 +41,7 @@ const CrewPage = () => {
         </div>
       </div>
 
-      {/* Sliding content area */}
+      {/* Content area */}
       <div className="relative w-full h-full overflow-hidden">
         <div 
           className="flex transition-transform duration-300 h-full"

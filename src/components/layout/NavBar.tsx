@@ -1,15 +1,14 @@
 
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { Home, ScrollText, BarChart2, History, User, Users } from "lucide-react";
+import { Home, BarChart2, History, User, Users } from "lucide-react";
 
 const NavBar = () => {
   const navItems = [
     { to: "/", icon: Home, label: "Home" },
-    { to: "/quests", icon: ScrollText, label: "Quests" },
+    { to: "/crew", icon: Users, label: "Crew" },
     { to: "/stats", icon: BarChart2, label: "Stats" },
     { to: "/shadows", icon: History, label: "Shadows" },
-    { to: "/social", icon: Users, label: "Social" },
     { to: "/profile", icon: User, label: "Profile" },
   ];
 
