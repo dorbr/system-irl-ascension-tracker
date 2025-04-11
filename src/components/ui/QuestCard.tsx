@@ -1,10 +1,15 @@
 
 import React from "react";
 import { Quest } from "@/context/QuestContext";
-import StatBadge from "./StatBadge";
-import { CheckCircle, Circle, Shield, Star, Calendar, Award, Swords, Scroll } from "lucide-react";
 import { useUser } from "@/context/UserContext";
 import { cn } from "@/lib/utils";
+import { QuestTypeIndicator, getQuestTypeStyles } from "@/components/quests/card/QuestTypeIndicator";
+import QuestStats from "@/components/quests/card/QuestStats";
+import QuestTags from "@/components/quests/card/QuestTags";
+import QuestStreak from "@/components/quests/card/QuestStreak";
+import CompleteButton from "@/components/quests/card/CompleteButton";
+import StrategyIndicator from "@/components/quests/card/StrategyIndicator";
+import XpReward from "@/components/quests/card/XpReward";
 
 interface QuestCardProps {
   quest: Quest;
@@ -12,77 +17,6 @@ interface QuestCardProps {
   onClick?: () => void;
   className?: string;
 }
-
-const getDifficultyColor = (difficulty?: string): string => {
-  switch (difficulty) {
-    case "E": return "text-gray-400";
-    case "D": return "text-green-500";
-    case "C": return "text-blue-500";
-    case "B": return "text-purple-500";
-    case "A": return "text-orange-500";
-    case "S": return "text-red-500";
-    default: return "text-gray-500";
-  }
-};
-
-const getQuestTypeStyles = (type: string): { 
-  icon: React.ReactNode; 
-  borderColor: string;
-  bgColor: string;
-  label: string;
-  textColor: string;
-} => {
-  switch (type) {
-    case "main":
-      return { 
-        icon: <Star size={16} className="text-yellow-400" />,
-        borderColor: "border-yellow-500/30",
-        bgColor: "bg-yellow-500/5",
-        label: "Main Quest",
-        textColor: "text-yellow-400"
-      };
-    case "daily":
-      return { 
-        icon: <Calendar size={16} className="text-blue-400" />,
-        borderColor: "border-blue-500/30",
-        bgColor: "bg-blue-500/5",
-        label: "Daily Quest",
-        textColor: "text-blue-400"
-      };
-    case "penalty":
-      return { 
-        icon: <Shield size={16} className="text-red-400" />,
-        borderColor: "border-red-500/30", 
-        bgColor: "bg-red-500/5",
-        label: "Penalty Quest",
-        textColor: "text-red-400"
-      };
-    case "reward":
-      return { 
-        icon: <Award size={16} className="text-green-400" />,
-        borderColor: "border-green-500/30", 
-        bgColor: "bg-green-500/5",
-        label: "Reward Quest",
-        textColor: "text-green-400"
-      };
-    case "dungeon":
-      return { 
-        icon: <Swords size={16} className="text-rpg-accent" />,
-        borderColor: "border-rpg-accent/30",
-        bgColor: "bg-rpg-accent/5",
-        label: "Dungeon Challenge",
-        textColor: "text-rpg-accent"
-      };
-    default:
-      return { 
-        icon: <Calendar size={16} className="text-blue-400" />,
-        borderColor: "border-blue-500/30",
-        bgColor: "bg-blue-500/5",
-        label: "Quest",
-        textColor: "text-blue-400"
-      };
-  }
-};
 
 const QuestCard: React.FC<QuestCardProps> = ({
   quest,
@@ -133,20 +67,7 @@ const QuestCard: React.FC<QuestCardProps> = ({
         <div className="flex-1">
           {/* Header section with quest type and title */}
           <div className="flex flex-col gap-2 mb-3">
-            <div className="flex items-center gap-2 flex-wrap">
-              <div className="flex items-center gap-1.5">
-                {typeStyles.icon}
-                <span className={`text-xs font-medium px-1.5 py-0.5 rounded-full bg-secondary/40 ${typeStyles.textColor}`}>
-                  {typeStyles.label}
-                </span>
-              </div>
-              
-              {quest.type === "dungeon" && quest.difficulty && (
-                <div className={cn("text-xs font-bold px-1.5 py-0.5 rounded", getDifficultyColor(quest.difficulty))}>
-                  {quest.difficulty}-Rank
-                </div>
-              )}
-            </div>
+            <QuestTypeIndicator type={quest.type} difficulty={quest.difficulty} />
             <h3 className="font-semibold text-sm">{quest.title}</h3>
           </div>
           
@@ -154,70 +75,32 @@ const QuestCard: React.FC<QuestCardProps> = ({
           <p className="text-xs text-muted-foreground mb-3">{quest.description}</p>
           
           {/* Stats */}
-          {quest.stats.length > 0 && (
-            <div className="flex flex-wrap gap-1 mb-3">
-              {quest.stats.map((stat) => (
-                <StatBadge
-                  key={stat}
-                  name=""
-                  abbreviation={stat}
-                  color={getStatColor(stat)}
-                />
-              ))}
-            </div>
-          )}
+          <QuestStats stats={quest.stats} getStatColor={getStatColor} />
           
           {/* Tags and streak */}
           <div className="flex items-center justify-between mt-2">
-            {quest.tags.length > 0 && (
-              <div className="flex flex-wrap gap-1">
-                {quest.tags.map((tag) => (
-                  <span key={tag} className="text-xs text-muted-foreground bg-secondary/30 px-1.5 py-0.5 rounded">
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            )}
-            
-            {quest.type === "daily" && quest.streak && quest.streak > 1 && (
-              <div className="text-xs font-medium text-rpg-primary ml-2">
-                🔥 {quest.streak} days
-              </div>
-            )}
+            <QuestTags tags={quest.tags} />
+            <QuestStreak type={quest.type} streak={quest.streak} />
           </div>
         </div>
         
         {/* Right side with complete button */}
         <div className="flex flex-col items-end">
-          <button
-            onClick={(e) => {
+          <CompleteButton 
+            completed={quest.completed} 
+            onComplete={(e) => {
               e.stopPropagation();
               onComplete();
-            }}
-            disabled={quest.completed}
-            className="p-1 transition-transform hover:scale-110 disabled:opacity-50 disabled:hover:scale-100"
-          >
-            {quest.completed ? (
-              <CheckCircle size={24} className="text-rpg-primary" />
-            ) : (
-              <Circle size={24} className="text-muted-foreground" />
-            )}
-          </button>
+            }} 
+          />
         </div>
       </div>
       
-      {/* XP reward label now at bottom right */}
-      <div className="text-sm font-semibold text-rpg-primary absolute bottom-3 right-3">
-        +{quest.xpReward} XP
-      </div>
+      {/* XP reward label */}
+      <XpReward xpReward={quest.xpReward} />
       
       {/* Strategy planning indicator for dungeons */}
-      {quest.type === "dungeon" && isClickable && (
-        <div className="absolute top-3 right-3 text-xs flex items-center gap-1 bg-rpg-accent/10 px-1.5 py-0.5 rounded-full">
-          <Scroll size={12} className="text-rpg-accent" />
-          <span className="text-rpg-accent font-medium">Strategy</span>
-        </div>
-      )}
+      <StrategyIndicator isClickable={isClickable && quest.type === "dungeon"} />
     </div>
   );
 };
