@@ -2,10 +2,9 @@
 /* RTL Support - Selective approach */
 .rtl {
   direction: rtl;
-  text-align: right;
 }
 
-/* Text alignment for content */
+/* Text alignment override - keep text centered */
 .rtl p,
 .rtl h1, 
 .rtl h2, 
@@ -16,10 +15,10 @@
 .rtl li,
 .rtl label,
 .rtl .rtl-text {
-  text-align: right;
+  /* Remove text-align: right; to keep text centered as defined in components */
 }
 
-/* Form Controls - only text alignment */
+/* Form Controls - only direction */
 .rtl .radix-select-trigger,
 .rtl .radix-select-content,
 .rtl .radix-select-item,
@@ -42,3 +41,9 @@
 .centered-content {
   @apply mx-auto text-center;
 }
+
+/* Explicitly exclude navigation from RTL changes */
+.rtl nav {
+  direction: ltr;
+}
+

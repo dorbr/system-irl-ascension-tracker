@@ -2,14 +2,17 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import { Home, BarChart2, History, User, Users } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
 
 const NavBar = () => {
+  const { t } = useLanguage();
+  
   const navItems = [
-    { to: "/", icon: Home, label: "Home" },
-    { to: "/crew", icon: Users, label: "Road" },
-    { to: "/stats", icon: BarChart2, label: "Stats" },
-    { to: "/shadows", icon: History, label: "Shadows" },
-    { to: "/profile", icon: User, label: "Profile" },
+    { to: "/", icon: Home, label: t("home") },
+    { to: "/crew", icon: Users, label: t("road") },
+    { to: "/stats", icon: BarChart2, label: t("stats") },
+    { to: "/shadows", icon: History, label: t("shadows") },
+    { to: "/profile", icon: User, label: t("profile") },
   ];
 
   return (
