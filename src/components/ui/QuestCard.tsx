@@ -187,9 +187,8 @@ const QuestCard: React.FC<QuestCardProps> = ({
           </div>
         </div>
         
-        {/* Right side with XP and complete button */}
+        {/* Right side with complete button */}
         <div className="flex flex-col items-end">
-          <div className="text-sm font-semibold text-rpg-primary mb-2">+{quest.xpReward} XP</div>
           <button
             onClick={(e) => {
               e.stopPropagation();
@@ -205,6 +204,11 @@ const QuestCard: React.FC<QuestCardProps> = ({
             )}
           </button>
         </div>
+      </div>
+      
+      {/* XP reward label now at bottom right */}
+      <div className="text-sm font-semibold text-rpg-primary absolute bottom-3 right-3">
+        +{quest.xpReward} XP
       </div>
       
       {/* Strategy planning indicator for dungeons */}
