@@ -12,6 +12,8 @@ import ProfileHeader from "@/components/profile/ProfileHeader";
 import ProfileStats from "@/components/profile/ProfileStats";
 import QuestStats from "@/components/profile/QuestStats";
 import ClassEvolution from "@/components/profile/ClassEvolution";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import ProfileSettings from "@/components/profile/ProfileSettings";
 
 interface ProfileData {
   username: string | null;
@@ -87,28 +89,32 @@ const ProfilePage = () => {
           toggleEditForm={toggleEditForm}
         />
         
-        {showEditForm ? (
-          <EditProfileForm 
-            currentUsername={profileData.username || userData.name} 
-            avatarUrl={profileData.avatar_url}
-            onProfileUpdate={handleProfileUpdate}
-          />
-        ) : (
-          <>
-            <ProfileStats userData={userData} topStats={topStats} />
-            <QuestStats quests={quests} shadows={shadows} />
-            <ClassEvolution userData={userData} />
-          </>
-        )}
-        
-        <Button 
-          variant="outline" 
-          className="w-full mt-4 bg-destructive/10 border-destructive/20 hover:bg-destructive/20"
-          onClick={signOut}
-        >
-          <LogOut size={16} className="mr-2" />
-          Sign Out
-        </Button>
+        <Tabs defaultValue="profile" className="mt-4">
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="profile">Profile</TabsTrigger>
+            <TabsTrigger value="settings">Settings</TabsTrigger>
+          </TabsList>
+          
+          <TabsContent value="profile">
+            {showEditForm ? (
+              <EditProfileForm 
+                currentUsername={profileData.username || userData.name} 
+                avatarUrl={profileData.avatar_url}
+                onProfileUpdate={handleProfileUpdate}
+              />
+            ) : (
+              <>
+                <ProfileStats userData={userData} topStats={topStats} />
+                <QuestStats quests={quests} shadows={shadows} />
+                <ClassEvolution userData={userData} />
+              </>
+            )}
+          </TabsContent>
+          
+          <TabsContent value="settings">
+            <ProfileSettings signOut={signOut} />
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );
