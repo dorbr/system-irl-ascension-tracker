@@ -6,7 +6,7 @@ import { toast } from "@/hooks/use-toast";
 import QuestTabs from "@/components/quests/QuestTabs";
 
 const QuestsPage = () => {
-  const { quests, addQuest, completeQuest } = useQuests();
+  const { quests, addQuest, completeQuest, resetAllQuests } = useQuests();
   const { updateUserXp, updateUserStat, userData } = useUser();
   
   const availableStats = userData.stats.map(stat => stat.abbreviation);
@@ -52,6 +52,7 @@ const QuestsPage = () => {
           availableStats={availableStats}
           onCompleteQuest={handleCompleteQuest}
           onCreateQuest={handleCreateQuest}
+          onResetQuests={resetAllQuests}
         />
       </div>
     </div>

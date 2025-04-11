@@ -1,10 +1,12 @@
 
 import React from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ScrollText, Swords, PlusCircle, Calendar, Star } from "lucide-react";
+import { ScrollText, Swords, PlusCircle, Calendar, Star, RotateCcw } from "lucide-react";
 import { Quest } from "@/context/QuestContext";
 import QuestList from "./QuestList";
 import QuestForm from "./QuestForm";
+import { Button } from "@/components/ui/button";
+import { toast } from "@/hooks/use-toast";
 
 interface QuestTabsProps {
   dailyQuests: Quest[];
@@ -22,6 +24,7 @@ interface QuestTabsProps {
     tags: string[];
     difficulty?: "E" | "D" | "C" | "B" | "A" | "S";
   }) => void;
+  onResetQuests?: () => void;
 }
 
 const QuestTabs: React.FC<QuestTabsProps> = ({
@@ -31,33 +34,58 @@ const QuestTabs: React.FC<QuestTabsProps> = ({
   completedQuests,
   availableStats,
   onCompleteQuest,
-  onCreateQuest
+  onCreateQuest,
+  onResetQuests
 }) => {
   // Combine daily and main quests for the "All Quests" tab
   const allQuests = [...dailyQuests, ...mainQuests];
   
+  const handleResetQuests = () => {
+    if (onResetQuests) {
+      onResetQuests();
+      toast({
+        title: "Quests Reset",
+        description: "All quests have been reset to defaults",
+      });
+    }
+  };
+  
   return (
     <Tabs defaultValue="quests">
-      <TabsList className="grid grid-cols-3 bg-secondary/50">
-        <TabsTrigger value="quests" className="flex items-center gap-1">
-          <ScrollText size={14} />
-          <span className="hidden sm:inline">All Quests</span>
-          <span className="inline-flex items-center justify-center bg-secondary/60 text-xs rounded-full h-5 min-w-5 px-1">
-            {allQuests.length}
-          </span>
-        </TabsTrigger>
-        <TabsTrigger value="dungeons" className="flex items-center gap-1">
-          <Swords size={14} />
-          <span className="hidden sm:inline">Dungeons</span>
-          <span className="inline-flex items-center justify-center bg-secondary/60 text-xs rounded-full h-5 min-w-5 px-1">
-            {dungeonQuests.length}
-          </span>
-        </TabsTrigger>
-        <TabsTrigger value="create" className="flex items-center gap-1">
-          <PlusCircle size={14} />
-          <span className="hidden sm:inline">Create</span>
-        </TabsTrigger>
-      </TabsList>
+      <div className="flex justify-between items-center mb-4">
+        <TabsList className="grid grid-cols-3 bg-secondary/50">
+          <TabsTrigger value="quests" className="flex items-center gap-1">
+            <ScrollText size={14} />
+            <span className="hidden sm:inline">All Quests</span>
+            <span className="inline-flex items-center justify-center bg-secondary/60 text-xs rounded-full h-5 min-w-5 px-1">
+              {allQuests.length}
+            </span>
+          </TabsTrigger>
+          <TabsTrigger value="dungeons" className="flex items-center gap-1">
+            <Swords size={14} />
+            <span className="hidden sm:inline">Dungeons</span>
+            <span className="inline-flex items-center justify-center bg-secondary/60 text-xs rounded-full h-5 min-w-5 px-1">
+              {dungeonQuests.length}
+            </span>
+          </TabsTrigger>
+          <TabsTrigger value="create" className="flex items-center gap-1">
+            <PlusCircle size={14} />
+            <span className="hidden sm:inline">Create</span>
+          </TabsTrigger>
+        </TabsList>
+        
+        {onResetQuests && (
+          <Button 
+            variant="outline" 
+            size="sm" 
+            onClick={handleResetQuests} 
+            className="flex items-center gap-1"
+          >
+            <RotateCcw size={14} />
+            <span className="hidden sm:inline">Reset</span>
+          </Button>
+        )}
+      </div>
       
       <TabsContent value="quests">
         <div className="flex items-center justify-between mb-2 px-1">

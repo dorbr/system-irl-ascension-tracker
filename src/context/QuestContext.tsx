@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useState, useEffect } from "react";
 
 export type QuestDifficulty = "E" | "D" | "C" | "B" | "A" | "S";
@@ -283,6 +284,7 @@ interface QuestContextType {
   addQuest: (quest: Omit<Quest, "id" | "completed">) => void;
   completeQuest: (id: string) => void;
   resetDailyQuests: () => void;
+  resetAllQuests: () => void;
 }
 
 const QuestContext = createContext<QuestContextType | undefined>(undefined);
@@ -292,7 +294,23 @@ export const QuestProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [quests, setQuests] = useState<Quest[]>(() => {
     const savedQuests = localStorage.getItem("system_irl_quests");
-    return savedQuests ? JSON.parse(savedQuests) : defaultQuests;
+    // Check if we have saved quests in localStorage
+    if (savedQuests) {
+      try {
+        const parsedQuests = JSON.parse(savedQuests);
+        // If the saved quests array is empty or invalid, use default quests
+        if (!Array.isArray(parsedQuests) || parsedQuests.length === 0) {
+          return defaultQuests;
+        }
+        return parsedQuests;
+      } catch (error) {
+        console.error("Error parsing saved quests:", error);
+        return defaultQuests;
+      }
+    } else {
+      // If no saved quests, use default quests
+      return defaultQuests;
+    }
   });
 
   useEffect(() => {
@@ -363,9 +381,15 @@ export const QuestProvider: React.FC<{ children: React.ReactNode }> = ({
     );
   };
 
+  // Add a function to reset all quests back to defaults
+  const resetAllQuests = () => {
+    localStorage.removeItem("system_irl_quests");
+    setQuests(defaultQuests);
+  };
+
   return (
     <QuestContext.Provider
-      value={{ quests, addQuest, completeQuest, resetDailyQuests }}
+      value={{ quests, addQuest, completeQuest, resetDailyQuests, resetAllQuests }}
     >
       {children}
     </QuestContext.Provider>
