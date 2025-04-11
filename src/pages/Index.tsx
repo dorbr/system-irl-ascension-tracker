@@ -14,7 +14,7 @@ import { useLanguage } from "@/context/LanguageContext";
 
 const Index = () => {
   const { resetDailyQuests, checkUnfinishedDailyQuests } = useQuests();
-  const { isRtl } = useLanguage();
+  const { isRtl, t } = useLanguage();
   
   // Check and reset daily quests on load
   useEffect(() => {
@@ -29,8 +29,8 @@ const Index = () => {
   const handleDebugTimerEnd = () => {
     console.log("Debug button pressed on home page - checking unfinished quests");
     toast({
-      title: "Debug Mode",
-      description: "Simulating end of day penalty check",
+      title: t("debugMode"),
+      description: t("simulatingEndOfDay"),
     });
     
     // Force check unfinished quests
@@ -49,7 +49,7 @@ const Index = () => {
           className={`flex items-center gap-1.5 text-sm ${isRtl ? "flex-row-reverse" : ""}`}
         >
           <Clock size={14} className="text-amber-400" />
-          Debug Timer
+          {t("debugTimer")}
         </Button>
       </div>
       <UserInfo />

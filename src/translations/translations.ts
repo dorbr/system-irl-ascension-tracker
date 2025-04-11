@@ -7,6 +7,7 @@ import { englishProfile, hebrewProfile } from './profile';
 import { englishSocial, hebrewSocial } from './social';
 import { englishShadows, hebrewShadows } from './shadows';
 import { englishStats, hebrewStats } from './stats';
+import { englishHome, hebrewHome } from './home';
 
 // English translations (default)
 export const englishTranslations: Translations = {
@@ -17,6 +18,7 @@ export const englishTranslations: Translations = {
   ...englishSocial,
   ...englishShadows,
   ...englishStats,
+  ...englishHome,
 } as Translations;
 
 // Hebrew translations
@@ -28,6 +30,7 @@ export const hebrewTranslations: Translations = {
   ...hebrewSocial,
   ...hebrewShadows,
   ...hebrewStats,
+  ...hebrewHome,
 } as Translations;
 
 // Get translations based on selected language

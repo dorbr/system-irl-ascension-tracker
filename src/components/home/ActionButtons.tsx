@@ -7,73 +7,78 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useUser } from "@/context/UserContext";
 import { toast } from "@/hooks/use-toast";
+import { useLanguage } from "@/context/LanguageContext";
 
 const ActionButtons: React.FC = () => {
   const { updateUserXp } = useUser();
+  const { t, isRtl } = useLanguage();
   const [xpAmount, setXpAmount] = useState(10);
 
   const handleLogXp = () => {
     updateUserXp(xpAmount);
     toast({
-      title: "XP Logged",
-      description: `You've gained ${xpAmount} XP!`,
+      title: t("progressLogged"),
+      description: t("earnXp").replace("{xp}", xpAmount.toString()),
     });
   };
 
   return (
-    <div className="flex justify-between gap-3 mb-4 animate-fade-in">
+    <div className={`flex justify-between gap-3 mb-4 animate-fade-in ${isRtl ? "flex-row-reverse" : ""}`}>
       <Dialog>
         <DialogTrigger asChild>
-          <Button variant="outline" className="flex-1 bg-rpg-primary/20 border-rpg-primary/30">
-            <PlusCircle size={18} className="mr-2" />
-            Log XP
+          <Button variant="outline" className={`flex-1 bg-rpg-primary/20 border-rpg-primary/30 ${isRtl ? "flex-row-reverse" : ""}`}>
+            <PlusCircle size={18} className={isRtl ? "ml-2" : "mr-2"} />
+            {t("logXp")}
           </Button>
         </DialogTrigger>
         <DialogContent className="glass-card">
-          <DialogHeader>
-            <DialogTitle>Log Experience Points</DialogTitle>
+          <DialogHeader className={isRtl ? "text-right" : ""}>
+            <DialogTitle>{t("logExperiencePoints")}</DialogTitle>
             <DialogDescription>
-              Track your progress by adding XP for tasks you've completed outside the app.
+              {t("trackProgress")}
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4 pt-4">
             <div className="space-y-2">
-              <Label htmlFor="xp">XP Amount</Label>
+              <Label htmlFor="xp" className={isRtl ? "block text-right" : ""}>{t("xpAmount")}</Label>
               <Input
                 id="xp"
                 type="number"
                 value={xpAmount}
                 onChange={(e) => setXpAmount(Number(e.target.value))}
                 className="bg-secondary/50 border-secondary"
+                dir={isRtl ? "rtl" : "ltr"}
               />
             </div>
-            <Button onClick={handleLogXp}>Log Experience</Button>
+            <div className={isRtl ? "text-right" : ""}>
+              <Button onClick={handleLogXp}>{t("logExperience")}</Button>
+            </div>
           </div>
         </DialogContent>
       </Dialog>
 
       <Dialog>
         <DialogTrigger asChild>
-          <Button variant="outline" className="flex-1 bg-secondary">
-            <Settings size={18} className="mr-2" />
-            System
+          <Button variant="outline" className={`flex-1 bg-secondary ${isRtl ? "flex-row-reverse" : ""}`}>
+            <Settings size={18} className={isRtl ? "ml-2" : "mr-2"} />
+            {t("system")}
           </Button>
         </DialogTrigger>
         <DialogContent className="glass-card">
-          <DialogHeader>
-            <DialogTitle>System Menu</DialogTitle>
+          <DialogHeader className={isRtl ? "text-right" : ""}>
+            <DialogTitle>{t("systemMenu")}</DialogTitle>
             <DialogDescription>
-              Access system functions and settings
+              {t("accessSystemFunctions")}
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4 pt-4">
-            <p className="text-sm text-muted-foreground">
-              System menu functionality will be expanded in future updates.
+            <p className={`text-sm text-muted-foreground ${isRtl ? "text-right" : ""}`}>
+              {t("systemMenuDesc")}
             </p>
             <div className="flex flex-col gap-2">
-              <Button variant="outline">Reset Daily Quests</Button>
-              <Button variant="outline">Export Data</Button>
-              <Button variant="outline">Import Data</Button>
+              <Button variant="outline">{t("resetDailyQuests")}</Button>
+              <Button variant="outline">{t("exportData")}</Button>
+              <Button variant="outline">{t("importData")}</Button>
             </div>
           </div>
         </DialogContent>
