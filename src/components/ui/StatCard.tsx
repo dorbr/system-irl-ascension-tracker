@@ -2,6 +2,7 @@
 import React from "react";
 import { Stat } from "@/context/UserContext";
 import { cn } from "@/lib/utils";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface StatCardProps {
   stat: Stat;
@@ -16,6 +17,8 @@ const StatCard: React.FC<StatCardProps> = ({
   className,
   animate = false
 }) => {
+  const { isRtl } = useLanguage();
+  
   return (
     <div 
       className={cn(
@@ -25,9 +28,12 @@ const StatCard: React.FC<StatCardProps> = ({
         className
       )}
       onClick={onClick}
-      style={{ borderLeft: `3px solid ${stat.color}` }}
+      style={{ 
+        borderLeft: isRtl ? 'none' : `3px solid ${stat.color}`,
+        borderRight: isRtl ? `3px solid ${stat.color}` : 'none'
+      }}
     >
-      <div className="flex items-center gap-2">
+      <div className={`flex items-center gap-2 ${isRtl ? "flex-row-reverse" : ""}`}>
         <div 
           className="w-8 h-8 rounded-md flex items-center justify-center text-white font-medium"
           style={{ backgroundColor: stat.color }}

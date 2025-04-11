@@ -47,3 +47,18 @@
   direction: ltr;
 }
 
+/* Prevent grid layout inversion in RTL mode */
+.rtl .grid {
+  direction: ltr; /* Keep grid layout the same in both RTL and LTR */
+}
+
+/* But make the text inside grid items respect RTL */
+.rtl .grid > * {
+  direction: rtl;
+}
+
+/* Ensure stat cards maintain their layout */
+.rtl .stat-card {
+  direction: rtl;
+  text-align: right;
+}
