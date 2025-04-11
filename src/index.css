@@ -1,4 +1,3 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -125,6 +124,11 @@
   .rtl .tabs-content {
     text-align: right;
   }
+  
+  /* Settings item text alignment */
+  .rtl .settings-item-text {
+    text-align: right;
+  }
 }
 
 @layer components {
@@ -146,6 +150,26 @@
 
   .quest-item {
     @apply p-3 rounded-md border border-border/50 hover:border-rpg-primary/50 transition-colors;
+  }
+
+  .settings-row {
+    @apply flex items-center justify-between;
+  }
+  
+  .settings-icon-wrapper {
+    @apply flex-shrink-0 w-6 flex justify-center;
+  }
+  
+  .settings-text-wrapper {
+    @apply flex flex-col;
+  }
+  
+  .settings-title {
+    @apply text-sm font-medium leading-none mb-1;
+  }
+  
+  .settings-description {
+    @apply text-xs text-muted-foreground;
   }
 }
 

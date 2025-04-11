@@ -78,7 +78,7 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ signOut }) => {
               <div className="flex-shrink-0 w-6 flex justify-center">
                 <Bell size={18} className="text-muted-foreground" />
               </div>
-              <div>
+              <div className="flex flex-col">
                 <p className="text-sm font-medium leading-none mb-1">{t('notifications')}</p>
                 <p className="text-xs text-muted-foreground">{t('notificationsDesc')}</p>
               </div>
@@ -95,7 +95,7 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ signOut }) => {
               <div className="flex-shrink-0 w-6 flex justify-center">
                 <Moon size={18} className="text-muted-foreground" />
               </div>
-              <div>
+              <div className="flex flex-col">
                 <p className="text-sm font-medium leading-none mb-1">{t('darkMode')}</p>
                 <p className="text-xs text-muted-foreground">{t('darkModeDesc')}</p>
               </div>
@@ -112,7 +112,7 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ signOut }) => {
               <div className="flex-shrink-0 w-6 flex justify-center">
                 <Volume2 size={18} className="text-muted-foreground" />
               </div>
-              <div>
+              <div className="flex flex-col">
                 <p className="text-sm font-medium leading-none mb-1">{t('soundEffects')}</p>
                 <p className="text-xs text-muted-foreground">{t('soundEffectsDesc')}</p>
               </div>
@@ -129,7 +129,7 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ signOut }) => {
               <div className="flex-shrink-0 w-6 flex justify-center">
                 <Languages size={18} className="text-muted-foreground" />
               </div>
-              <div>
+              <div className="flex flex-col">
                 <p className="text-sm font-medium leading-none mb-1">{t('language')}</p>
                 <p className="text-xs text-muted-foreground">{t('languageDesc')}</p>
               </div>
