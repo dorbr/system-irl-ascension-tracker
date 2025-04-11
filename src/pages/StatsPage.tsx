@@ -153,9 +153,9 @@ const StatsPage = () => {
           })}
         </div>
 
-        {/* Show stat explanation when a stat is selected */}
+        {/* Show stat explanation at the bottom of the page */}
         {showStatDetail && selectedStat && (
-          <Card className="mb-6">
+          <Card className="mt-4">
             <CardContent className="pt-4">
               <StatExplanation 
                 stats={userData.stats.filter(s => s.name === selectedStat)} 
