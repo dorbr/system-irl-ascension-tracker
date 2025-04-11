@@ -58,22 +58,11 @@ const AvatarUploader: React.FC<AvatarUploaderProps> = ({
       };
       reader.readAsDataURL(file);
       
-      // First, make sure the avatars bucket exists
-      const { data: bucketData, error: bucketError } = await supabase
-        .storage
-        .getBucket('avatars');
-      
-      // Create bucket if it doesn't exist
-      if (bucketError && bucketError.message.includes('does not exist')) {
-        await supabase.storage.createBucket('avatars', {
-          public: true
-        });
-      }
+      // Create a unique file path that includes the user ID as required by the RLS policy
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${user.id}/${Date.now()}.${fileExt}`;
       
       // Upload to Supabase Storage
-      const fileExt = file.name.split('.').pop();
-      const fileName = `${user.id}-${Date.now()}.${fileExt}`;
-      
       const { error: uploadError } = await supabase.storage
         .from('avatars')
         .upload(fileName, file, { upsert: true });
@@ -100,6 +89,7 @@ const AvatarUploader: React.FC<AvatarUploaderProps> = ({
       
       onAvatarUpdate();
     } catch (error: any) {
+      console.error("Avatar upload error:", error);
       toast({
         title: "Error updating avatar",
         description: error.message,
