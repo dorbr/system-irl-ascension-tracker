@@ -3,13 +3,13 @@ import React, { useState, useEffect } from "react";
 import { useSocial } from "@/context/SocialContext";
 import { useAuth } from "@/context/AuthContext";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ArrowLeft, Trophy, User, Medal, Sparkles, Swords, FlameKindling } from "lucide-react";
 import { Link } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
-import { AspectRatio } from "@/components/ui/aspect-ratio";
+
+// Import leaderboard components
+import LeaderboardFilters from "@/components/leaderboard/LeaderboardFilters";
+import LeaderboardList from "@/components/leaderboard/LeaderboardList";
+import LeaderboardRewards from "@/components/leaderboard/LeaderboardRewards";
 
 interface LeaderboardUser {
   id: string;
@@ -34,13 +34,12 @@ const LeaderboardPage = () => {
     { id: "streaks", name: "Quest Streaks", icon: FlameKindling, color: "text-orange-500" }
   ];
   
-  // Mock data for demonstration - in a real app, this would come from the database
+  // Mock data for demonstration
   useEffect(() => {
     const fetchLeaderboard = async () => {
       setIsLoading(true);
       
       // This is mock data for demonstration
-      // In a real implementation, you would query the database for actual user stats
       const mockData: LeaderboardUser[] = [
         {
           id: "1",
@@ -122,6 +121,11 @@ const LeaderboardPage = () => {
     return cat ? cat.icon : Sparkles;
   };
   
+  const getCategoryColor = (categoryId: string) => {
+    const cat = categories.find(c => c.id === categoryId);
+    return cat ? cat.color : "";
+  };
+  
   return (
     <div className="py-4">
       <div className="mb-4 flex items-center">
@@ -139,115 +143,24 @@ const LeaderboardPage = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="flex flex-col sm:flex-row sm:justify-between gap-2 mb-4">
-            <Select value={category} onValueChange={setCategory}>
-              <SelectTrigger className="w-full sm:w-[180px]">
-                <SelectValue placeholder="Select Category" />
-              </SelectTrigger>
-              <SelectContent>
-                {categories.map(cat => (
-                  <SelectItem key={cat.id} value={cat.id}>
-                    <div className="flex items-center">
-                      <cat.icon className={`h-4 w-4 mr-2 ${cat.color}`} />
-                      {cat.name}
-                    </div>
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            
-            <Tabs defaultValue="global" value={scope} onValueChange={setScope} className="w-full sm:w-auto">
-              <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="global">Global</TabsTrigger>
-                <TabsTrigger value="friends">Friends</TabsTrigger>
-              </TabsList>
-            </Tabs>
-          </div>
+          <LeaderboardFilters 
+            category={category}
+            scope={scope}
+            onCategoryChange={setCategory}
+            onScopeChange={setScope}
+          />
           
-          <div className="space-y-2">
-            {leaderboard.map((leader) => {
-              const CategoryIcon = getCategoryIcon(category);
-              return (
-                <div 
-                  key={leader.id} 
-                  className={`flex items-center p-3 rounded-lg ${
-                    leader.is_current_user ? "bg-rpg-primary/20" : "glass-card"
-                  }`}
-                >
-                  <div className="flex-shrink-0 w-8 text-center font-bold">
-                    {leader.rank <= 3 ? (
-                      <Trophy 
-                        className={
-                          leader.rank === 1 ? "text-yellow-500 mx-auto" : 
-                          leader.rank === 2 ? "text-gray-300 mx-auto" : 
-                          "text-amber-700 mx-auto"
-                        } 
-                        size={20} 
-                      />
-                    ) : (
-                      `#${leader.rank}`
-                    )}
-                  </div>
-                  
-                  <div className="ml-3 flex-shrink-0">
-                    <div className="w-10 h-10 rounded-full overflow-hidden">
-                      <AspectRatio ratio={1} className="h-full">
-                        {leader.avatar_url ? (
-                          <img 
-                            src={leader.avatar_url} 
-                            alt={leader.username || "User"} 
-                            className="w-full h-full object-cover"
-                          />
-                        ) : (
-                          <div className="bg-muted flex items-center justify-center h-full">
-                            <User className="h-5 w-5 text-muted-foreground" />
-                          </div>
-                        )}
-                      </AspectRatio>
-                    </div>
-                  </div>
-                  
-                  <div className="ml-3 flex-grow min-w-0">
-                    <div className="flex justify-between items-baseline">
-                      <p className="font-medium text-sm truncate">
-                        {leader.username}
-                        {leader.is_current_user && <span className="ml-1 text-xs">(You)</span>}
-                      </p>
-                      <div className="flex items-center text-sm ml-2">
-                        <CategoryIcon className={`h-3.5 w-3.5 mr-1 ${categories.find(c => c.id === category)?.color}`} />
-                        <span>{leader.value} {getCategoryUnit()}</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+          <LeaderboardList 
+            leaderboard={leaderboard}
+            category={category}
+            getCategoryUnit={getCategoryUnit}
+            getCategoryIcon={getCategoryIcon}
+            getCategoryColor={getCategoryColor}
+          />
         </CardContent>
       </Card>
       
-      <Card className="glass-card">
-        <CardHeader>
-          <CardTitle className="text-base">Weekly Rewards</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className="text-sm mb-3">Leaderboards reset every week. Top performers earn special rewards:</p>
-          <ul className="space-y-2">
-            <li className="flex items-center text-sm">
-              <Trophy className="h-4 w-4 mr-2 text-yellow-500" />
-              <span>1st Place: Special achievement badge + 100 XP</span>
-            </li>
-            <li className="flex items-center text-sm">
-              <Trophy className="h-4 w-4 mr-2 text-gray-300" />
-              <span>2nd Place: 75 XP</span>
-            </li>
-            <li className="flex items-center text-sm">
-              <Trophy className="h-4 w-4 mr-2 text-amber-700" />
-              <span>3rd Place: 50 XP</span>
-            </li>
-          </ul>
-        </CardContent>
-      </Card>
+      <LeaderboardRewards />
     </div>
   );
 };

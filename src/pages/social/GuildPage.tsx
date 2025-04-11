@@ -2,16 +2,20 @@
 import React, { useState, useEffect } from "react";
 import { useSocial } from "@/context/SocialContext";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Loader2, Shield, LogOut, ArrowLeft, UserPlus, Swords } from "lucide-react";
+import { Loader2, LogOut, ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
+
+// Import guild components
+import GuildHeader from "@/components/guild/GuildHeader";
+import GuildDescription from "@/components/guild/GuildDescription";
+import GuildQuestsList from "@/components/guild/GuildQuestsList";
+import CreateGuildForm from "@/components/guild/CreateGuildForm";
+import AvailableGuildsList from "@/components/guild/AvailableGuildsList";
+import GuildBenefits from "@/components/guild/GuildBenefits";
 
 interface GuildQuest {
   id: string;
@@ -26,12 +30,6 @@ interface GuildQuest {
 const GuildPage = () => {
   const { userGuild, createGuild, joinGuild, leaveGuild, isLoading } = useSocial();
   const [showCreateDialog, setShowCreateDialog] = useState(false);
-  const [showJoinDialog, setShowJoinDialog] = useState(false);
-  const [newGuild, setNewGuild] = useState({
-    name: "",
-    description: "",
-    motto: "",
-  });
   const [guildQuests, setGuildQuests] = useState<GuildQuest[]>([]);
   const [availableGuilds, setAvailableGuilds] = useState<any[]>([]);
   const [isLoadingQuests, setIsLoadingQuests] = useState(false);
@@ -81,18 +79,10 @@ const GuildPage = () => {
     }
   };
   
-  const handleCreateGuild = async () => {
-    if (!newGuild.name.trim()) return;
-    
-    const result = await createGuild(
-      newGuild.name, 
-      newGuild.description,
-      newGuild.motto
-    );
-    
+  const handleCreateGuild = async (name: string, description: string, motto: string) => {
+    const result = await createGuild(name, description, motto);
     if (result) {
       setShowCreateDialog(false);
-      setNewGuild({ name: "", description: "", motto: "" });
     }
   };
   
@@ -121,20 +111,9 @@ const GuildPage = () => {
         </div>
       ) : userGuild ? (
         <Card className="glass-card">
-          <CardHeader>
-            <CardTitle className="flex items-center">
-              <Shield className="mr-2 h-5 w-5 text-rpg-primary" />
-              {userGuild.name}
-            </CardTitle>
-            <CardDescription>
-              {userGuild.motto || "No motto set"}
-            </CardDescription>
-          </CardHeader>
+          <GuildHeader name={userGuild.name} motto={userGuild.motto} />
           <CardContent>
-            <div className="mb-4">
-              <p className="text-sm text-muted-foreground mb-2">Guild Description:</p>
-              <p className="text-sm">{userGuild.description || "No description available."}</p>
-            </div>
+            <GuildDescription description={userGuild.description} />
             
             <Separator className="my-4" />
             
@@ -145,34 +124,11 @@ const GuildPage = () => {
               </TabsList>
               
               <TabsContent value="quests" className="mt-4">
-                {isLoadingQuests ? (
-                  <div className="flex justify-center py-4">
-                    <Loader2 className="h-6 w-6 animate-spin text-rpg-primary" />
-                  </div>
-                ) : guildQuests.length === 0 ? (
-                  <div className="text-center py-4">
-                    <p className="text-muted-foreground">No guild quests available</p>
-                    {userGuild.user_role === 'leader' && (
-                      <Button size="sm" className="mt-2">Create Quest</Button>
-                    )}
-                  </div>
-                ) : (
-                  <div className="space-y-3">
-                    {guildQuests.map(quest => (
-                      <div key={quest.id} className="glass-card p-3 rounded-lg">
-                        <div className="flex justify-between items-start">
-                          <div>
-                            <h4 className="font-medium text-sm">{quest.title}</h4>
-                            <p className="text-xs text-muted-foreground">{quest.description}</p>
-                          </div>
-                          <div className="text-xs text-rpg-primary font-semibold">
-                            +{quest.xp_reward} XP
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
+                <GuildQuestsList 
+                  quests={guildQuests}
+                  isLoading={isLoadingQuests}
+                  isLeader={userGuild.user_role === 'leader'}
+                />
               </TabsContent>
               
               <TabsContent value="members" className="mt-4">
@@ -200,57 +156,11 @@ const GuildPage = () => {
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex flex-col space-y-2">
-                <Dialog open={showCreateDialog} onOpenChange={setShowCreateDialog}>
-                  <DialogTrigger asChild>
-                    <Button className="w-full">
-                      <Shield className="mr-2 h-4 w-4" />
-                      Create New Guild
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent>
-                    <DialogHeader>
-                      <DialogTitle>Create a Guild</DialogTitle>
-                      <DialogDescription>
-                        Form a guild and lead other adventurers
-                      </DialogDescription>
-                    </DialogHeader>
-                    <div className="grid gap-4 py-4">
-                      <div className="grid gap-2">
-                        <Label htmlFor="guild-name">Guild Name</Label>
-                        <Input
-                          id="guild-name"
-                          placeholder="Enter guild name"
-                          value={newGuild.name}
-                          onChange={(e) => setNewGuild({ ...newGuild, name: e.target.value })}
-                        />
-                      </div>
-                      <div className="grid gap-2">
-                        <Label htmlFor="guild-motto">Guild Motto (Optional)</Label>
-                        <Input
-                          id="guild-motto"
-                          placeholder="Enter guild motto"
-                          value={newGuild.motto}
-                          onChange={(e) => setNewGuild({ ...newGuild, motto: e.target.value })}
-                        />
-                      </div>
-                      <div className="grid gap-2">
-                        <Label htmlFor="guild-description">Description (Optional)</Label>
-                        <Textarea
-                          id="guild-description"
-                          placeholder="Describe your guild's purpose"
-                          value={newGuild.description}
-                          onChange={(e) => setNewGuild({ ...newGuild, description: e.target.value })}
-                        />
-                      </div>
-                    </div>
-                    <DialogFooter>
-                      <Button variant="outline" onClick={() => setShowCreateDialog(false)}>
-                        Cancel
-                      </Button>
-                      <Button onClick={handleCreateGuild}>Create Guild</Button>
-                    </DialogFooter>
-                  </DialogContent>
-                </Dialog>
+                <CreateGuildForm
+                  isOpen={showCreateDialog}
+                  onOpenChange={setShowCreateDialog}
+                  onCreateGuild={handleCreateGuild}
+                />
               </div>
             </CardContent>
           </Card>
@@ -261,49 +171,15 @@ const GuildPage = () => {
               <CardDescription>Join an existing guild</CardDescription>
             </CardHeader>
             <CardContent>
-              {isLoadingGuilds ? (
-                <div className="flex justify-center py-4">
-                  <Loader2 className="h-6 w-6 animate-spin text-rpg-primary" />
-                </div>
-              ) : availableGuilds.length === 0 ? (
-                <div className="text-center py-4">
-                  <p className="text-muted-foreground">No guilds available to join</p>
-                </div>
-              ) : (
-                <div className="space-y-3">
-                  {availableGuilds.map(guild => (
-                    <div key={guild.id} className="glass-card p-3 rounded-lg">
-                      <div className="flex justify-between items-start">
-                        <div>
-                          <h4 className="font-medium text-sm">{guild.name}</h4>
-                          <p className="text-xs text-muted-foreground">{guild.motto || "No motto"}</p>
-                          <p className="text-xs mt-1">Members: {guild.members[0].count}</p>
-                        </div>
-                        <Button size="sm" onClick={() => handleJoinGuild(guild.id)}>
-                          <UserPlus className="h-4 w-4 mr-1" />
-                          Join
-                        </Button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
+              <AvailableGuildsList
+                guilds={availableGuilds}
+                isLoading={isLoadingGuilds}
+                onJoinGuild={handleJoinGuild}
+              />
             </CardContent>
           </Card>
           
-          <Card className="glass-card bg-muted/50">
-            <CardHeader>
-              <CardTitle className="text-base">Guild Benefits</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <ul className="list-disc list-inside text-sm space-y-2">
-                <li>Access to exclusive guild quests</li>
-                <li>Weekly guild events and raids</li>
-                <li>Guild-wide buffs and bonuses</li>
-                <li>Track your progress against other guild members</li>
-              </ul>
-            </CardContent>
-          </Card>
+          <GuildBenefits />
         </div>
       )}
     </div>

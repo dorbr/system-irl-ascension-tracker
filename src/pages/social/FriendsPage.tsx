@@ -29,6 +29,20 @@ const FriendsPage = () => {
       setShowAddDialog(false);
     }
   };
+
+  const handleAcceptFriend = async (friendshipId: string) => {
+    await acceptFriendRequest(friendshipId);
+  };
+
+  const handleRejectFriend = async (friendshipId: string) => {
+    await rejectFriendRequest(friendshipId);
+  };
+
+  const handleRemoveFriend = async (friendshipId: string) => {
+    if (confirm("Are you sure you want to remove this friend?")) {
+      await removeFriend(friendshipId);
+    }
+  };
   
   return (
     <div className="py-4">
@@ -69,11 +83,7 @@ const FriendsPage = () => {
                 friends={friends}
                 isLoading={isLoading}
                 onAddFriend={() => setShowAddDialog(true)}
-                onRemoveFriend={async (friendshipId) => {
-                  if (confirm("Are you sure you want to remove this friend?")) {
-                    await removeFriend(friendshipId);
-                  }
-                }}
+                onRemoveFriend={handleRemoveFriend}
               />
             </TabsContent>
             
@@ -81,8 +91,8 @@ const FriendsPage = () => {
               <PendingFriendsList 
                 pendingFriends={pendingFriends}
                 isLoading={isLoading}
-                onAcceptFriend={acceptFriendRequest}
-                onRejectFriend={rejectFriendRequest}
+                onAcceptFriend={handleAcceptFriend}
+                onRejectFriend={handleRejectFriend}
               />
             </TabsContent>
           </Tabs>
