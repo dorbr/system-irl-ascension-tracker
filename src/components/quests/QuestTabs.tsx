@@ -1,7 +1,7 @@
 
 import React from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ScrollText, Swords, PlusCircle } from "lucide-react";
+import { ScrollText, Swords, PlusCircle, Calendar, Star } from "lucide-react";
 import { Quest } from "@/context/QuestContext";
 import QuestList from "./QuestList";
 import QuestForm from "./QuestForm";
@@ -42,10 +42,16 @@ const QuestTabs: React.FC<QuestTabsProps> = ({
         <TabsTrigger value="quests" className="flex items-center gap-1">
           <ScrollText size={14} />
           <span className="hidden sm:inline">All Quests</span>
+          <span className="inline-flex items-center justify-center bg-secondary/60 text-xs rounded-full h-5 min-w-5 px-1">
+            {allQuests.length}
+          </span>
         </TabsTrigger>
         <TabsTrigger value="dungeons" className="flex items-center gap-1">
           <Swords size={14} />
           <span className="hidden sm:inline">Dungeons</span>
+          <span className="inline-flex items-center justify-center bg-secondary/60 text-xs rounded-full h-5 min-w-5 px-1">
+            {dungeonQuests.length}
+          </span>
         </TabsTrigger>
         <TabsTrigger value="create" className="flex items-center gap-1">
           <PlusCircle size={14} />
@@ -54,19 +60,55 @@ const QuestTabs: React.FC<QuestTabsProps> = ({
       </TabsList>
       
       <TabsContent value="quests">
-        <QuestList 
-          quests={allQuests} 
-          onComplete={onCompleteQuest} 
-          emptyMessage="No quests available" 
-        />
+        <div className="flex items-center justify-between mb-2 px-1">
+          <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1 text-xs">
+              <Calendar size={14} className="text-blue-400" />
+              <span className="text-blue-400">Daily: {dailyQuests.length}</span>
+            </div>
+            <div className="flex items-center gap-1 text-xs">
+              <Star size={14} className="text-yellow-400" />
+              <span className="text-yellow-400">Main: {mainQuests.length}</span>
+            </div>
+          </div>
+          <div className="text-xs text-muted-foreground">
+            Total: {allQuests.length}
+          </div>
+        </div>
+        
+        {allQuests.length > 0 ? (
+          <QuestList 
+            quests={allQuests} 
+            onComplete={onCompleteQuest} 
+            emptyMessage="No quests available" 
+          />
+        ) : (
+          <div className="text-center py-8 px-4">
+            <h3 className="font-medium text-lg mb-2">No Quests Available</h3>
+            <p className="text-muted-foreground text-sm mb-4">
+              Your quest log is empty. Create your first quest to get started!
+            </p>
+            <PlusCircle size={40} className="mx-auto text-muted-foreground/50" />
+          </div>
+        )}
       </TabsContent>
       
       <TabsContent value="dungeons">
-        <QuestList 
-          quests={dungeonQuests} 
-          onComplete={onCompleteQuest} 
-          emptyMessage="No dungeons available" 
-        />
+        {dungeonQuests.length > 0 ? (
+          <QuestList 
+            quests={dungeonQuests} 
+            onComplete={onCompleteQuest} 
+            emptyMessage="No dungeons available" 
+          />
+        ) : (
+          <div className="text-center py-8 px-4">
+            <h3 className="font-medium text-lg mb-2">No Dungeon Challenges</h3>
+            <p className="text-muted-foreground text-sm mb-4">
+              You haven't created any dungeon challenges yet. Create your first challenge to test your limits!
+            </p>
+            <Swords size={40} className="mx-auto text-muted-foreground/50" />
+          </div>
+        )}
       </TabsContent>
       
       <TabsContent value="create">

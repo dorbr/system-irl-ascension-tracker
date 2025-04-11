@@ -28,43 +28,57 @@ const getQuestTypeStyles = (type: string): {
   icon: React.ReactNode; 
   borderColor: string;
   bgColor: string;
+  label: string;
+  textColor: string;
 } => {
   switch (type) {
     case "main":
       return { 
         icon: <Star size={16} className="text-yellow-400" />,
         borderColor: "border-yellow-500/30",
-        bgColor: "bg-yellow-500/5"
+        bgColor: "bg-yellow-500/5",
+        label: "Main Quest",
+        textColor: "text-yellow-400"
       };
     case "daily":
       return { 
         icon: <Calendar size={16} className="text-blue-400" />,
         borderColor: "border-blue-500/30",
-        bgColor: "bg-blue-500/5"
+        bgColor: "bg-blue-500/5",
+        label: "Daily Quest",
+        textColor: "text-blue-400"
       };
     case "penalty":
       return { 
         icon: <Shield size={16} className="text-red-400" />,
-        borderColor: "border-red-500/30",
-        bgColor: "bg-red-500/5"
+        borderColor: "border-red-500/30", 
+        bgColor: "bg-red-500/5",
+        label: "Penalty Quest",
+        textColor: "text-red-400"
       };
     case "reward":
       return { 
         icon: <Award size={16} className="text-green-400" />,
         borderColor: "border-green-500/30", 
-        bgColor: "bg-green-500/5"
+        bgColor: "bg-green-500/5",
+        label: "Reward Quest",
+        textColor: "text-green-400"
       };
     case "dungeon":
       return { 
         icon: <Swords size={16} className="text-rpg-accent" />,
         borderColor: "border-rpg-accent/30",
-        bgColor: "bg-rpg-accent/5"
+        bgColor: "bg-rpg-accent/5",
+        label: "Dungeon Challenge",
+        textColor: "text-rpg-accent"
       };
     default:
       return { 
         icon: <Calendar size={16} className="text-blue-400" />,
         borderColor: "border-blue-500/30",
-        bgColor: "bg-blue-500/5"
+        bgColor: "bg-blue-500/5",
+        label: "Quest",
+        textColor: "text-blue-400"
       };
   }
 };
@@ -97,14 +111,19 @@ const QuestCard: React.FC<QuestCardProps> = ({
     >
       <div className="flex justify-between items-start gap-3">
         <div className="flex-1">
-          <div className="flex items-center gap-2">
-            {typeStyles.icon}
-            <h3 className="font-semibold text-sm mb-1">{quest.title}</h3>
-            {quest.type === "dungeon" && quest.difficulty && (
-              <div className={cn("text-xs font-bold px-1.5 py-0.5 rounded", getDifficultyColor(quest.difficulty))}>
-                {quest.difficulty}-Rank
-              </div>
-            )}
+          <div className="flex flex-col gap-1">
+            <div className="flex items-center gap-1.5">
+              {typeStyles.icon}
+              <span className={`text-xs font-medium px-1.5 py-0.5 rounded-full bg-secondary/40 ${typeStyles.textColor}`}>
+                {typeStyles.label}
+              </span>
+              {quest.type === "dungeon" && quest.difficulty && (
+                <div className={cn("text-xs font-bold px-1.5 py-0.5 rounded ml-1", getDifficultyColor(quest.difficulty))}>
+                  {quest.difficulty}-Rank
+                </div>
+              )}
+            </div>
+            <h3 className="font-semibold text-sm">{quest.title}</h3>
           </div>
           <p className="text-xs text-muted-foreground mb-2">{quest.description}</p>
           

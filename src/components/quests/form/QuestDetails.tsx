@@ -5,7 +5,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { QuestDifficulty } from "@/context/QuestContext";
-import { Shield, Star, Calendar, Award } from "lucide-react";
+import { Shield, Star, Calendar, Award, Flag } from "lucide-react";
 
 interface QuestDetailsProps {
   title: string;
@@ -46,7 +46,7 @@ const QuestDetails: React.FC<QuestDetailsProps> = ({
 }) => {
   return (
     <>
-      <div>
+      <div className="mb-3">
         <Label htmlFor="title" className="text-sm font-medium">
           {isDungeon ? "Dungeon Title" : "Quest Title"}
         </Label>
@@ -59,7 +59,7 @@ const QuestDetails: React.FC<QuestDetailsProps> = ({
         />
       </div>
       
-      <div>
+      <div className="mb-3">
         <Label htmlFor="description" className="text-sm font-medium">Description</Label>
         <Textarea
           id="description"
@@ -70,7 +70,7 @@ const QuestDetails: React.FC<QuestDetailsProps> = ({
         />
       </div>
       
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-2 gap-3 mb-3">
         <div>
           <Label htmlFor="xp" className="text-sm font-medium">XP Reward</Label>
           <Input
@@ -84,7 +84,10 @@ const QuestDetails: React.FC<QuestDetailsProps> = ({
         
         {!isDungeon ? (
           <div>
-            <Label htmlFor="type" className="text-sm font-medium">Quest Type</Label>
+            <Label htmlFor="type" className="text-sm font-medium flex items-center gap-1">
+              <Flag size={16} />
+              <span>Quest Type</span>
+            </Label>
             <Select
               value={type}
               onValueChange={(value) => setType(value as "daily" | "main" | "penalty" | "reward")}
@@ -96,28 +99,40 @@ const QuestDetails: React.FC<QuestDetailsProps> = ({
                 <SelectValue placeholder="Select quest type" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="daily" className="flex items-center gap-2">
+                <SelectItem value="daily">
                   <div className="flex items-center gap-2">
                     <Calendar size={16} className="text-blue-400" />
-                    <span>Daily Quest</span>
+                    <div className="flex flex-col">
+                      <span className="text-blue-400 font-medium">Daily Quest</span>
+                      <span className="text-xs text-muted-foreground">Regular tasks that build habits</span>
+                    </div>
                   </div>
                 </SelectItem>
                 <SelectItem value="main">
                   <div className="flex items-center gap-2">
                     <Star size={16} className="text-yellow-400" />
-                    <span>Main Quest</span>
+                    <div className="flex flex-col">
+                      <span className="text-yellow-400 font-medium">Main Quest</span>
+                      <span className="text-xs text-muted-foreground">Important goals that advance your journey</span>
+                    </div>
                   </div>
                 </SelectItem>
                 <SelectItem value="penalty">
                   <div className="flex items-center gap-2">
                     <Shield size={16} className="text-red-400" />
-                    <span>Penalty Quest</span>
+                    <div className="flex flex-col">
+                      <span className="text-red-400 font-medium">Penalty Quest</span>
+                      <span className="text-xs text-muted-foreground">Tasks to avoid bad habits</span>
+                    </div>
                   </div>
                 </SelectItem>
                 <SelectItem value="reward">
                   <div className="flex items-center gap-2">
                     <Award size={16} className="text-green-400" />
-                    <span>Reward Quest</span>
+                    <div className="flex flex-col">
+                      <span className="text-green-400 font-medium">Reward Quest</span>
+                      <span className="text-xs text-muted-foreground">Treats earned after completing other quests</span>
+                    </div>
                   </div>
                 </SelectItem>
               </SelectContent>
