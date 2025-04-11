@@ -27,8 +27,13 @@ interface LanguageProviderProps {
 export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) => {
   // Check for saved language preference or use default
   const getSavedLanguage = () => {
-    const saved = localStorage.getItem('system_irl_language');
-    return saved || 'english';
+    try {
+      const saved = localStorage.getItem('system_irl_language');
+      return saved || 'english';
+    } catch (error) {
+      console.error("Error accessing localStorage:", error);
+      return 'english';
+    }
   };
 
   const [language, setLanguageState] = useState<string>(getSavedLanguage());
@@ -45,13 +50,18 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
       document.documentElement.dir = 'ltr';
       document.body.classList.remove('rtl');
     }
-  }, []);
+  }, [language]);
 
   const setLanguage = (newLanguage: string) => {
     console.log("Setting language to:", newLanguage);
     setLanguageState(newLanguage);
     setTranslations(getTranslations(newLanguage));
-    localStorage.setItem('system_irl_language', newLanguage);
+    
+    try {
+      localStorage.setItem('system_irl_language', newLanguage);
+    } catch (error) {
+      console.error("Error saving to localStorage:", error);
+    }
     
     // Set direction based on language
     if (newLanguage === 'hebrew' || newLanguage === 'arabic') {
