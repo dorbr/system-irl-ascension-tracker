@@ -26,7 +26,7 @@ const QuestCard: React.FC<QuestCardProps> = ({
   className,
 }) => {
   const { userData } = useUser();
-  const { isRtl } = useLanguage();
+  const { isRtl, t } = useLanguage();
   
   // Get visual styles based on quest type
   const typeStyles = getQuestTypeStyles(quest.type);
@@ -68,17 +68,19 @@ const QuestCard: React.FC<QuestCardProps> = ({
 
   // Format the title with colorful rank for dungeon quests
   const displayTitle = () => {
+    return quest.title;
+  };
+
+  // Display the rank for dungeon quests separately
+  const displayRank = () => {
     if (quest.type === "dungeon" && quest.difficulty) {
       return (
-        <span>
-          {quest.title}{" "}
-          <span className={`font-bold ${getRankColor(quest.difficulty)}`}>
-            - {quest.difficulty} Rank
-          </span>
-        </span>
+        <div className={`text-center font-bold ${getRankColor(quest.difficulty)}`}>
+          {quest.difficulty} {t('rank')}
+        </div>
       );
     }
-    return quest.title;
+    return null;
   };
 
   return (
@@ -101,6 +103,7 @@ const QuestCard: React.FC<QuestCardProps> = ({
           <div className="flex flex-col gap-2 mb-3">
             <QuestTypeIndicator type={quest.type} difficulty={quest.difficulty} />
             <h3 className="font-semibold text-sm text-center">{displayTitle()}</h3>
+            {displayRank()}
           </div>
           
           {/* Description */}

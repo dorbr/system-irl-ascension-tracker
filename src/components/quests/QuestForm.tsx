@@ -7,6 +7,7 @@ import QuestTypeSelector from "./form/QuestTypeSelector";
 import QuestDetails from "./form/QuestDetails";
 import StatSelector from "./form/StatSelector";
 import TagSelector from "./form/TagSelector";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface QuestFormProps {
   availableStats: string[];
@@ -22,6 +23,7 @@ interface QuestFormProps {
 }
 
 const QuestForm: React.FC<QuestFormProps> = ({ availableStats, onCreateQuest }) => {
+  const { t, isRtl } = useLanguage();
   const [isDungeon, setIsDungeon] = useState(false);
   
   const [newQuest, setNewQuest] = useState({
@@ -86,8 +88,8 @@ const QuestForm: React.FC<QuestFormProps> = ({ availableStats, onCreateQuest }) 
   const handleCreateQuest = () => {
     if (!newQuest.title.trim()) {
       toast({
-        title: "Error",
-        description: "Title is required",
+        title: t('error'),
+        description: t('questName') + " " + t('is_required'),
         variant: "destructive",
       });
       return;
@@ -95,8 +97,8 @@ const QuestForm: React.FC<QuestFormProps> = ({ availableStats, onCreateQuest }) 
     
     if (newQuest.stats.length === 0) {
       toast({
-        title: "Error",
-        description: "Please select at least one stat",
+        title: t('error'),
+        description: t('selectStat'),
         variant: "destructive",
       });
       return;
@@ -114,10 +116,10 @@ const QuestForm: React.FC<QuestFormProps> = ({ availableStats, onCreateQuest }) 
     onCreateQuest(questToCreate);
     
     toast({
-      title: isDungeon ? "Dungeon Created" : "Quest Created",
+      title: isDungeon ? t('dungeon') + " " + t('created') : t('quests') + " " + t('created'),
       description: isDungeon 
-        ? "Your new dungeon challenge has been added" 
-        : "Your new quest has been added to your log",
+        ? t('newDungeonAddedDesc')
+        : t('newQuestAddedDesc'),
     });
     
     // Reset form
@@ -182,7 +184,7 @@ const QuestForm: React.FC<QuestFormProps> = ({ availableStats, onCreateQuest }) 
         onClick={handleCreateQuest} 
         className={`w-full ${isDungeon ? "bg-rpg-accent hover:bg-rpg-accent/90" : "bg-rpg-primary hover:bg-rpg-primary/90"}`}
       >
-        {isDungeon ? "Create Dungeon Challenge" : "Create Quest"}
+        {isDungeon ? t('createDungeonBtn') : t('createQuestBtn')}
       </Button>
     </div>
   );
