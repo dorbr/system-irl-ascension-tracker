@@ -40,11 +40,15 @@ export const ExpenseBreakdownChart = () => {
   
   // Map category names to display names
   const getCategoryName = (category: string): string => {
-    const parts = category.split('_');
-    if (parts.length > 1) {
-      return t(parts[0]) + ' (' + t(parts[1]) + ')';
+    // Extract the base category without the type suffix
+    const baseCategoryName = category.split('_')[0];
+    
+    // Make sure we only use valid translation keys
+    if (baseCategoryName === 'other') {
+      return t('other');
     }
-    return t(category);
+    
+    return t(baseCategoryName as any); // Using 'as any' as a temporary workaround
   };
   
   // Transform data for the chart

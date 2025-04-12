@@ -2,9 +2,9 @@
 import React from "react";
 import { useResources } from "@/context/ResourcesContext";
 import { useLanguage } from "@/context/LanguageContext";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { ResourceEntry } from "@/types/resources";
-import { Coins, Droplet, Pencil, Trash2 } from "lucide-react";
+import { Coins, Droplet, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { formatDistanceToNow } from "date-fns";
 
@@ -36,7 +36,10 @@ export const HistoryTab = () => {
   
   // Get category display name
   const getCategoryName = (category: string): string => {
-    return t(category.split('_')[0]);
+    // Extract the base category name without type suffix
+    const baseCategoryName = category.split('_')[0];
+    // Cast to any as a workaround since we know these are valid keys
+    return t(baseCategoryName as any);
   };
   
   if (sortedEntries.length === 0) {
@@ -78,8 +81,6 @@ const ResourceEntryCard: React.FC<ResourceEntryCardProps> = ({
   formatRelativeDate,
   getCategoryName
 }) => {
-  const { t } = useLanguage();
-  
   return (
     <Card className="glass-card">
       <CardContent className="p-4 flex items-center justify-between">

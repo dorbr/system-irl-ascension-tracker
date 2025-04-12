@@ -201,7 +201,7 @@ export type TranslationKey =
   | 'noBuffs'
   | 'netGain'
   | 'netLoss'
-  | 'expenseBreakdown'
+  | 'expenseBreakdown' 
   | 'netWorthTrend'
   | 'selectCategory'
   | 'food'
@@ -213,7 +213,9 @@ export type TranslationKey =
   | 'salary'
   | 'freelance'
   | 'gift'
-  | 'investment';
+  | 'investment'
+  | 'other_income'
+  | 'other_expense';
 
 export type Translations = {
   [key in TranslationKey]?: string;

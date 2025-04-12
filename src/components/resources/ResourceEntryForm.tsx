@@ -9,7 +9,6 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Switch } from "@/components/ui/switch";
 import { Coins, Droplet, Calendar, Tag } from "lucide-react";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
@@ -150,11 +149,16 @@ export const ResourceEntryForm: React.FC<ResourceEntryFormProps> = ({ isOpen, on
                 <SelectValue placeholder={t('selectCategory')} />
               </SelectTrigger>
               <SelectContent>
-                {getCategories().map((cat) => (
-                  <SelectItem key={cat} value={cat}>
-                    {t(cat.split('_')[0])}
-                  </SelectItem>
-                ))}
+                {getCategories().map((cat) => {
+                  // Get the base category name without type suffix
+                  const baseCat = cat.split('_')[0];
+                  return (
+                    <SelectItem key={cat} value={cat}>
+                      {/* Cast to any as a workaround since we know these are valid keys */}
+                      {t(baseCat as any)}
+                    </SelectItem>
+                  );
+                })}
               </SelectContent>
             </Select>
           </div>
@@ -182,7 +186,7 @@ export const ResourceEntryForm: React.FC<ResourceEntryFormProps> = ({ isOpen, on
               id="notes"
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
-              placeholder={t('notes')}
+              placeholder={t('notes') as string}
               rows={3}
             />
           </div>
@@ -197,7 +201,7 @@ export const ResourceEntryForm: React.FC<ResourceEntryFormProps> = ({ isOpen, on
                   value={tag}
                   onChange={(e) => setTag(e.target.value)}
                   className="pl-10"
-                  placeholder={t('tags')}
+                  placeholder={t('tags') as string}
                   onKeyDown={(e) => {
                     if (e.key === 'Enter') {
                       e.preventDefault();
