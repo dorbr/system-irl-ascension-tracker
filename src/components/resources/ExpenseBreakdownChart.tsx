@@ -45,7 +45,7 @@ export const ExpenseBreakdownChart = () => {
     
     // Make sure we only use valid translation keys
     if (baseCategoryName === 'other') {
-      return t('other');
+      return t('other' as any);
     }
     
     return t(baseCategoryName as any); // Using 'as any' as a temporary workaround
@@ -77,11 +77,14 @@ export const ExpenseBreakdownChart = () => {
               dataKey="value"
               label={({ name, percentage }) => `${name}: ${percentage}%`}
               labelLine={false}
+              animationBegin={0}
+              animationDuration={800}
             >
               {chartData.map((entry, index) => (
                 <Cell 
                   key={`cell-${index}`} 
                   fill={COLORS[index % COLORS.length]} 
+                  strokeWidth={2}
                 />
               ))}
             </Pie>

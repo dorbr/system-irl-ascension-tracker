@@ -1,18 +1,28 @@
 
 import React from "react";
 import { useUser } from "@/context/UserContext";
-import { Coins, Droplet, PiggyBank } from "lucide-react";
+import { Coins, Droplet, PiggyBank, ArrowRight } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
+import { Link } from "react-router-dom";
 
 const ResourcesOverview: React.FC = () => {
   const { userData } = useUser();
   const { t, isRtl } = useLanguage();
 
   return (
-    <div className="glass-card rounded-lg p-4 mb-4 animate-fade-in text-center">
-      <h3 className="text-sm uppercase font-medium text-muted-foreground mb-3">
-        {t("resources")}
-      </h3>
+    <div className="glass-card rounded-lg p-4 mb-4 animate-fade-in">
+      <div className="flex justify-between items-center mb-3">
+        <h3 className="text-sm uppercase font-medium text-muted-foreground">
+          {t("resources")}
+        </h3>
+        <Link 
+          to="/resources" 
+          className="text-xs flex items-center text-primary hover:underline"
+        >
+          {t("resourceDashboard")}
+          <ArrowRight size={12} className="ml-1" />
+        </Link>
+      </div>
       
       <div className="grid grid-cols-3 gap-3">
         <div className="flex flex-col items-center p-2 bg-secondary/30 rounded-md">
@@ -42,6 +52,13 @@ const ResourcesOverview: React.FC = () => {
           <span className="text-xs text-muted-foreground">{t("netWorth")}</span>
         </div>
       </div>
+      
+      <Link
+        to="/resources"
+        className="mt-3 w-full block text-center text-xs py-2 bg-primary/10 text-primary rounded-md hover:bg-primary/20 transition-colors"
+      >
+        {t("viewDetails")}
+      </Link>
     </div>
   );
 };

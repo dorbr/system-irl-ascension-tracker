@@ -215,7 +215,8 @@ export type TranslationKey =
   | 'gift'
   | 'investment'
   | 'other_income'
-  | 'other_expense';
+  | 'other_expense'
+  | 'viewDetails';
 
 export type Translations = {
   [key in TranslationKey]?: string;

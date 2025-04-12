@@ -17,6 +17,7 @@ export const englishResources: Partial<Translations> = {
   allTime: 'All Time',
   timeRange: 'Time Range',
   addEntry: 'Add Entry',
+  viewDetails: 'View Details',
   
   // Log entry
   logEntry: 'Log Entry',
@@ -98,6 +99,7 @@ export const hebrewResources: Partial<Translations> = {
   allTime: 'כל הזמן',
   timeRange: 'טווח זמן',
   addEntry: 'הוסף רשומה',
+  viewDetails: 'הצג פרטים',
   
   // Log entry
   logEntry: 'רשום רשומה',
@@ -179,6 +181,7 @@ export const arabicResources: Partial<Translations> = {
   allTime: 'كل الوقت',
   timeRange: 'النطاق الزمني',
   addEntry: 'إضافة إدخال',
+  viewDetails: 'عرض التفاصيل',
   
   // Basic Arabic translations for the most important keys
   overviewTab: 'نظرة عامة',
