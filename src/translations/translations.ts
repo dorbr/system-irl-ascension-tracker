@@ -1,46 +1,45 @@
 
-import { Translations, TranslationKey, Languages } from './types';
-import { englishCommon, hebrewCommon } from './common';
-import { englishSettings, hebrewSettings } from './settings';
+import { Translations } from './types';
+import { englishCommon, hebrewCommon, arabicCommon } from './common';
+import { englishHome, hebrewHome, arabicHome } from './home';
+import { englishShadows, hebrewShadows, arabicShadows } from './shadows';
+import { englishStats, hebrewStats, arabicStats } from './stats';
+import { englishProfile, hebrewProfile, arabicProfile } from './profile';
+import { englishSettings, hebrewSettings, arabicSettings } from './settings';
+import { englishSocial, hebrewSocial, arabicSocial } from './social';
 import { englishQuests, hebrewQuests } from './quests';
-import { englishProfile, hebrewProfile } from './profile';
-import { englishSocial, hebrewSocial } from './social';
-import { englishShadows, hebrewShadows } from './shadows';
-import { englishStats, hebrewStats } from './stats';
-import { englishHome, hebrewHome } from './home';
+import { englishResources, hebrewResources } from './resources';
 
-// English translations (default)
-export const englishTranslations: Translations = {
+export const english: Translations = {
   ...englishCommon,
-  ...englishSettings,
-  ...englishQuests,
-  ...englishProfile,
-  ...englishSocial,
+  ...englishHome,
   ...englishShadows,
   ...englishStats,
-  ...englishHome,
-} as Translations;
-
-// Hebrew translations
-export const hebrewTranslations: Translations = {
-  ...hebrewCommon,
-  ...hebrewSettings,
-  ...hebrewQuests,
-  ...hebrewProfile,
-  ...hebrewSocial,
-  ...hebrewShadows,
-  ...hebrewStats,
-  ...hebrewHome,
-} as Translations;
-
-// Get translations based on selected language
-export const getTranslations = (language: string): Translations => {
-  if (language === 'hebrew') {
-    return hebrewTranslations;
-  }
-  // Add support for other languages as needed
-  return englishTranslations;
+  ...englishProfile,
+  ...englishSettings,
+  ...englishSocial,
+  ...englishQuests,
+  ...englishResources
 };
 
-// Re-export types for easier importing
-export type { TranslationKey, Translations, Languages };
+export const hebrew: Translations = {
+  ...hebrewCommon,
+  ...hebrewHome,
+  ...hebrewShadows,
+  ...hebrewStats,
+  ...hebrewProfile,
+  ...hebrewSettings,
+  ...hebrewSocial,
+  ...hebrewQuests,
+  ...hebrewResources
+};
+
+export const arabic: Translations = {
+  ...arabicCommon,
+  ...arabicHome,
+  ...arabicShadows,
+  ...arabicStats,
+  ...arabicProfile,
+  ...arabicSettings,
+  ...arabicSocial
+};
