@@ -58,23 +58,15 @@ const CrewPage = () => {
 
       {/* Content area */}
       <div className="relative w-full h-full overflow-hidden">
-        <div 
-          className="flex transition-transform duration-300 h-full"
-          style={{ 
-            width: "200%", 
-            transform: section === "quests" 
-              ? "translateX(0)" 
-              : isRtl ? "translateX(0)" : "translateX(-50%)"
-          }}
-        >
-          {/* Always show Quest content first in the DOM regardless of language */}
+        {section === "quests" ? (
           <div className="w-full h-full overflow-y-auto">
             <QuestsPage />
           </div>
+        ) : (
           <div className="w-full h-full overflow-y-auto">
             <SocialPage />
           </div>
-        </div>
+        )}
       </div>
     </div>
   );
