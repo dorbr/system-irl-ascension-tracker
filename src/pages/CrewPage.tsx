@@ -62,7 +62,9 @@ const CrewPage = () => {
           className="flex transition-transform duration-300 h-full"
           style={{ 
             width: "200%", 
-            transform: section === "quests" ? "translateX(0)" : "translateX(-50%)" 
+            transform: isRtl 
+              ? (section === "quests" ? "translateX(50%)" : "translateX(0)")
+              : (section === "quests" ? "translateX(0)" : "translateX(-50%)")
           }}
         >
           <div className="w-full h-full overflow-y-auto">
