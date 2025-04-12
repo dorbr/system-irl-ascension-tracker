@@ -1,4 +1,3 @@
-
 import { Translations } from './types';
 
 // Quests related translations
@@ -86,4 +85,28 @@ export const hebrewQuests: Partial<Translations> = {
   average: 'ממוצע',
   hardest: 'הקשה ביותר',
   rank: 'דרגה',
+};
+
+// Add basic Arabic quest translations
+export const arabicQuests: Partial<Translations> = {
+  quests: 'المهام',
+  daily: 'يومي',
+  main: 'رئيسي',
+  dungeon: 'الزنزانة',
+  completed: 'مكتمل',
+  createQuest: 'إنشاء مهمة',
+  questName: 'اسم المهمة',
+  questDescription: 'وصف المهمة',
+  questType: 'نوع المهمة',
+  questReward: 'المكافأة',
+  
+  // Basic translations for most important elements
+  createDungeon: 'إنشاء تحدي الزنزانة',
+  description: 'الوصف',
+  xpReward: 'مكافأة XP',
+  
+  // Tabs and buttons
+  overviewTab: 'نظرة عامة',
+  createQuestBtn: 'إنشاء مهمة',
+  createDungeonBtn: 'إنش��ء تحدي الزنزانة'
 };

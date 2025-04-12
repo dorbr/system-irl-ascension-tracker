@@ -1,4 +1,3 @@
-
 import { Translations } from './types';
 
 // Shadows page related translations
@@ -46,4 +45,17 @@ export const hebrewShadows: Partial<Translations> = {
   noShadows: 'אין צללים בארכיון עדיין',
   shadowRequired: 'שם הצל והאירוע הם שדות חובה',
   shadowArchived: 'הצל נשמר בארכיון',
+};
+
+// Add basic Arabic shadows translations
+export const arabicShadows: Partial<Translations> = {
+  shadows: 'الظلال',
+  shadowArchive: 'أرشيف الظلال',
+  newShadow: 'ظل جديد',
+  archiveNewShadow: 'أرشفة ظل جديد',
+  shadowName: 'اسم الظل',
+  event: 'ماذا حدث؟',
+  reflection: 'تأملاتك',
+  insight: 'البصيرة المكتسبة',
+  archiveShadow: 'أرشفة الظل'
 };

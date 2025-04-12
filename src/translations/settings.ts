@@ -1,4 +1,3 @@
-
 import { Translations } from './types';
 
 // Settings and preferences related translations
@@ -62,4 +61,20 @@ export const hebrewSettings: Partial<Translations> = {
   privacySettingsTitle: 'הגדרות פרטיות',
   privacySettingsDesc: 'תכונה זו עדיין לא מיושמת.',
   settings: 'הגדרות',
+};
+
+// Add basic Arabic settings translations
+export const arabicSettings: Partial<Translations> = {
+  preferences: 'التفضيلات',
+  customizeExperience: 'تخصيص تجربة التطبيق',
+  notifications: 'الإشعارات',
+  darkMode: 'الوضع المظلم',
+  soundEffects: 'المؤثرات الصوتية',
+  language: 'اللغة',
+  account: 'الحساب',
+  manageAccount: 'إدارة إعدادات حسابك',
+  privacySettings: 'إعدادات الخصوصية',
+  deleteAccount: 'حذف الحساب',
+  signOut: 'تسجيل الخروج',
+  settings: 'الإعدادات'
 };

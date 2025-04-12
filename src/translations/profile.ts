@@ -1,4 +1,3 @@
-
 import { Translations } from './types';
 
 // Profile related translations
@@ -20,4 +19,15 @@ export const hebrewProfile: Partial<Translations> = {
   progressStats: 'סטטיסטיקות התקדמות',
   classEvolution: 'התפתחות מקצוע',
   nextClasses: 'מקצועות פוטנציאליים הבאים',
+};
+
+// Add basic Arabic profile translations
+export const arabicProfile: Partial<Translations> = {
+  profile: 'الملف الشخصي',
+  editProfile: 'تعديل الملف الشخصي',
+  hideEditor: 'إخفاء المحرر',
+  topStats: 'أفضل الإحصائيات',
+  progressStats: 'إحصائيات التقدم',
+  classEvolution: 'تطور الفئة',
+  nextClasses: 'الفئات المحتملة التالية'
 };

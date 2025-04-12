@@ -216,7 +216,7 @@ export type TranslationKey =
   | 'investment';
 
 export type Translations = {
-  [key in TranslationKey]: string;
+  [key in TranslationKey]?: string;
 };
 
 export type Languages = 'english' | 'hebrew' | 'arabic';

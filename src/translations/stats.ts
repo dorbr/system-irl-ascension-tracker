@@ -1,4 +1,3 @@
-
 import { Translations } from './types';
 
 // Stats page translations - English
@@ -31,4 +30,15 @@ export const hebrewStats: Partial<Translations> = {
   improvedStat: 'שיפרת את {stat} ב-{amount} והרווחת {xp} נקודות ניסיון!',
   benefits: 'יתרונות של {stat} גבוה:',
   howToImprove: 'איך לשפר את {stat}:',
+};
+
+// Add basic Arabic stats translations
+export const arabicStats: Partial<Translations> = {
+  statTracker: 'متتبع الإحصائيات',
+  logProgress: 'تسجيل التقدم',
+  selectStatToImprove: 'اختر إحصائية لتحسينها',
+  journalEntry: 'إدخال اليومية (اختياري)',
+  statGain: 'اكتساب الإحصائية',
+  logImprovement: 'تسجيل التحسين',
+  progressLogged: 'تم تسجيل التقدم'
 };

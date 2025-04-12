@@ -163,3 +163,32 @@ export const hebrewResources: Partial<Translations> = {
   gift: 'מתנה',
   investment: 'השקעה'
 };
+
+// Add Arabic resources translations (basic implementation)
+export const arabicResources: Partial<Translations> = {
+  resourceModule: 'الموارد',
+  resourceDashboard: 'لوحة الموارد',
+  totalGold: 'إجمالي الذهب',
+  totalMana: 'إجمالي المانا',
+  totalNet: 'القيمة الصافية',
+  passiveBuffs: 'التعزيزات السلبية',
+  artifacts: 'التحف',
+  buffs: 'التعزيزات',
+  weekly: 'أسبوعي',
+  monthly: 'شهري',
+  allTime: 'كل الوقت',
+  timeRange: 'النطاق الزمني',
+  addEntry: 'إضافة إدخال',
+  
+  // Basic Arabic translations for the most important keys
+  overviewTab: 'نظرة عامة',
+  historyTab: 'التاريخ',
+  artifactsTab: 'التحف',
+  buffsTab: 'التعزيزات',
+  
+  gold: 'ذهب',
+  mana: 'مانا',
+  income: 'الدخل',
+  expenses: 'النفقات',
+  netWorth: 'القيمة الصافية'
+};

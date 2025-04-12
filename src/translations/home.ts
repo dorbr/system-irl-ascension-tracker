@@ -1,4 +1,3 @@
-
 import { Translations } from './types';
 
 // English translations for home page components
@@ -63,4 +62,20 @@ export const hebrewHome: Partial<Translations> = {
   debugMode: 'מצב דיבאג',
   simulatingEndOfDay: 'מדמה בדיקת קנס סוף יום',
   debugTimer: 'טיימר דיבאג',
+};
+
+// Add basic Arabic home translations
+export const arabicHome: Partial<Translations> = {
+  dailyQuests: 'المهام اليومية',
+  questsRemaining: 'المهمة المتبقية',
+  questsRemaining_plural: 'المهام المتبقية',
+  resources: 'الموارد',
+  gold: 'الذهب',
+  mana: 'المانا',
+  net: 'الصافي',
+  income: 'الدخل',
+  expenses: 'المصروفات',
+  netWorth: 'القيمة الصافية',
+  system: 'النظام',
+  stats: 'الإحصائيات'
 };

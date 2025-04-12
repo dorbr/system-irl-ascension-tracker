@@ -1,4 +1,3 @@
-
 import { Translations } from './types';
 
 // Common translations used across the application
@@ -32,4 +31,21 @@ export const hebrewCommon: Partial<Translations> = {
   home: 'בית',
   stats: 'סטטיסטיקות',
   profile: 'פרופיל',
+};
+
+// Add basic Arabic common translations
+export const arabicCommon: Partial<Translations> = {
+  save: 'حفظ',
+  cancel: 'إلغاء',
+  error: 'خطأ',
+  add: 'إضافة',
+  level: 'المستوى',
+  xp: 'XP',
+  class: 'الفئة',
+  username: 'اسم المستخدم',
+  saveChanges: 'حفظ التغييرات',
+  saving: 'جاري الحفظ...',
+  home: 'الرئيسية',
+  stats: 'الإحصائيات',
+  profile: 'الملف الشخصي',
 };
